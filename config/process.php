@@ -12,9 +12,9 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
+use app\common\process\Http;
 use support\Log;
 use support\Request;
-use app\process\Http;
 
 global $argv;
 
@@ -37,7 +37,7 @@ return [
     ],
     // File update detection and automatic reload
     'monitor' => [
-        'handler' => app\process\Monitor::class,
+        'handler' => \app\common\process\Monitor::class,
         'reloadable' => false,
         'constructor' => [
             // Monitor these directories

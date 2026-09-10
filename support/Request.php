@@ -20,5 +20,42 @@ namespace support;
  */
 class Request extends \Webman\Http\Request
 {
+    public function isPost(): bool
+    {
+        return $this->method() == 'POST';
+    }
 
+    public function isGet(): bool
+    {
+        return $this->method() == 'GET';
+    }
+
+    public function ip(): string
+    {
+        return $this->getRealIp();
+    }
+
+    public function getController(): array|string|null
+    {
+        return strtolower(str_replace("app\\" . ($this->app) . "\controller\\", "", $this->controller));
+    }
+
+    public function param($data = [], $default = ''):array|int|string|null
+    {
+        if(is_string($data)){
+            return $this->input($data,$default);
+        }
+        $param = [];
+        if(!empty($data) && is_array($data)){
+            foreach ($data as $k=>$v){
+                if(is_int($k)){//代表仅取值
+                    $param[$v] = $this->input($v);
+                }elseif(is_string($k)){
+                    $param[$k] = $this->input($k,$v);
+                }
+            }
+            return $param;
+        }
+        return $this->all();
+    }
 }

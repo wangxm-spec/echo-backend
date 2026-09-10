@@ -15,7 +15,11 @@
 use Webman\Route;
 
 
+require_once app_path('api/route/app.php');
 
+Route::fallback(function(){
+    return response('Hello World');
+});
 
 
 

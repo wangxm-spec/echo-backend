@@ -1,6 +1,6 @@
 <?php
 
-namespace app\process;
+namespace app\common\process;
 
 use Webman\App;
 
