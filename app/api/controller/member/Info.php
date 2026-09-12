@@ -1,0 +1,31 @@
+<?php
+
+namespace app\api\controller\member;
+
+use app\api\controller\Base;
+use app\api\exception\AuthException;
+use app\common\model\MemberAccountModel;
+use app\common\model\MemberDeviceModel;
+
+class Info extends Base
+{
+    function info(){
+        $user = MemberAccountModel::where('status', 1)
+            ->where('uuid', $this->uuid)
+            ->field('uuid,account,avatar,phone,email,nickname,qq_number,mbti_type,hope_amount,create_time')
+            ->find();
+        if(!$user){
+            throw new AuthException();
+        }
+        $user['avatar'] = formatUrl($user['avatar']);
+        $user['phone'] = substr($user['phone'], 0, 3) . '****' . substr($user['phone'], -4);
+        return $this->success('SUCCESS', $user);
+    }
+
+    function device(){
+        $device_list = MemberDeviceModel::where('uuid', $this->uuid)
+            ->order('update_time desc')
+            ->column('code,name,status,online_status,create_time,update_time');
+        return $this->success('SUCCESS', $device_list);
+    }
+}

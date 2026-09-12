@@ -33,8 +33,7 @@ class JwtAuth implements MiddlewareInterface
             throw new AuthException('登录设备异常');
         }
 
-        $request->user = $user;
-
+        $request->uuid = $uuid;
         return $handler($request);
     }
 }

@@ -10,7 +10,7 @@ class SmsService
 {
     protected static $error_limit = 3;
     protected static $exp_time = 300;
-    public static function send($phone, $type):bool
+    public static function send($phone, $type):array
     {
         $code = random(4,'number');
         $key = 'wezjVRW5jgLk';
@@ -28,20 +28,22 @@ class SmsService
             if ($result['code'] != 200) {
                 throw new ParamException($result['reason']);
             }
-            ServiceSmsLogModel::create([
+            $sms = ServiceSmsLogModel::create([
                 'mobile' => $phone,
                 'code' => $code,
                 'type' => $type,
                 'status' => 0,
                 'error_count' => 0,
-                'use_time' => null,
                 'create_time' => formatDate(),
                 'update_time' => formatDate()
             ]);
+            return [
+                'msg_id' => $sms->id,
+                'msg_code' => $code
+            ];
         }else{
             throw new ParamException('请求失败');
         }
-        return true;
     }
 
     public static function verify($id, $type, $phone, $code)
@@ -49,31 +51,25 @@ class SmsService
         $last = ServiceSmsLogModel::where('id', $id)
             ->where('mobile', $phone)
             ->where('type', $type)
-            ->field('id,code,verify_count,status')
+            ->field('id,code,error_count,status,create_time')
             ->find();
 
         if (!$last) {
             throw new ParamException('请先发送验证码');
         }
 
-        if (time() - strtotime($last['send_time']) > self::$exp_time) {
+        if (time() - strtotime($last['create_time']) > self::$exp_time) {
             throw new ParamException('验证码已过期');
         }
 
-        if ($last['status'] != 0 || $last['verify_count'] >= self::$error_limit) {
+        if ($last['status'] != 0 || $last['error_count'] >= self::$error_limit) {
             throw new ParamException('验证码已失效');
         }
 
-        if ($last['code'] != $code) {
-            ServiceSmsLogModel::where('id', $id)->inc('verify_count')->update();
+        if ((string)$last['code'] !== (string)$code) {
+            ServiceSmsLogModel::where('id', $id)->inc('error_count')->update();
             throw new ParamException('验证码有误');
         }
-        self::commit($id);
-        return true;
-    }
-
-    private static function commit($id)
-    {
         ServiceSmsLogModel::where('id', $id)->update([
             'status' => 1,
             'update_time' => formatDate()

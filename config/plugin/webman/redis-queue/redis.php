@@ -1,10 +1,10 @@
 <?php
 return [
     'default' => [
-        'host' => 'redis://127.0.0.1:6379',
+        'host' => 'redis://' . env('REDIS_HOST') . ':' . env('REDIS_PORT'),
         'options' => [
-            'auth' => null,
-            'db' => 0,
+            'auth' => env('REDIS_PASSWORD'),
+            'db' => env('REDIS_SELECT'),
             'prefix' => '',
             'max_attempts'  => 5,
             'retry_seconds' => 5,

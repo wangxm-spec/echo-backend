@@ -7,15 +7,15 @@ return [
             // 数据库类型
             'type' => 'mysql',
             // 服务器地址
-            'hostname' => '127.0.0.1',
+            'hostname' => env('DATABASE_HOST'),
             // 数据库名
-            'database' => 'echo',
+            'database' => env('DATABASE_NAME'),
             // 数据库用户名
-            'username' => 'echo',
+            'username' => env('DATABASE_USER'),
             // 数据库密码
-            'password' => 'i8WhwRcjnDTH2Msx',
+            'password' => env('DATABASE_PASSWORD'),
             // 数据库连接端口
-            'hostport' => '3306',
+            'hostport' => env('DATABASE_PORT'),
             // 数据库连接参数
             'params' => [
                 // 连接超时3秒

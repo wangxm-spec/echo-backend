@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ffc5c39e28d24fa6f76d0a8ba34d919b",
+    "content-hash": "e8b33ec6b7ace5b3c84f837297acb13d",
     "packages": [
         {
             "name": "blogdaren/configurator",
@@ -706,6 +706,52 @@
                 "source": "https://github.com/gitfei1231/webman-api-sign2/tree/0.0.30"
             },
             "time": "2025-10-17T06:55:11+00:00"
+        },
+        {
+            "name": "graham-campbell/result-type",
+            "version": "v1.2.0",
+            "dist": {
+                "type": "zip",
+                "url": "https://mirrors.tencent.com/repository/composer/graham-campbell/result-type/v1.2.0/graham-campbell-result-type-v1.2.0.zip",
+                "reference": "adccca3324eece92ca35463648c12b9e6293c05b",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2.5 || ^8.0",
+                "phpoption/phpoption": "^1.10"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.5.52 || ^9.6.34 || ^10.5.63 || ^11.5.55 || ^12.5.14"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "GrahamCampbell\\ResultType\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Graham Campbell",
+                    "email": "hello@gjcampbell.co.uk",
+                    "homepage": "https://github.com/GrahamCampbell"
+                }
+            ],
+            "description": "An Implementation Of The Result Type",
+            "keywords": [
+                "Graham Campbell",
+                "GrahamCampbell",
+                "Result Type",
+                "Result-Type",
+                "result"
+            ],
+            "support": {
+                "issues": "https://github.com/GrahamCampbell/Result-Type/issues",
+                "source": "https://github.com/GrahamCampbell/Result-Type/tree/v1.2.0"
+            },
+            "time": "2026-08-24T09:06:52+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -2485,6 +2531,65 @@
                 "source": "https://github.com/PHP-DI/PHP-DI/tree/7.1.1"
             },
             "time": "2025-08-16T11:10:48+00:00"
+        },
+        {
+            "name": "phpoption/phpoption",
+            "version": "1.10.0",
+            "dist": {
+                "type": "zip",
+                "url": "https://mirrors.tencent.com/repository/composer/phpoption/phpoption/1.10.0/phpoption-phpoption-1.10.0.zip",
+                "reference": "67b192b6a42ec03944b972d6e633ddec78ad2c6d",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2.5 || ^8.0"
+            },
+            "require-dev": {
+                "bamarni/composer-bin-plugin": "^1.8.2",
+                "phpunit/phpunit": "^8.5.54 || ^9.6.36 || ^10.5.64 || ^11.5.56 || ^12.5.33"
+            },
+            "type": "library",
+            "extra": {
+                "bamarni-bin": {
+                    "bin-links": true,
+                    "forward-command": false
+                },
+                "branch-alias": {
+                    "dev-master": "1.9-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PhpOption\\": "src/PhpOption/"
+                }
+            },
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Johannes M. Schmitt",
+                    "email": "schmittjoh@gmail.com",
+                    "homepage": "https://github.com/schmittjoh"
+                },
+                {
+                    "name": "Graham Campbell",
+                    "email": "hello@gjcampbell.co.uk",
+                    "homepage": "https://github.com/GrahamCampbell"
+                }
+            ],
+            "description": "Option Type for PHP",
+            "keywords": [
+                "language",
+                "option",
+                "php",
+                "type"
+            ],
+            "support": {
+                "issues": "https://github.com/schmittjoh/php-option/issues",
+                "source": "https://github.com/schmittjoh/php-option/tree/1.10.0"
+            },
+            "time": "2026-08-24T00:54:40+00:00"
         },
         {
             "name": "phpseclib/phpseclib",
@@ -4709,6 +4814,54 @@
             "time": "2026-08-21T12:09:28+00:00"
         },
         {
+            "name": "tinywan/captcha",
+            "version": "v1.0.0",
+            "dist": {
+                "type": "zip",
+                "url": "https://mirrors.tencent.com/repository/composer/tinywan/captcha/v1.0.0/tinywan-captcha-v1.0.0.zip",
+                "reference": "78cfaa8ec80f56294ed5aa10116e2891941c0157",
+                "shasum": ""
+            },
+            "require": {
+                "ext-gd": "*",
+                "ext-mbstring": "*",
+                "ext-redis": "*",
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.6",
+                "phpstan/phpstan": "^1.4",
+                "workerman/webman": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Tinywan\\Captcha\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tinywan",
+                    "email": "756684177@qq.com"
+                }
+            ],
+            "description": "base64 image verification captcha library for webman plugin",
+            "keywords": [
+                "base64",
+                "captcha",
+                "plugin",
+                "webman"
+            ],
+            "support": {
+                "issues": "https://github.com/Tinywan/webman-captcha/issues",
+                "source": "https://github.com/Tinywan/webman-captcha/tree/v1.0.0"
+            },
+            "time": "2026-08-29T08:39:10+00:00"
+        },
+        {
             "name": "tinywan/jwt",
             "version": "v2.0.1",
             "dist": {
@@ -4955,6 +5108,74 @@
             "time": "2025-06-11T05:51:40+00:00"
         },
         {
+            "name": "vlucas/phpdotenv",
+            "version": "v5.7.0",
+            "dist": {
+                "type": "zip",
+                "url": "https://mirrors.tencent.com/repository/composer/vlucas/phpdotenv/v5.7.0/vlucas-phpdotenv-v5.7.0.zip",
+                "reference": "301c07936b16d88628b126b01d082ba153cf4c40",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pcre": "*",
+                "graham-campbell/result-type": "^1.2",
+                "php": "^7.2.5 || ^8.0",
+                "phpoption/phpoption": "^1.10",
+                "symfony/polyfill-ctype": "^1.26",
+                "symfony/polyfill-mbstring": "^1.26",
+                "symfony/polyfill-php80": "^1.26"
+            },
+            "require-dev": {
+                "bamarni/composer-bin-plugin": "^1.8.2",
+                "ext-filter": "*",
+                "phpunit/phpunit": "^8.5.34 || ^9.6.13 || ^10.4.2"
+            },
+            "suggest": {
+                "ext-filter": "Required to use the boolean validator."
+            },
+            "type": "library",
+            "extra": {
+                "bamarni-bin": {
+                    "bin-links": true,
+                    "forward-command": false
+                },
+                "branch-alias": {
+                    "dev-master": "5.6-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Dotenv\\": "src/"
+                }
+            },
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Graham Campbell",
+                    "email": "hello@gjcampbell.co.uk",
+                    "homepage": "https://github.com/GrahamCampbell"
+                },
+                {
+                    "name": "Vance Lucas",
+                    "email": "vance@vancelucas.com",
+                    "homepage": "https://github.com/vlucas"
+                }
+            ],
+            "description": "Loads environment variables from `.env` to `$_ENV` and `$_SERVER` automagically, and optionally to `getenv()`.",
+            "keywords": [
+                "dotenv",
+                "env",
+                "environment"
+            ],
+            "support": {
+                "issues": "https://github.com/vlucas/phpdotenv/issues",
+                "source": "https://github.com/vlucas/phpdotenv/tree/v5.7.0"
+            },
+            "time": "2026-08-24T18:07:49+00:00"
+        },
+        {
             "name": "voku/portable-ascii",
             "version": "2.1.1",
             "dist": {
@@ -4999,6 +5220,58 @@
                 "source": "https://github.com/voku/portable-ascii/tree/2.1.1"
             },
             "time": "2026-04-26T05:33:54+00:00"
+        },
+        {
+            "name": "webman/captcha",
+            "version": "v1.0.5",
+            "dist": {
+                "type": "zip",
+                "url": "https://mirrors.tencent.com/repository/composer/webman/captcha/v1.0.5/webman-captcha-v1.0.5.zip",
+                "reference": "0b2645b813466e4e70bff311511364080bad2ec5",
+                "shasum": ""
+            },
+            "require": {
+                "ext-gd": "*",
+                "ext-mbstring": "*",
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Webman\\Captcha\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "walkor",
+                    "email": "walkor@workerman.net"
+                },
+                {
+                    "name": "Grégoire Passault",
+                    "email": "g.passault@gmail.com",
+                    "homepage": "http://www.gregwar.com/"
+                },
+                {
+                    "name": "Jeremy Livingston",
+                    "email": "jeremy.j.livingston@gmail.com"
+                }
+            ],
+            "description": "Captcha generator",
+            "keywords": [
+                "bot",
+                "captcha",
+                "spam"
+            ],
+            "support": {
+                "source": "https://github.com/webman-php/captcha/tree/v1.0.5"
+            },
+            "time": "2025-03-01T08:43:36+00:00"
         },
         {
             "name": "webman/console",

@@ -49,7 +49,9 @@
     "next/var-dumper": "^0.1.1",
     "blogdaren/webman-phpcreeper": "^1.0",
     "tinywan/jwt": "^2.0",
-    "ext-http": "*"
+    "vlucas/phpdotenv": "^5.7",
+    "webman/captcha": "^1.0",
+    "tinywan/captcha": "^1.0"
   },
   "suggest": {
     "ext-event": "For better performance. "

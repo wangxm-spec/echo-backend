@@ -3,25 +3,25 @@
 return [
     // push server 储存器
     'server-storage' => [
-        'host'     => '172.17.0.1',
-        'password' => '',
-        'port'     => 6379,
-        'database' => 0,
+        'host'     => env('REDIS_HOST'),
+        'password' => env('REDIS_PASSWORD'),
+        'port'     => env('REDIS_PORT'),
+        'database' => env('REDIS_SELECT'),
     ],
     // 服务通讯频道
     'server-channel' => [
-        'host'     => '172.17.0.1',
-        'password' => '',
-        'port'     => 6379,
-        'database' => 0,
+        'host'     => env('REDIS_HOST'),
+        'password' => env('REDIS_PASSWORD'),
+        'port'     => env('REDIS_PORT'),
+        'database' => env('REDIS_SELECT'),
         'options'  => []
     ],
     // redis注册器配置
     'server-registrar' => [
-        'host'     => '172.17.0.1',
-        'password' => '',
-        'port'     => 6379,
-        'database' => 0,
+        'host'     => env('REDIS_HOST'),
+        'password' => env('REDIS_PASSWORD'),
+        'port'     => env('REDIS_PORT'),
+        'database' => env('REDIS_SELECT'),
         'options'  => []
     ]
 ];

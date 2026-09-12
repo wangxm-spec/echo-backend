@@ -18,7 +18,7 @@ use Webman\Session\RedisClusterSessionHandler;
 
 return [
 
-    'type' => 'file', // or redis or redis_cluster
+    'type' => 'redis', // or redis or redis_cluster
 
     'handler' => FileSessionHandler::class,
 
@@ -27,11 +27,11 @@ return [
             'save_path' => runtime_path() . '/sessions',
         ],
         'redis' => [
-            'host' => '127.0.0.1',
-            'port' => 6379,
-            'auth' => '',
+            'host' => env('REDIS_HOST'),
+            'port' => env('REDIS_PORT'),
+            'auth' => env('REDIS_PASSWORD'),
             'timeout' => 2,
-            'database' => '',
+            'database' => env('REDIS_SELECT'),
             'prefix' => 'redis_session_',
         ],
         'redis_cluster' => [

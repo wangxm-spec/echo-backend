@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no,email=no,address=no">
+    <title>{site_name} 邮箱绑定验证码</title>
+    <style>
+        body { margin: 0; padding: 0; background-color: #eef1f6; }
+        table { border-collapse: collapse; }
+        img { border: 0; outline: none; }
+        .code-box { font-family: Consolas, Monaco, 'Courier New', monospace; }
+        @media only screen and (max-width: 620px) {
+            .container { width: 100% !important; }
+            .px { padding-left: 22px !important; padding-right: 22px !important; }
+            .code-text { font-size: 28px !important; letter-spacing: 4px !important; }
+        }
+    </style>
+</head>
+<body style="margin:0;padding:0;background-color:#eef1f6;">
+
+<!-- 邮件主体 -->
+<table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color:#eef1f6;">
+    <tr>
+        <td align="center" style="padding:36px 14px;">
+
+            <!-- 内容容器 -->
+            <table role="presentation" class="container" width="600" border="0" cellpadding="0" cellspacing="0"
+                   style="width:600px;max-width:600px;background-color:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 6px 24px rgba(26,32,54,0.08);">
+
+                <!-- 顶部品牌条 -->
+                <tr>
+                    <td style="background-color:#4f46e5;background-image:linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%);padding:30px 40px;">
+                        <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td style="font-size:22px;font-weight:700;color:#ffffff;letter-spacing:1px;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',Arial,sans-serif;">
+                                    {site_name}
+                                </td>
+                                <td align="right" style="font-size:13px;color:#ded9ff;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',Arial,sans-serif;">
+                                    安全验证
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- 正文 -->
+                <tr>
+                    <td class="px" style="padding:40px 40px 8px 40px;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',Arial,sans-serif;">
+                        <p style="margin:0 0 6px 0;font-size:20px;font-weight:700;color:#1a2036;line-height:1.5;">
+                            邮箱绑定验证
+                        </p>
+                        <p style="margin:0;font-size:14px;color:#6b7280;line-height:1.7;">
+                            您好，您正在为账号绑定邮箱，请使用下方验证码完成验证：
+                        </p>
+                    </td>
+                </tr>
+
+                <!-- 验证码 -->
+                <tr>
+                    <td class="px" style="padding:20px 40px 0 40px;">
+                        <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0"
+                               style="background-color:#f5f4ff;border:1px dashed #c7c2f7;border-radius:10px;">
+                            <tr>
+                                <td align="center" class="code-box code-text"
+                                    style="padding:22px 16px;font-size:34px;font-weight:700;color:#4f46e5;letter-spacing:10px;text-indent:10px;font-family:Consolas,Monaco,'Courier New',monospace;">
+                                    {code}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- 提示 -->
+                <tr>
+                    <td class="px" style="padding:18px 40px 0 40px;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',Arial,sans-serif;">
+                        <p style="margin:0;font-size:13px;color:#8a90a0;line-height:1.8;">
+                            验证码 <strong style="color:#4f46e5;">{expire} 分钟</strong> 内有效，请勿将验证码泄露给他人。
+                        </p>
+                    </td>
+                </tr>
+
+                <!-- 安全提示 -->
+                <tr>
+                    <td class="px" style="padding:24px 40px 40px 40px;">
+                        <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0"
+                               style="background-color:#f7f8fa;border-left:3px solid #4f46e5;border-radius:6px;">
+                            <tr>
+                                <td style="padding:14px 18px;font-size:13px;color:#6b7280;line-height:1.8;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',Arial,sans-serif;">
+                                    若非您本人操作，请忽略本邮件，您的账号不会被绑定。如存在异常，请及时联系客服。
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- 页脚 -->
+                <tr>
+                    <td style="background-color:#f7f8fa;padding:22px 40px;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',Arial,sans-serif;">
+                        <p style="margin:0;font-size:12px;color:#9aa0ac;line-height:1.8;">
+                            此邮件由系统自动发送，请勿直接回复。<br>
+                            © {year} {site_name} 保留所有权利。
+                        </p>
+                    </td>
+                </tr>
+
+            </table>
+            <!-- /内容容器 -->
+
+            <table role="presentation" width="600" class="container" border="0" cellpadding="0" cellspacing="0" style="width:600px;max-width:600px;">
+                <tr>
+                    <td align="center" style="padding:18px 10px 4px 10px;font-size:12px;color:#a8aebc;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',Arial,sans-serif;">
+                        发送时间：{send_time}
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

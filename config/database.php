@@ -4,11 +4,11 @@ return  [
     'connections' => [
         'mysql' => [
             'driver'      => 'mysql',
-            'host'        => '127.0.0.1',
-            'port'        => '3306',
-            'database'    => 'echo',
-            'username'    => 'echo',
-            'password'    => 'i8WhwRcjnDTH2Msx',
+            'host'        => env('DATABASE_HOST'),
+            'port'        => env('DATABASE_PORT'),
+            'database'    => env('DATABASE_NAME'),
+            'username'    => env('DATABASE_USER'),
+            'password'    => env('DATABASE_PASSWORD'),
             'charset'     => 'utf8mb4',
             'collation'   => 'utf8mb4_general_ci',
             'prefix'      => '',

@@ -9,13 +9,13 @@ return [
             // 驱动方式
             'type' => 'redis',
             // 服务器地址
-            'host' => '127.0.0.1',
+            'host' => env('REDIS_HOST'),
             // 无 ACL 用户请留空 username（Redis 6.0 起支持用户名 + 密码认证）
             'username' => '',
             // redis密码
-            'password' => '',
+            'password' => env('REDIS_PASSWORD'),
             // 选择的数据库索引
-            'select' => 0,
+            'select' => env('REDIS_SELECT'),
             // 缓存前缀
             'prefix' => 'cache:',
             // 默认缓存有效期 0表示永久缓存

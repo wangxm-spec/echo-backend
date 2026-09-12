@@ -1,23 +1,4 @@
 <?php
-/**
- * Here is your custom functions.
- */
-/**
- * 数据签名认证
- * @param  array  $data 被认证的数据
- * @return string       签名
- */
-function data_auth_sign($data) {
-    //数据类型检测
-    if(!is_array($data)){
-        $data = (array)$data;
-    }
-    ksort($data); //排序
-    $code = http_build_query($data); //url编码并生成query字符串
-    $sign = sha1($code); //生成签名
-    return $sign;
-}
-
 function remove_xss($string): string
 {
     $string = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]+/S', '', $string);
@@ -136,4 +117,26 @@ function decimal($str, $format = 2): string
         return "0.00";
     }
     return number_format($str, $format, ".", "");
+}
+
+function uuid(){
+    return \Ramsey\Uuid\Uuid::uuid4()->toString();
+}
+
+function getDomain(){
+    // 协议：优先取代理头，其次判断是否 SSL
+    $request = request();
+    $scheme = $request->header('x-forwarded-proto');
+    if (!$scheme) {
+        $scheme = $request->connection->transport === 'ssl' ? 'https' : 'http';
+    }
+    $host = $request->host();
+    return $scheme . '://' . $host;
+}
+
+function formatUrl($path){
+    if(stripos($path, '://') !== false){
+        return getDomain() . $path;
+    }
+    return $path;
 }

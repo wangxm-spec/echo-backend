@@ -8,12 +8,17 @@ class Base
 {
     protected $request;
     protected $platform = 'mp';
+
+    protected $uuid = '';
     public function __construct()
     {
         $this->request = request();
         $this->platform = $this->request->header('platform');
         if(!in_array($this->platform, ['mp','mb'])){
             throw new ParamException('设备异常');
+        }
+        if(!empty($this->request->uuid)){
+            $this->uuid = $this->request->uuid;
         }
         $this->initialize();
     }
