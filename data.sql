@@ -11,7 +11,7 @@
  Target Server Version : 80024 (8.0.24)
  File Encoding         : 65001
 
- Date: 12/09/2026 17:09:03
+ Date: 14/09/2026 11:21:24
 */
 
 SET NAMES utf8mb4;
@@ -398,9 +398,9 @@ CREATE TABLE `service_email_log`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `delete_time` datetime NULL DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `type`(`type` ASC) USING BTREE,
-  INDEX `email`(`email` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '邮箱发送记录表' ROW_FORMAT = DYNAMIC;
+  INDEX `email`(`email` ASC) USING BTREE,
+  INDEX `type`(`type` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '邮箱发送记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of service_email_log
@@ -460,9 +460,10 @@ CREATE TABLE `service_sms_log`  (
 DROP TABLE IF EXISTS `system_ai_providers`;
 CREATE TABLE `system_ai_providers`  (
   `id` int NOT NULL AUTO_INCREMENT,
+  `key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调用键名',
   `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题',
   `desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '备注',
-  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类型：openai,huoshan,deepseek',
+  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类型：ollama,openai,huoshan,deepseek',
   `config` json NOT NULL COMMENT '配置参数',
   `models` json NOT NULL COMMENT '模型列表',
   `default_model` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '默认模型',

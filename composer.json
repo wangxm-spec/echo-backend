@@ -51,7 +51,8 @@
     "tinywan/jwt": "^2.0",
     "vlucas/phpdotenv": "^5.7",
     "webman/captcha": "^1.0",
-    "tinywan/captcha": "^1.0"
+    "tinywan/captcha": "^1.0",
+    "memran/marwa-ai": "^1.0"
   },
   "suggest": {
     "ext-event": "For better performance. "
