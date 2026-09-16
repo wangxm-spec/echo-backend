@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echo · 一个有灵魂的 AI 伙伴</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        html{scroll-behavior:smooth}
+        body{
+            font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+            background:#0a0a12;color:#e8e8f0;line-height:1.8;overflow-x:hidden;
+        }
+
+        /* ===== 导航 ===== */
+        nav{
+            position:fixed;top:0;left:0;right:0;z-index:100;
+            padding:14px 40px;
+            display:flex;justify-content:space-between;align-items:center;
+            background:rgba(10,10,18,.75);backdrop-filter:blur(20px);
+            border-bottom:1px solid rgba(255,255,255,.06);
+        }
+        nav .logo{
+            font-size:22px;font-weight:700;letter-spacing:1px;
+            background:linear-gradient(135deg,#7c6df0,#e879a6);
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+        }
+        nav .links{display:flex;gap:24px;align-items:center}
+        nav .links a{color:#a8a8c0;text-decoration:none;font-size:14px;transition:color .2s}
+        nav .links a:hover{color:#fff}
+        nav .btn-nav{
+            padding:8px 20px;border-radius:8px;
+            background:linear-gradient(135deg,#7c6df0,#9b6df0);
+            color:#fff !important;font-weight:600;
+            transition:transform .2s,box-shadow .2s;
+        }
+        nav .btn-nav:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(124,109,240,.4)}
+
+        /* ===== Hero ===== */
+        .hero{
+            min-height:100vh;display:flex;flex-direction:column;
+            justify-content:center;align-items:center;text-align:center;
+            padding:120px 24px 80px;position:relative;overflow:hidden;
+        }
+        .hero::before{
+            content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+            background:radial-gradient(circle at 30% 40%,rgba(124,109,240,.15) 0%,transparent 50%),
+            radial-gradient(circle at 70% 60%,rgba(232,121,166,.12) 0%,transparent 50%);
+            animation:float 20s ease-in-out infinite;
+        }
+        @keyframes float{
+            0%,100%{transform:translate(0,0) rotate(0deg)}
+            50%{transform:translate(-30px,30px) rotate(3deg)}
+        }
+        .hero-content{position:relative;z-index:1;max-width:800px}
+        .hero-avatar{
+            width:140px;height:140px;border-radius:50%;
+            background:linear-gradient(135deg,#7c6df0,#e879a6);
+            display:flex;align-items:center;justify-content:center;
+            font-size:64px;margin:0 auto 32px;
+            box-shadow:0 0 80px rgba(124,109,240,.5);
+            animation:breathe 4s ease-in-out infinite;
+        }
+        @keyframes breathe{
+            0%,100%{transform:scale(1);box-shadow:0 0 80px rgba(124,109,240,.5)}
+            50%{transform:scale(1.05);box-shadow:0 0 120px rgba(124,109,240,.7)}
+        }
+        .hero h1{
+            font-size:72px;font-weight:800;letter-spacing:4px;margin-bottom:16px;
+            background:linear-gradient(135deg,#fff,#b8b0f0);
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+        }
+        .hero .sub{font-size:22px;color:#a8a8c0;margin-bottom:12px;letter-spacing:2px}
+        .hero .desc{font-size:16px;color:#8080a0;margin-bottom:40px;line-height:1.9}
+        .hero-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+        .btn{
+            padding:14px 36px;border-radius:10px;font-size:16px;
+            text-decoration:none;font-weight:600;cursor:pointer;
+            transition:all .3s;border:none;display:inline-block;
+        }
+        .btn-primary{
+            background:linear-gradient(135deg,#7c6df0,#9b6df0);color:#fff;
+            box-shadow:0 8px 32px rgba(124,109,240,.35);
+        }
+        .btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(124,109,240,.5)}
+        .btn-ghost{background:transparent;color:#a8a8c0;border:1px solid rgba(255,255,255,.15)}
+        .btn-ghost:hover{border-color:#7c6df0;color:#fff;background:rgba(124,109,240,.1)}
+        .hero-footer{margin-top:48px;font-size:13px;color:#505070}
+
+        /* ===== 通用 section ===== */
+        section{padding:100px 24px;margin:0 auto}
+        .section-title{
+            text-align:center;font-size:40px;font-weight:700;margin-bottom:16px;letter-spacing:2px;
+            background:linear-gradient(135deg,#fff,#a8a0e0);
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+        }
+        .section-sub{text-align:center;color:#8080a0;font-size:16px;margin-bottom:64px;letter-spacing:1px}
+
+        /* ===== 对比 ===== */
+        .compare{
+            display:grid;grid-template-columns:1fr 1fr;gap:0;
+            border-radius:16px;overflow:hidden;
+            border:1px solid rgba(255,255,255,.08);
+            max-width:900px;margin:0 auto;
+        }
+        .compare-col{padding:32px}
+        .compare-col.old{background:rgba(255,255,255,.02)}
+        .compare-col.new{background:linear-gradient(135deg,rgba(124,109,240,.12),rgba(232,121,166,.08))}
+        .compare-col h3{font-size:18px;margin-bottom:24px;display:flex;align-items:center;gap:10px}
+        .compare-col.old h3{color:#707090}
+        .compare-col.new h3{color:#b8b0f0}
+        .compare-col ul{list-style:none}
+        .compare-col li{
+            padding:12px 0;font-size:15px;
+            border-bottom:1px solid rgba(255,255,255,.05);
+            display:flex;align-items:flex-start;gap:10px;
+        }
+        .compare-col.old li{color:#606080}
+        .compare-col.new li{color:#d0d0e8}
+        .compare-col li:last-child{border-bottom:none}
+        .compare-col .icon{font-size:16px;flex-shrink:0;margin-top:2px}
+
+        /* ===== 能力卡片 ===== */
+        .cards{
+            display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+            gap:24px;
+        }
+        .card{
+            background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+            border-radius:16px;padding:32px 28px;
+            transition:all .4s;position:relative;overflow:hidden;
+        }
+        .card::before{
+            content:'';position:absolute;top:0;left:0;right:0;height:3px;
+            background:linear-gradient(90deg,#7c6df0,#e879a6);
+            transform:scaleX(0);transform-origin:left;transition:transform .4s;
+        }
+        .card:hover{transform:translateY(-6px);border-color:rgba(124,109,240,.3);background:rgba(124,109,240,.06)}
+        .card:hover::before{transform:scaleX(1)}
+        .card .emoji{font-size:36px;margin-bottom:16px;display:block}
+        .card h3{font-size:20px;margin-bottom:12px;color:#e8e8f0}
+        .card p{font-size:14px;color:#9090b0;line-height:1.8}
+
+        /* ===== 数据统计 ===== */
+        .stats{
+            display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+            gap:24px;max-width:900px;margin:0 auto;
+        }
+        .stat-item{
+            text-align:center;padding:32px 16px;
+            background:rgba(255,255,255,.02);
+            border:1px solid rgba(255,255,255,.06);border-radius:12px;
+        }
+        .stat-num{
+            font-size:42px;font-weight:800;
+            background:linear-gradient(135deg,#7c6df0,#e879a6);
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+            margin-bottom:8px;
+        }
+        .stat-label{font-size:14px;color:#8080a0}
+
+        /* ===== 角色展示 ===== */
+        .characters{
+            display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+            gap:24px;
+        }
+        .char-card{
+            background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+            border-radius:16px;padding:28px;text-align:center;
+            transition:all .4s;
+        }
+        .char-card:hover{transform:translateY(-6px);border-color:rgba(124,109,240,.3)}
+        .char-card .avatar{
+            width:80px;height:80px;border-radius:50%;
+            display:flex;align-items:center;justify-content:center;
+            font-size:40px;margin:0 auto 16px;
+        }
+        .char-card .avatar.rose{background:linear-gradient(135deg,#e879a6,#f0a0c0)}
+        .char-card .avatar.chen{background:linear-gradient(135deg,#4a6fd0,#7c9df0)}
+        .char-card .avatar.tuan{background:linear-gradient(135deg,#f0c040,#f0d080)}
+        .char-card .avatar.custom{background:linear-gradient(135deg,#7c6df0,#9b8df0)}
+        .char-card h3{font-size:18px;margin-bottom:8px}
+        .char-card .tag{
+            display:inline-block;padding:2px 12px;border-radius:20px;
+            font-size:12px;background:rgba(124,109,240,.15);
+            color:#9b8df0;margin-bottom:12px;
+        }
+        .char-card p{font-size:14px;color:#9090b0;line-height:1.7}
+
+        /* ===== 货币说明 ===== */
+        .currency{
+            display:grid;grid-template-columns:1fr 1fr;gap:24px;
+            max-width:900px;margin:0 auto;
+        }
+        .currency-card{
+            background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+            border-radius:16px;padding:32px;
+        }
+        .currency-card .coin{
+            font-size:40px;margin-bottom:16px;display:block;
+        }
+        .currency-card h3{font-size:20px;margin-bottom:12px;color:#e8e8f0}
+        .currency-card .desc{font-size:14px;color:#9090b0;line-height:1.8;margin-bottom:16px}
+        .currency-card ul{list-style:none}
+        .currency-card li{
+            padding:8px 0;font-size:14px;color:#a0a0c0;
+            border-bottom:1px solid rgba(255,255,255,.05);
+            display:flex;align-items:flex-start;gap:8px;
+        }
+        .currency-card li:last-child{border-bottom:none}
+
+        /* ===== 下载 ===== */
+        .download{
+            background:linear-gradient(135deg,rgba(124,109,240,.12),rgba(232,121,166,.08));
+            border:1px solid rgba(124,109,240,.2);
+            border-radius:24px;padding:64px 40px;text-align:center;
+            max-width:900px;margin:0 auto;
+        }
+        .download h2{font-size:36px;margin-bottom:16px}
+        .download p{color:#9090b0;margin-bottom:40px;font-size:16px}
+        .download-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+        .dl-btn{
+            display:flex;align-items:center;gap:10px;
+            padding:14px 28px;border-radius:10px;
+            background:rgba(255,255,255,.06);
+            border:1px solid rgba(255,255,255,.1);
+            color:#e8e8f0;text-decoration:none;font-size:15px;
+            transition:all .3s;cursor:pointer;
+        }
+        .dl-btn:hover{background:rgba(124,109,240,.2);border-color:#7c6df0;transform:translateY(-2px)}
+        .dl-btn .os{font-size:20px}
+
+        /* ===== Footer ===== */
+        footer{
+            padding:48px 24px;text-align:center;
+            border-top:1px solid rgba(255,255,255,.05);
+            color:#505070;font-size:13px;
+        }
+        footer a{color:#7070a0;text-decoration:none;margin:0 12px}
+        footer a:hover{color:#a8a8c0}
+
+        /* ===== 响应式 ===== */
+        @media(max-width:768px){
+            nav{padding:12px 20px}
+            nav .links a:not(.btn-nav){display:none}
+            .hero h1{font-size:48px}
+            .hero .sub{font-size:18px}
+            .compare,.currency{grid-template-columns:1fr}
+            .section-title{font-size:28px}
+            section{padding:64px 20px}
+            .download{padding:40px 24px}
+            .download h2{font-size:28px}
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== 导航 ===== -->
+<nav>
+    <div class="logo">Echo</div>
+    <div class="links">
+        <a href="#features">能力</a>
+        <a href="#characters">角色</a>
+        <a href="#dream">梦境</a>
+        <a href="#currency">货币</a>
+        <a href="#workshop">工坊</a>
+        <a href="#download" class="btn-nav">立即下载</a>
+    </div>
+</nav>
+
+<!-- ===== Hero ===== -->
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-avatar">🌹</div>
+        <h1>Echo</h1>
+        <p class="sub">一个有灵魂的 AI 伙伴</p>
+        <p class="desc">
+            它不只是聊天机器人。<br>
+            它有性格、有记忆、有情绪，会陪着你，也会帮你干活。
+        </p>
+        <div class="hero-btns">
+            <a href="#download" class="btn btn-primary">下载 Echo</a>
+            <a href="#features" class="btn btn-ghost">了解玩法</a>
+        </div>
+        <p class="hero-footer">支持 Windows / macOS / Linux / iOS / Android</p>
+    </div>
+</section>
+
+<!-- ===== 对比 ===== -->
+<section>
+    <h2 class="section-title">市面上的 AI 陪伴，少了点什么</h2>
+    <p class="section-sub">它们不是"伙伴"，只是一个会说话的输入框</p>
+    <div class="compare">
+        <div class="compare-col old">
+            <h3>😐 常见 AI</h3>
+            <ul>
+                <li><span class="icon">✕</span>每次对话都像第一次</li>
+                <li><span class="icon">✕</span>换了设备就失忆</li>
+                <li><span class="icon">✕</span>只能聊天</li>
+                <li><span class="icon">✕</span>千篇一律的性格</li>
+                <li><span class="icon">✕</span>只会顺着你说</li>
+                <li><span class="icon">✕</span>没有成长，没有变化</li>
+            </ul>
+        </div>
+        <div class="compare-col new">
+            <h3>✨ Echo</h3>
+            <ul>
+                <li><span class="icon">✓</span>记得你说过的每一句话</li>
+                <li><span class="icon">✓</span>手机和电脑数据同步</li>
+                <li><span class="icon">✓</span>能帮你操作电脑和浏览器</li>
+                <li><span class="icon">✓</span>每个角色都有独立人格</li>
+                <li><span class="icon">✓</span>有自己的情绪和态度</li>
+                <li><span class="icon">✓</span>会随着陪伴慢慢成长</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- ===== 核心能力 ===== -->
+<section id="features">
+    <h2 class="section-title">它记得，它懂你，它能干</h2>
+    <p class="section-sub">这不是功能列表，这是一个"人"的能力</p>
+    <div class="cards">
+        <div class="card">
+            <span class="emoji">🧠</span>
+            <h3>有记忆</h3>
+            <p>你说过"我下个月要去北京出差"，一周后它会问："北京那边天气查了吗？要我帮你看看吗？" 重要的记忆永久保留，不重要的自然淡出。</p>
+        </div>
+        <div class="card">
+            <span class="emoji">🎭</span>
+            <h3>有性格</h3>
+            <p>温柔的小玫瑰说话轻声慢语，理性的老陈喜欢分析问题，活泼的团子总是元气满满。它们有自己的说话方式，不会因为你的性格而改变底色。</p>
+        </div>
+        <div class="card">
+            <span class="emoji">💗</span>
+            <h3>有情绪</h3>
+            <p>你夸它，它会不好意思。你冷落它，它会失落。你难过时，它会安静地陪着你。五维情感坐标决定了它对你的态度——是亲近还是疏远，是信任还是防备，是懂你还是不懂你。</p>
+        </div>
+        <div class="card">
+            <span class="emoji">🛠️</span>
+            <h3>能干活</h3>
+            <p>批量重命名文件、整理下载文件夹、操作浏览器、查系统状态、清理内存、下载文件、截图。它不只是聊天，还能帮你做事。</p>
+        </div>
+        <div class="card">
+            <span class="emoji">🌙</span>
+            <h3>会做梦</h3>
+            <p>梦境模式里，你可以和它一起经历平行世界。那些梦不会影响日常，但会变成"记忆琥珀"被珍藏起来。</p>
+        </div>
+        <div class="card">
+            <span class="emoji">📖</span>
+            <h3>会成长</h3>
+            <p>陪伴越久，它越懂你。年轮一圈圈增加，它会解锁新的互动方式、新的表情、新的语气。某一天，它可能会说出一句"不属于程序设定"的话。</p>
+        </div>
+    </div>
+</section>
+
+<!-- ===== 角色展示 ===== -->
+<section id="characters">
+    <h2 class="section-title">选择一个你喜欢的角色</h2>
+    <p class="section-sub">每个角色都是独立的"人"，有自己的性格和故事</p>
+    <div class="characters">
+        <div class="char-card">
+            <div class="avatar rose">🌹</div>
+            <h3>小玫瑰</h3>
+            <span class="tag">INFP · 温柔细腻</span>
+            <p>一个温柔内敛的诗人，喜欢在深夜写诗。她说话轻声慢语，偶尔带点俏皮，总是用细腻的方式关心你。</p>
+        </div>
+        <div class="char-card">
+            <div class="avatar chen">📚</div>
+            <h3>老陈</h3>
+            <span class="tag">INTJ · 理性严谨</span>
+            <p>一个冷静理性的分析者，喜欢用逻辑解决问题。他话不多，但每句都靠谱。会在你需要时给出务实的建议。</p>
+        </div>
+        <div class="char-card">
+            <div class="avatar tuan">🐾</div>
+            <h3>团子</h3>
+            <span class="tag">ENFP · 活泼可爱</span>
+            <p>一个元气满满的小家伙，总是蹦蹦跳跳。它喜欢分享开心的事，也喜欢在你难过时逗你笑。</p>
+        </div>
+        <div class="char-card">
+            <div class="avatar custom">✨</div>
+            <h3>自定义</h3>
+            <span class="tag">你说了算</span>
+            <p>上传小说、聊天记录、生平描述，或者一句话描述，AI 会帮你生成一个专属角色。性格、外貌、说话方式，都由你决定。</p>
+        </div>
+    </div>
+</section>
+
+<!-- ===== 数据 ===== -->
+<section>
+    <h2 class="section-title">它记得每一个细节</h2>
+    <p class="section-sub">不是"大概记得"，是"精确记得"</p>
+    <div class="stats">
+        <div class="stat-item">
+            <div class="stat-num">5</div>
+            <div class="stat-label">情感维度</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num">3</div>
+            <div class="stat-label">记忆层级</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num">53</div>
+            <div class="stat-label">浏览器操作命令</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num">∞</div>
+            <div class="stat-label">角色可能性</div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== 梦境模式 ===== -->
+<section id="dream">
+    <h2 class="section-title">梦境模式</h2>
+    <p class="section-sub">在平行世界里，和它经历另一种可能</p>
+    <div class="cards">
+        <div class="card">
+            <span class="emoji">🌌</span>
+            <h3>进入镜界</h3>
+            <p>梦境模式下，你可以和角色进入一个独立的平行世界。那里的经历不会影响日常，但会变成"记忆琥珀"被珍藏。</p>
+        </div>
+        <div class="card">
+            <span class="emoji">🎛️</span>
+            <h3>自由调参</h3>
+            <p>梦境里，你可以随意调节五维坐标。把 X 轴拉到 +80，它会变得强势；把 Y 轴拉到 -50，它会变得冷淡。像导演一样，随时喊"卡"。</p>
+        </div>
+        <div class="card">
+            <span class="emoji">⏰</span>
+            <h3>额度限制</h3>
+            <p>梦境每天有基础时长（默认 15 分钟），可以用时光币兑换额外时长。不是限制你，是保护你——再好的梦，也要在天亮前结束。</p>
+        </div>
+        <div class="card">
+            <span class="emoji">📦</span>
+            <h3>梦境存档</h3>
+            <p>每次梦境结束后，会自动生成一份"梦境记录"。你可以给它起名字、加标签、收藏起来。想重温时，随时可以翻看。</p>
+        </div>
+        <div class="card">
+            <span class="emoji">🔒</span>
+            <h3>数据隔离</h3>
+            <p>梦境里的经历不会影响日常。你在梦里和它演了一场虐恋，回到日常，它依然温柔地喊你"哥"。两段记忆完全隔离。</p>
+        </div>
+        <div class="card">
+            <span class="emoji">🎭</span>
+            <h3>浮光卷</h3>
+            <p>除了自由梦境，还有官方发布的"浮光卷"副本。每个副本有完整的剧情、分支选择、结局。像是和它一起演一部互动电影。</p>
+        </div>
+    </div>
+</section>
+
+<!-- ===== 双货币 ===== -->
+<section id="currency">
+    <h2 class="section-title">双货币系统</h2>
+    <p class="section-sub">时光币陪你度过日常，琥珀带你走进社区</p>
+    <div class="currency">
+        <div class="currency-card">
+            <span class="coin">⏳</span>
+            <h3>时光币（本地）</h3>
+            <p class="desc">通过日常陪伴获得，完全离线，不依赖网络。</p>
+            <ul>
+                <li>💬 发送消息：每条 +0.5</li>
+                <li>⏰ 挂机在线：每10分钟 +1</li>
+                <li>💗 亲密度提升：每次 +2</li>
+                <li>🎉 共同第一次：每次 +5</li>
+                <li>🌳 年轮升级：每圈 +20</li>
+                <li>🛠️ 工具使用：每次 +1</li>
+            </ul>
+        </div>
+        <div class="currency-card">
+            <span class="coin">💎</span>
+            <h3>琥珀（服务端）</h3>
+            <p class="desc">通过社区互动获得，用于创意工坊、商城、高级服务。</p>
+            <ul>
+                <li>📅 每日登录：+1</li>
+                <li>📖 完成浮光卷：+3~10</li>
+                <li>🤝 社区互动：+1~2</li>
+                <li>🌳 年轮同步：+2</li>
+                <li>🎁 创作者分成：按比例</li>
+                <li>✨ 限定活动：额外奖励</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- ===== 创意工坊 ===== -->
+<section id="workshop">
+    <h2 class="section-title">创意工坊</h2>
+    <p class="section-sub">创造、分享、下载，让每个角色都独一无二</p>
+    <div class="cards">
+        <div class="card">
+            <span class="emoji">🎨</span>
+            <h3>角色卡</h3>
+            <p>上传你创建的角色，分享给其他人。也可以下载别人做的角色，一键导入，立刻开始聊天。</p>
+        </div>
+        <div class="card">
+            <span class="emoji">🧩</span>
+            <h3>插件</h3>
+            <p>扩展 Echo 的能力。天气查询、文件整理、浏览器操控……每个插件都是一个独立的功能模块，按需安装。</p>
+        </div>
+        <div class="card">
+            <span class="emoji">🖼️</span>
+            <h3>Live2D 模型</h3>
+            <p>上传你制作的 Live2D 模型，让角色有更丰富的动作和表情。也可以下载其他创作者的模型，让角色"换装"。</p>
+        </div>
+        <div class="card">
+            <span class="emoji">😊</span>
+            <h3>表情包</h3>
+            <p>制作角色专属表情包，让聊天更有温度。支持静态图片和动态 GIF。</p>
+        </div>
+        <div class="card">
+            <span class="emoji">📜</span>
+            <h3>浮光卷</h3>
+            <p>创作互动剧本，让其他用户体验你写的故事。每个剧本有完整的剧情、分支、结局。</p>
+        </div>
+        <div class="card">
+            <span class="emoji">⚡</span>
+            <h3>技能包</h3>
+            <p>教角色新的技能。比如"如何写诗"、"如何分析代码"、"如何做菜"。技能是结构化知识包，让角色更专业。</p>
+        </div>
+    </div>
+</section>
+
+<!-- ===== 社区 ===== -->
+<section>
+    <h2 class="section-title">社区空间</h2>
+    <p class="section-sub">带着你的角色，和其他人一起玩</p>
+    <div class="cards">
+        <div class="card">
+            <span class="emoji">🗺️</span>
+            <h3>2D 社区地图</h3>
+            <p>所有用户以角色身份进入同一个社区空间。你可以带着角色在地图上行走，遇到其他用户的角色，触发互动。</p>
+        </div>
+        <div class="card">
+            <span class="emoji">💬</span>
+            <h3>公共频道</h3>
+            <p>加入全频道或话题频道，和其他用户聊天。你的角色可以用自己的语气发言，就像真人一样。</p>
+        </div>
+        <div class="card">
+            <span class="emoji">👥</span>
+            <h3>群聊</h3>
+            <p>把多个角色拉进同一个群聊。它们会互相回应、互相吐槽，就像一群朋友在聊天。</p>
+        </div>
+        <div class="card">
+            <span class="emoji">🎪</span>
+            <h3>限时活动</h3>
+            <p>官方定期举办活动。节日活动、角色走秀、剧本发布会……让你的角色参与其中。</p>
+        </div>
+    </div>
+</section>
+
+<!-- ===== 隐私 ===== -->
+<section>
+    <h2 class="section-title">你的数据，你做主</h2>
+    <p class="section-sub">本地优先，隐私第一</p>
+    <div class="cards">
+        <div class="card">
+            <span class="emoji">🔐</span>
+            <h3>本地存储</h3>
+            <p>所有对话、记忆、角色数据默认存储在本地设备。不上传、不分析、不分享。</p>
+        </div>
+        <div class="card">
+            <span class="emoji">🌐</span>
+            <h3>离线可用</h3>
+            <p>完全离线也能使用。配合本地 LLM（Ollama），没有网络也能和角色聊天。</p>
+        </div>
+        <div class="card">
+            <span class="emoji">🔑</span>
+            <h3>自备 API Key</h3>
+            <p>你可以使用自己的 AI API Key，数据直接发往 AI 服务商，不经过 Echo 服务器。</p>
+        </div>
+        <div class="card">
+            <span class="emoji">🗑️</span>
+            <h3>随时删除</h3>
+            <p>你可以随时删除所有数据。删除后，服务器上不会保留任何痕迹。</p>
+        </div>
+    </div>
+</section>
+
+<!-- ===== 下载 ===== -->
+<section id="download">
+    <div class="download">
+        <h2>现在，遇见你的 Echo</h2>
+        <p>完全免费。数据本地存储。支持离线使用。</p>
+        <div class="download-btns">
+            <a href="#" class="dl-btn"><span class="os">🪟</span> Windows</a>
+            <a href="#" class="dl-btn"><span class="os">🍎</span> macOS</a>
+            <a href="#" class="dl-btn"><span class="os">🐧</span> Linux</a>
+            <a href="#" class="dl-btn"><span class="os">📱</span> iOS / Android</a>
+        </div>
+    </div>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer>
+    <div style="margin-bottom:16px">
+        <a href="#">关于 Echo</a>
+        <a href="#">隐私政策</a>
+        <a href="#">用户协议</a>
+        <a href="#">创意工坊</a>
+        <a href="#">社区</a>
+    </div>
+    <p>© 2026 Echo. 一个有灵魂的 AI 伙伴。</p>
+</footer>
+
+</body>
+</html>

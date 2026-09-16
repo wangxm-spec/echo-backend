@@ -16,9 +16,9 @@ use Webman\Route;
 
 
 require_once app_path('api/route/app.php');
-
+Route::get('/', [app\index\controller\Index::class, 'index']);
 Route::fallback(function(){
-    return response('Hello World');
+    return redirect('/');
 });
 
 

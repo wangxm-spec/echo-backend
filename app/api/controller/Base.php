@@ -2,17 +2,19 @@
 
 namespace app\api\controller;
 
+use app\BaseController;
 use app\common\exception\ParamException;
 
-class Base
+class Base extends BaseController
 {
-    protected $request;
+
     protected $platform = 'mp';
 
     protected $uuid = '';
     public function __construct()
     {
-        $this->request = request();
+        parent::__construct();
+
         $this->platform = $this->request->header('platform');
         if(!in_array($this->platform, ['mp','mb'])){
             throw new ParamException('设备异常');
@@ -49,7 +51,7 @@ class Base
     /**
      * 错误响应
      */
-    protected function error($msg, $data = [])
+    protected function error($msg = '参数错误', $data = [])
     {
         return $this->ajaxReturn(201, $msg, $data);
     }

@@ -4,10 +4,41 @@ use Webman\Route;
 
 
 Route::group('/api', function () {
-    Route::post('/test', [app\api\controller\Test::class, 'test']);
+    Route::group('/common', function () {
+        Route::group('/captcha', function () {
+            Route::post('/build', [app\api\controller\common\Captcha::class, 'build']);
+        });
+    });
+    Route::group('/init', function () {
+        Route::group('/login', function () {
+            Route::post('/sms', [app\api\controller\init\Login::class, 'sms']);
+            Route::post('/account', [app\api\controller\init\Login::class, 'account']);
+            Route::post('/phone', [app\api\controller\init\Login::class, 'phone']);
+        });
+        Route::group('/register', function () {
+            Route::post('/sms', [app\api\controller\init\Register::class, 'sms']);
+            Route::post('/account', [app\api\controller\init\Register::class, 'account']);
+        });
+    });
 });
 Route::group('/api', function () {
-    Route::post('/test2', [app\api\controller\Test::class, 'test2']);
+    Route::group('/init', function () {
+        Route::group('/mbti', function () {
+            Route::post('/type', [app\api\controller\init\Mbti::class, 'type']);
+            Route::post('/question', [app\api\controller\init\Mbti::class, 'question']);
+            Route::post('/calculator', [app\api\controller\init\Mbti::class, 'calculator']);
+        });
+        Route::group('/character', function () {
+            Route::post('/build', [app\api\controller\init\Character::class, 'build']);
+        });
+    });
+    Route::group('/member', function () {
+        Route::group('/info', function () {
+            Route::post('/account', [app\api\controller\member\Info::class, 'info']);
+            Route::post('/device', [app\api\controller\member\Info::class, 'device']);
+            Route::post('/character', [app\api\controller\member\Info::class, 'character']);
+        });
+    });
 })->middleware([
     app\api\middleware\JwtAuth::class,
 ]);
