@@ -29,24 +29,25 @@ class Register extends Base
 
         $sms_id = $this->request->param('sms_id');
         $sms_code = $this->request->param('sms_code');
-        SmsService::verify($sms_id, 'login', $account, $sms_code);
-
-        $check = MemberAccountModel::where('account', $account)->count();
-        if($check > 0){
-            return $this->error('该账号已被注册');
-        }
         $password = $this->request->param('password');
         // 密码校验：6-20 位，必须同时包含英文和数字
         if (!preg_match('/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,20}$/', $password)) {
             return $this->error('密码需为6-20位，且同时包含英文和数字');
         }
+        SmsService::verify($sms_id, 'register', $account, $sms_code);
+
+        $check = MemberAccountModel::where('account', $account)->count();
+        if($check > 0){
+            return $this->error('该账号已被注册');
+        }
+
         MemberAccountModel::create([
             'uuid' => uuid(),
             'account' => $account,
             'password' => password_hash($password, PASSWORD_DEFAULT),
             'salt' => random(6),
             'email' => '',
-            'nickname' => '',
+            'nickname' => '用户-' . random(6, 'number'),
             'qq_number' => '',
             'avatar' => '/static/img/avatar.png',
             'status' => 1,

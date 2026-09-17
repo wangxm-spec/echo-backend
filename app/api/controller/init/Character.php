@@ -3,7 +3,7 @@
 namespace app\api\controller\init;
 
 use app\api\controller\Base;
-use app\common\service\AiProviderService;
+use app\common\service\AIProvidersService;
 
 /**
  * 角色卡生成（通过 AI 从材料中提取）
@@ -17,9 +17,9 @@ class Character extends Base
     public function build()
     {
         // 1. 参数校验
-        $type = $this->request->param('type', 'biography');
-        if (!in_array($type, ['novel', 'chat', 'biography'], true)) {
-            return $this->error('参数错误：type 必须为 novel / chat / biography');
+        $type = $this->request->param('type', 'common');
+        if (!in_array($type, ['novel', 'chat', 'common'], true)) {
+            return $this->error('参数错误：type 必须为 novel / chat / common');
         }
 
         $content = $this->request->param('content', '');
@@ -43,10 +43,11 @@ class Character extends Base
         // 4. 替换占位符
         $prompt = str_replace('{{MATERIAL_TYPE}}', $type, $template);
         $prompt = str_replace('{{MATERIAL_CONTENT}}', $content, $prompt);
+        $prompt = str_replace('{{TIME}}', date('Y-m-d'), $prompt);
 
         // 5. 调用 AI
         try {
-            $ai = new AiProviderService('local');
+            $ai = new AIProvidersService('local');
             $rawResult = $ai->chat($prompt);
         } catch (\Exception $e) {
             return $this->error('AI 调用失败：' . $e->getMessage());
@@ -59,7 +60,7 @@ class Character extends Base
 
         $character = json_decode($rawResult, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
-            return $this->error('AI 返回格式异常，请重试');
+            return $this->error('AI 返回格式异常，请重试', $rawResult);
         }
 
         return $this->success('SUCCESS', $character);

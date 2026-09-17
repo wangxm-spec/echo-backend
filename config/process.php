@@ -19,6 +19,9 @@ use support\Request;
 global $argv;
 
 return [
+    'task'  => [
+        'handler'  => app\common\process\Task::class
+    ],
     'webman' => [
         'handler' => Http::class,
         'listen' => 'http://0.0.0.0:8787',

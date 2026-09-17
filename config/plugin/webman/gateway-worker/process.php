@@ -10,11 +10,15 @@ return [
         'listen'      => 'websocket://0.0.0.0:7272',
         'count'       => 2,
         'reloadable'  => false,
+
+        // ✅ 心跳参数写在这一层，插件会自动识别
+        'pingInterval'         => 25,
+        'pingNotResponseLimit' => 10,
+        'pingData'             => '{"type":"ping"}',
+
         'constructor' => ['config' => [
             'lanIp'           => '127.0.0.1',
             'startPort'       => 2300,
-            'pingInterval'    => 25,
-            'pingData'        => '{"type":"ping"}',
             'registerAddress' => '127.0.0.1:1236',
             'onConnect'       => function(){},
         ]]

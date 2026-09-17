@@ -12,7 +12,7 @@ return [
         //'dsn'      => '',
     ],
     'from'   => [
-        'address' => 'smtp.126.com',
+        'address' => 'abigsoft@126.com',
         'name'    => 'Echo',
     ],
 ];

@@ -38,6 +38,14 @@ Route::group('/api', function () {
             Route::post('/device', [app\api\controller\member\Info::class, 'device']);
             Route::post('/character', [app\api\controller\member\Info::class, 'character']);
         });
+        Route::group('/update', function () {
+            Route::post('/password', [app\api\controller\member\Update::class, 'password']);
+            Route::any('/email', [app\api\controller\member\Update::class, 'email']);
+            Route::post('/qq', [app\api\controller\member\Update::class, 'qq']);
+            Route::any('/phone', [app\api\controller\member\Update::class, 'phone']);
+            Route::post('/mbti', [app\api\controller\member\Update::class, 'mbti']);
+            Route::any('/reset', [app\api\controller\member\Update::class, 'reset']);
+        });
     });
 })->middleware([
     app\api\middleware\JwtAuth::class,

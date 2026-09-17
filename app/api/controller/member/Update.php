@@ -53,14 +53,12 @@ class Update extends Base
             if (!$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 return $this->error('请输入正确的邮箱');
             }
-
             $captcha_key = $this->request->param('captcha_key');
             $captcha_code = $this->request->param('captcha_code');
             $check = \Tinywan\Captcha\Captcha::check($captcha_code, $captcha_key);
             if(!$check){
                 return $this->error('图片验证码错误');
             }
-
             $exists = MemberAccountModel::where('email', $email)
                 ->where('uuid', '<>', $this->uuid)
                 ->count();
@@ -149,7 +147,7 @@ class Update extends Base
                 return $this->error('图片验证码错误');
             }
 
-            $exists = MemberAccountModel::where('phone', $phone)
+            $exists = MemberAccountModel::where('account', $phone)
                 ->where('uuid', '<>', $this->uuid)
                 ->count();
             if ($exists > 0) {
@@ -201,6 +199,42 @@ class Update extends Base
         }
         MemberAccountModel::where('uuid', $this->uuid)->update([
             'mbti_type' => $mbti_type,
+            'update_time' => formatDate(),
+        ]);
+        return $this->success('修改成功');
+    }
+
+    function reset(){
+        $user = MemberAccountModel::where('uuid', $this->uuid)->find();
+        if (!$user) {
+            return $this->error('账号不存在');
+        }
+        if(!$this->request->isPost()){
+            $captcha_key = $this->request->param('captcha_key');
+            $captcha_code = $this->request->param('captcha_code');
+            $check = \Tinywan\Captcha\Captcha::check($captcha_code, $captcha_key);
+            if(!$check){
+                return $this->error('验证码错误');
+            }
+            $msg = SmsService::send($user['account'], 'reset');
+            if(!env('DATA_DEBUG')){
+                unset($msg['msg_code']);
+            }
+            return $this->success('发送成功', $msg);
+        }
+        $password = $this->request->param('password');
+        if (!$password) {
+            return $this->error('请输入新密码');
+        }
+        // 与注册保持一致：6-20 位，必须同时包含英文和数字
+        if (!preg_match('/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,20}$/', $password)) {
+            return $this->error('密码需为6-20位，且同时包含英文和数字');
+        }
+        $sms_id = $this->request->param('sms_id');
+        $sms_code = $this->request->param('sms_code');
+        SmsService::verify($sms_id, 'reset', $user['account'], $sms_code);
+        MemberAccountModel::where('uuid', $this->uuid)->update([
+            'password' => password_hash($password, PASSWORD_DEFAULT),
             'update_time' => formatDate(),
         ]);
         return $this->success('修改成功');

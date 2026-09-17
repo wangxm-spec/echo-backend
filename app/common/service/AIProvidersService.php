@@ -6,7 +6,7 @@ use app\common\model\SystemAiProvidersModel;
 use Marwa\AI\Application;
 use RuntimeException;
 
-class AiProviderService
+class AIProvidersService
 {
     /**
      * 当前使用的供应商 key
@@ -61,7 +61,7 @@ class AiProviderService
     {
         $provider = SystemAiProvidersModel::where('key', $this->providerKey)
             ->where('status', 1)
-            ->first();
+            ->find();
 
         if (!$provider) {
             throw new RuntimeException("AI 供应商 [{$this->providerKey}] 不存在或已禁用");
@@ -266,9 +266,24 @@ class AiProviderService
         }
 
         $usage = $response->getUsage();
-        $total = $usage['total_tokens'] ?? $usage->totalTokens ?? null;
+        if (!is_object($usage)) {
+            return;
+        }
 
-        if ($total === null) {
+        // 依次尝试常见的方法名和属性名
+        $total = null;
+
+        if (method_exists($usage, 'getTotalTokens')) {
+            $total = $usage->getTotalTokens();
+        } elseif (method_exists($usage, 'totalTokens')) {
+            $total = $usage->totalTokens();
+        } elseif (property_exists($usage, 'totalTokens')) {
+            $total = $usage->totalTokens;
+        } elseif (property_exists($usage, 'total_tokens')) {
+            $total = $usage->total_tokens;
+        }
+
+        if ($total === null || $total <= 0) {
             return;
         }
 

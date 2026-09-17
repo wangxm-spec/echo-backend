@@ -13,13 +13,13 @@ class Info extends Base
     function info(){
         $user = MemberAccountModel::where('status', 1)
             ->where('uuid', $this->uuid)
-            ->field('uuid,account,avatar,phone,email,nickname,qq_number,mbti_type,hope_amount,create_time')
+            ->field('uuid,account,avatar,email,nickname,qq_number,mbti_type,hope_amount,create_time')
             ->find();
         if(!$user){
             throw new AuthException();
         }
         $user['avatar'] = formatUrl($user['avatar']);
-        $user['phone'] = substr($user['phone'], 0, 3) . '****' . substr($user['phone'], -4);
+        $user['phone'] = substr($user['account'], 0, 3) . '****' . substr($user['account'], -4);
         return $this->success('SUCCESS', $user);
     }
 

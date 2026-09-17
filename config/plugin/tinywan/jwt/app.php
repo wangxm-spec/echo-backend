@@ -12,7 +12,7 @@ return [
         'access_secret_key' => '3ef4f235256989b42d59f68dd6eb614f5f55627a7195cbda840729a4c2dfb8fd',
 
         /** access令牌过期时间，单位：秒。默认 2 小时 */
-        'access_exp' => 7200,
+        'access_exp' => 86400,
 
         /** refresh令牌秘钥（安装时自动生成64位随机值） */
         'refresh_secret_key' => '899fea4782aa944f32a6c423a297d24575cb75590bef1ff04375b19e433ee8f7',
@@ -52,9 +52,9 @@ return [
         },
 
         /** 是否支持 get 请求获取令牌 */
-        'is_support_get_token' => false,
+        'is_support_get_token' => true,
         /** GET 请求获取令牌请求key */
-        'is_support_get_token_key' => 'authorization',
+        'is_support_get_token_key' => 'token',
 
         /** access令牌私钥 */
         'access_private_key' => <<<EOD

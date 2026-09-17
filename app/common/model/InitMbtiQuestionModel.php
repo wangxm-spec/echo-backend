@@ -9,7 +9,6 @@ class InitMbtiQuestionModel extends BaseModel
     {
         return $this->hasMany(InitMbtiQuestionOptionModel::class, 'question_id', 'id')
             ->field('id,question_id,content,score_value as score') // 直接别名
-            ->where('status', 1)
-            ->order('sort asc');
+            ->where('status', 1);
     }
 }

@@ -102,14 +102,12 @@ class EmailService
 
         // 主题变量替换
         $subject = self::fill($tpl['subject'], $vars);
-
         try {
             // 注意：Mailer::instance() 是单例，webman 常驻进程下 message 不会重置，
             // 会累积上一次的收件人/内容，所以这里每次 new 一个实例发送。
-            (new Mailer())
+            (new \yzh52521\mailer\mail\Mailer())
                 ->setTo($to)
                 ->setSubject($subject)
-                // 模板变量由 mailer 的 setHtmlBody() 第二个参数完成 {变量} 替换
                 ->setHtmlBody($html, $vars)
                 ->send();
         } catch (\Throwable $e) {

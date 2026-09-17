@@ -33,23 +33,20 @@ class Mbti extends Base
                 'option'    => $question->optionsList->toArray(), // 直接就是目标格式
             ];
         }
+        return $this->success('SUCCESS', $result);
     }
 
     function calculator(){
-        $answer = $this->request->param('answer/a', []);
-        try {
-            $result = MbtiService::calculate($answer);
-            InitMbtiTestRecordModel::create([
-                'uuid' => $this->uuid,
-                'result_type' => $result['type'],
-                'scores' => $result['scores'],
-                'status' => 1,
-                'create_time' => formatDate(),
-                'update_time' => formatDate(),
-            ]);
-            return $this->success('SUCCESS', $result);
-        }catch (\Exception $e){
-            return $this->error('参数错误');
-        }
+        $answer = $this->request->param('answer', []);
+        $result = MbtiService::calculate($answer);
+        InitMbtiTestRecordModel::create([
+            'uuid' => $this->uuid,
+            'result_type' => $result['type'],
+            'scores' => $result['scores'],
+            'status' => 1,
+            'create_time' => formatDate(),
+            'update_time' => formatDate(),
+        ]);
+        return $this->success('SUCCESS', $result);
     }
 }

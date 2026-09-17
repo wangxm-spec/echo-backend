@@ -12,7 +12,7 @@
 declare(strict_types=1);
 
 return [
-    'enable'      => true,
+    'enable'      => false,
     // 验证app_key
     'app_verify' => function (string $appKey): array
     {

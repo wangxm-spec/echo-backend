@@ -8,7 +8,7 @@ class Captcha extends Base
 {
     function build(){
         $result = \Tinywan\Captcha\Captcha::base64();
-        if(strtolower(env('DATA_DEBUG', 'false')) != 'true'){
+        if(!env('DATA_DEBUG', 'false')){
             unset($result['value']);
         }
         return $this->success('SUCCESS', $result);
