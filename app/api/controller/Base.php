@@ -14,7 +14,6 @@ class Base extends BaseController
     public function __construct()
     {
         parent::__construct();
-
         $this->platform = $this->request->header('platform');
         if(!in_array($this->platform, ['mp','mb'])){
             throw new ParamException('设备异常');

@@ -16,8 +16,6 @@ class Events
         //客户端连接
     }
 
-
-
     public static function onWebSocketConnect($client_id, $data)
     {
         $authorization = $data['server']['HTTP_AUTHORIZATION'] ?? '';

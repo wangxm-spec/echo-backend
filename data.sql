@@ -11,7 +11,7 @@
  Target Server Version : 80024 (8.0.24)
  File Encoding         : 65001
 
- Date: 16/09/2026 16:22:30
+ Date: 18/09/2026 10:25:24
 */
 
 SET NAMES utf8mb4;
@@ -28,6 +28,7 @@ CREATE TABLE `common_article`  (
   `keyword` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '关键字',
   `detaill` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '内容',
   `status` smallint NOT NULL DEFAULT 1 COMMENT '状态：1正常，0隐藏',
+  `publish_time` datetime NULL DEFAULT NULL COMMENT '发布时间',
   `create_time` datetime NULL DEFAULT NULL,
   `update_time` datetime NULL DEFAULT NULL,
   `delete_time` datetime NULL DEFAULT NULL,
@@ -92,11 +93,12 @@ CREATE TABLE `init_mbit_test_record`  (
   `delete_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_user`(`uuid` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '测试记录表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '测试记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of init_mbit_test_record
 -- ----------------------------
+INSERT INTO `init_mbit_test_record` VALUES (1, '59ba9558-35d9-497b-b1d4-5fd22392a34a', 'ESTP', '{\"EI\": 4, \"JP\": 0, \"SN\": 4, \"TF\": 3}', 1, '2026-09-17 11:11:42', '2026-09-17 11:11:42', NULL);
 
 -- ----------------------------
 -- Table structure for init_mbti_question
@@ -203,6 +205,7 @@ CREATE TABLE `member_account`  (
   `status` smallint NOT NULL DEFAULT 1 COMMENT '状态：1正常，0禁用',
   `hope_amount` bigint NOT NULL DEFAULT 0 COMMENT '琥珀余额',
   `mbti_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT 'mbti人格',
+  `is_super_admin` tinyint NOT NULL DEFAULT 0 COMMENT '是否超级管理员',
   `create_time` datetime NULL DEFAULT NULL,
   `update_time` datetime NULL DEFAULT NULL,
   `delete_time` datetime NULL DEFAULT NULL,
@@ -212,6 +215,27 @@ CREATE TABLE `member_account`  (
 
 -- ----------------------------
 -- Records of member_account
+-- ----------------------------
+INSERT INTO `member_account` VALUES ('59ba9558-35d9-497b-b1d4-5fd22392a34a', '15763043010', '$2y$10$A2hDC2nyGnzQ7rb4MjNoDe26fmSNhc.bZYS0uTj1DrrD0E0rgeiUi', 'omjoqv', '981615632@qq.com', '用户-513787', '981615632', '/static/img/avatar.png', 1, 0, 'ENFJ', 0, '2026-09-17 09:24:48', '2026-09-17 14:06:01', NULL);
+
+-- ----------------------------
+-- Table structure for member_call
+-- ----------------------------
+DROP TABLE IF EXISTS `member_call`;
+CREATE TABLE `member_call`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `uid` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '用户UID',
+  `title` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '名称',
+  `color` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '颜色',
+  `status` smallint NOT NULL DEFAULT 0 COMMENT '状态：1开启，0关闭',
+  `create_time` datetime NULL DEFAULT NULL,
+  `update_time` datetime NULL DEFAULT NULL,
+  `delete_time` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户称号' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of member_call
 -- ----------------------------
 
 -- ----------------------------
@@ -401,11 +425,12 @@ CREATE TABLE `service_email_log`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `email`(`email` ASC) USING BTREE,
   INDEX `type`(`type` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '邮箱发送记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '邮箱发送记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of service_email_log
 -- ----------------------------
+INSERT INTO `service_email_log` VALUES (1, '981615632@qq.com', '924392', 'bind', '【Echo】邮箱绑定验证码', '<!DOCTYPE html>\n<html lang=\"zh-CN\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <meta name=\"format-detection\" content=\"telephone=no,email=no,address=no\">\n    <title>{site_name} 邮箱绑定验证码</title>\n    <style>\n        body { margin: 0; padding: 0; background-color: #eef1f6; }\n        table { border-collapse: collapse; }\n        img { border: 0; outline: none; }\n        .code-box { font-family: Consolas, Monaco, \'Courier New\', monospace; }\n        @media only screen and (max-width: 620px) {\n            .container { width: 100% !important; }\n            .px { padding-left: 22px !important; padding-right: 22px !important; }\n            .code-text { font-size: 28px !important; letter-spacing: 4px !important; }\n        }\n    </style>\n</head>\n<body style=\"margin:0;padding:0;background-color:#eef1f6;\">\n\n<!-- 邮件主体 -->\n<table role=\"presentation\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#eef1f6;\">\n    <tr>\n        <td align=\"center\" style=\"padding:36px 14px;\">\n\n            <!-- 内容容器 -->\n            <table role=\"presentation\" class=\"container\" width=\"600\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"\n                   style=\"width:600px;max-width:600px;background-color:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 6px 24px rgba(26,32,54,0.08);\">\n\n                <!-- 顶部品牌条 -->\n                <tr>\n                    <td style=\"background-color:#4f46e5;background-image:linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%);padding:30px 40px;\">\n                        <table role=\"presentation\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n                            <tr>\n                                <td style=\"font-size:22px;font-weight:700;color:#ffffff;letter-spacing:1px;font-family:-apple-system,BlinkMacSystemFont,\'PingFang SC\',\'Microsoft YaHei\',Arial,sans-serif;\">\n                                    {site_name}\n                                </td>\n                                <td align=\"right\" style=\"font-size:13px;color:#ded9ff;font-family:-apple-system,BlinkMacSystemFont,\'PingFang SC\',\'Microsoft YaHei\',Arial,sans-serif;\">\n                                    安全验证\n                                </td>\n                            </tr>\n                        </table>\n                    </td>\n                </tr>\n\n                <!-- 正文 -->\n                <tr>\n                    <td class=\"px\" style=\"padding:40px 40px 8px 40px;font-family:-apple-system,BlinkMacSystemFont,\'PingFang SC\',\'Microsoft YaHei\',Arial,sans-serif;\">\n                        <p style=\"margin:0 0 6px 0;font-size:20px;font-weight:700;color:#1a2036;line-height:1.5;\">\n                            邮箱绑定验证\n                        </p>\n                        <p style=\"margin:0;font-size:14px;color:#6b7280;line-height:1.7;\">\n                            您好，您正在为账号绑定邮箱，请使用下方验证码完成验证：\n                        </p>\n                    </td>\n                </tr>\n\n                <!-- 验证码 -->\n                <tr>\n                    <td class=\"px\" style=\"padding:20px 40px 0 40px;\">\n                        <table role=\"presentation\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"\n                               style=\"background-color:#f5f4ff;border:1px dashed #c7c2f7;border-radius:10px;\">\n                            <tr>\n                                <td align=\"center\" class=\"code-box code-text\"\n                                    style=\"padding:22px 16px;font-size:34px;font-weight:700;color:#4f46e5;letter-spacing:10px;text-indent:10px;font-family:Consolas,Monaco,\'Courier New\',monospace;\">\n                                    {code}\n                                </td>\n                            </tr>\n                        </table>\n                    </td>\n                </tr>\n\n                <!-- 提示 -->\n                <tr>\n                    <td class=\"px\" style=\"padding:18px 40px 0 40px;font-family:-apple-system,BlinkMacSystemFont,\'PingFang SC\',\'Microsoft YaHei\',Arial,sans-serif;\">\n                        <p style=\"margin:0;font-size:13px;color:#8a90a0;line-height:1.8;\">\n                            验证码 <strong style=\"color:#4f46e5;\">{expire} 分钟</strong> 内有效，请勿将验证码泄露给他人。\n                        </p>\n                    </td>\n                </tr>\n\n                <!-- 安全提示 -->\n                <tr>\n                    <td class=\"px\" style=\"padding:24px 40px 40px 40px;\">\n                        <table role=\"presentation\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"\n                               style=\"background-color:#f7f8fa;border-left:3px solid #4f46e5;border-radius:6px;\">\n                            <tr>\n                                <td style=\"padding:14px 18px;font-size:13px;color:#6b7280;line-height:1.8;font-family:-apple-system,BlinkMacSystemFont,\'PingFang SC\',\'Microsoft YaHei\',Arial,sans-serif;\">\n                                    若非您本人操作，请忽略本邮件，您的账号不会被绑定。如存在异常，请及时联系客服。\n                                </td>\n                            </tr>\n                        </table>\n                    </td>\n                </tr>\n\n                <!-- 页脚 -->\n                <tr>\n                    <td style=\"background-color:#f7f8fa;padding:22px 40px;font-family:-apple-system,BlinkMacSystemFont,\'PingFang SC\',\'Microsoft YaHei\',Arial,sans-serif;\">\n                        <p style=\"margin:0;font-size:12px;color:#9aa0ac;line-height:1.8;\">\n                            此邮件由系统自动发送，请勿直接回复。<br>\n                            © {year} {site_name} 保留所有权利。\n                        </p>\n                    </td>\n                </tr>\n\n            </table>\n            <!-- /内容容器 -->\n\n            <table role=\"presentation\" width=\"600\" class=\"container\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:600px;max-width:600px;\">\n                <tr>\n                    <td align=\"center\" style=\"padding:18px 10px 4px 10px;font-size:12px;color:#a8aebc;font-family:-apple-system,BlinkMacSystemFont,\'PingFang SC\',\'Microsoft YaHei\',Arial,sans-serif;\">\n                        发送时间：{send_time}\n                    </td>\n                </tr>\n            </table>\n\n        </td>\n    </tr>\n</table>\n\n</body>\n</html>\n', 1, 3, '2026-09-17 13:49:24', '2026-09-17 13:45:46', '2026-09-17 13:49:24', NULL);
 
 -- ----------------------------
 -- Table structure for service_order
@@ -449,11 +474,18 @@ CREATE TABLE `service_sms_log`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `mobile`(`mobile` ASC) USING BTREE,
   INDEX `type`(`type` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '短信发送记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '短信发送记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of service_sms_log
 -- ----------------------------
+INSERT INTO `service_sms_log` VALUES (1, '15763043010', '0595', 'register', 0, 0, '2026-09-17 09:17:56', '2026-09-17 09:17:56', NULL);
+INSERT INTO `service_sms_log` VALUES (2, '15763043010', '5044', 'register', 1, 0, '2026-09-17 09:20:45', '2026-09-17 09:24:48', NULL);
+INSERT INTO `service_sms_log` VALUES (3, '15763043010', '7571', 'login', 0, 0, '2026-09-17 09:40:11', '2026-09-17 09:40:11', NULL);
+INSERT INTO `service_sms_log` VALUES (4, '15763043010', '2667', 'login', 1, 0, '2026-09-17 09:43:18', '2026-09-17 09:43:24', NULL);
+INSERT INTO `service_sms_log` VALUES (5, '15763043010', '1084', 'reset', 0, 0, '2026-09-17 11:33:20', '2026-09-17 11:33:20', NULL);
+INSERT INTO `service_sms_log` VALUES (6, '15763043010', '1441', 'reset', 1, 0, '2026-09-17 11:36:12', '2026-09-17 11:36:16', NULL);
+INSERT INTO `service_sms_log` VALUES (7, '17853391882', '1348', 'bind', 1, 0, '2026-09-17 14:04:45', '2026-09-17 14:06:01', NULL);
 
 -- ----------------------------
 -- Table structure for system_ai_providers
@@ -474,11 +506,13 @@ CREATE TABLE `system_ai_providers`  (
   `udpate_time` datetime NULL DEFAULT NULL,
   `delete_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-AI提供商' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统-AI提供商' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of system_ai_providers
 -- ----------------------------
+INSERT INTO `system_ai_providers` VALUES (1, 'deepseek', 'DeepSeek', 'DeepSeek V4.1 Flash', 'deepseek', '{\"api_key\": \"sk-2744ae47fc5f4f76bdd11cee27b499a2\", \"retries\": 3, \"timeout\": 30, \"base_url\": \"https://api.deepseek.com\"}', '[\"deepseek-flash\", \"deepseek-v4-pro\"]', 'deepseek-flash', 1, 4653, '2026-09-17 09:00:19', '2026-09-17 09:00:19', NULL);
+INSERT INTO `system_ai_providers` VALUES (2, 'local', 'Ollama', '本地 Ollama 服务', 'openai', '{\"api_key\": \"ollama\", \"retries\": 1, \"timeout\": 120, \"base_url\": \"http://ollama.abug.cc/v1/\"}', '[\"qwen3.5:4b-q4_K_M\"]', 'qwen3.5:4b-q4_K_M', 1, 13495, '2026-09-17 10:02:52', '2026-09-17 10:02:52', NULL);
 
 -- ----------------------------
 -- Table structure for system_config

@@ -34,6 +34,7 @@ class JwtAuth implements MiddlewareInterface
         }
 
         $request->uuid = $uuid;
+        $request->user = $user;
         return $handler($request);
     }
 }

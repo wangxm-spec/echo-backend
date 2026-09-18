@@ -13,7 +13,7 @@ class Info extends Base
     function info(){
         $user = MemberAccountModel::where('status', 1)
             ->where('uuid', $this->uuid)
-            ->field('uuid,account,avatar,email,nickname,qq_number,mbti_type,hope_amount,create_time')
+            ->field('uuid,account,avatar,email,nickname,qq_number,mbti_type,call_id,hope_amount,create_time')
             ->find();
         if(!$user){
             throw new AuthException();

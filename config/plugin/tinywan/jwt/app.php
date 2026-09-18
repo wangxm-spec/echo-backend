@@ -47,7 +47,7 @@ return [
         /** 用户信息模型 */
         'user_model' => function ($uid) {
             return MemberAccountModel::where('uuid',$uid)
-                ->field('uuid,account,email,nickname,avatar,status,hope_amount,mbti_type,create_time,update_time')
+                ->field('uuid,account,email,nickname,avatar,status,hope_amount,mbti_type,call_id,create_time,update_time')
                 ->find();
         },
 
