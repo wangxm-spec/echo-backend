@@ -3,11 +3,24 @@
 namespace app\api\controller\init;
 
 use app\api\controller\Base;
+use app\common\exception\ParamException;
+use app\common\exception\SystemException;
 use app\common\model\MemberAccountModel;
 use app\common\service\SmsService;
 
 class Register extends Base
 {
+    public function __construct()
+    {
+        parent::__construct();
+        if(!config('sys.site_status')){
+            throw new SystemException();
+        }
+        if(!config('sys.register_status')){
+            throw new ParamException('已关闭注册，请注意查看公告');
+        }
+    }
+
     function sms()
     {
         $phone = $this->request->param('phone');

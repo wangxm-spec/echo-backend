@@ -11,7 +11,7 @@
  Target Server Version : 80024 (8.0.24)
  File Encoding         : 65001
 
- Date: 18/09/2026 10:25:24
+ Date: 20/09/2026 10:27:37
 */
 
 SET NAMES utf8mb4;
@@ -205,7 +205,7 @@ CREATE TABLE `member_account`  (
   `status` smallint NOT NULL DEFAULT 1 COMMENT '状态：1正常，0禁用',
   `hope_amount` bigint NOT NULL DEFAULT 0 COMMENT '琥珀余额',
   `mbti_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT 'mbti人格',
-  `is_super_admin` tinyint NOT NULL DEFAULT 0 COMMENT '是否超级管理员',
+  `call_id` int NOT NULL DEFAULT 0 COMMENT '佩带称号ID',
   `create_time` datetime NULL DEFAULT NULL,
   `update_time` datetime NULL DEFAULT NULL,
   `delete_time` datetime NULL DEFAULT NULL,
@@ -224,7 +224,7 @@ INSERT INTO `member_account` VALUES ('59ba9558-35d9-497b-b1d4-5fd22392a34a', '15
 DROP TABLE IF EXISTS `member_call`;
 CREATE TABLE `member_call`  (
   `id` int NOT NULL AUTO_INCREMENT,
-  `uid` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '用户UID',
+  `uuid` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '用户UID',
   `title` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '名称',
   `color` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '颜色',
   `status` smallint NOT NULL DEFAULT 0 COMMENT '状态：1开启，0关闭',
@@ -232,7 +232,7 @@ CREATE TABLE `member_call`  (
   `update_time` datetime NULL DEFAULT NULL,
   `delete_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户称号' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户称号' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of member_call
@@ -533,11 +533,13 @@ CREATE TABLE `system_config`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `delete_time` datetime NULL DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统配置表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统配置表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of system_config
 -- ----------------------------
+INSERT INTO `system_config` VALUES (1, 'site_status', '系统状态', 1, 4, '1', '0:关闭,1:开启', '系统开放状态', 100, 1, '2026-09-20 10:14:15', '2026-09-20 10:14:16', NULL);
+INSERT INTO `system_config` VALUES (2, 'register_status', '开放注册', 1, 4, '1', '0:关闭,1:开启', '是否开放注册', 100, 1, '2026-09-20 10:15:04', '2026-09-20 10:15:05', NULL);
 
 -- ----------------------------
 -- Table structure for word_message
@@ -548,8 +550,9 @@ CREATE TABLE `word_message`  (
   `channel_id` int NOT NULL DEFAULT 0 COMMENT '频道ID,0世界频道',
   `uuid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户UUID',
   `uname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '用户名称',
-  `ucall` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '用户称号',
-  `msg` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '消息内容',
+  `message_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'text' COMMENT '消息类型：text,image,emoji',
+  `message_data` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '消息内容',
+  `role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '权限：admin管理员，viewer观察者',
   `create_time` datetime NULL DEFAULT NULL,
   `update_time` datetime NULL DEFAULT NULL,
   `delete_time` datetime NULL DEFAULT NULL,

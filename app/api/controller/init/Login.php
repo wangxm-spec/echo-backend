@@ -3,11 +3,21 @@
 namespace app\api\controller\init;
 
 use app\api\controller\Base;
+use app\common\exception\ParamException;
+use app\common\exception\SystemException;
 use app\common\model\MemberAccountModel;
 use app\common\service\SmsService;
 
 class Login extends Base
 {
+    public function __construct()
+    {
+        parent::__construct();
+        if(!config('sys.site_status')){
+            throw new SystemException();
+        }
+    }
+
     function sms()
     {
         $phone = $this->request->param('phone');
