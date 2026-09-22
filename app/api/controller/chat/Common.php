@@ -30,7 +30,7 @@ class Common extends Base
         }
         //组装提示词
         $prompt = (new PromptService())->build('chat_common.txt', [
-            
+
         ]);
         //组装聊天记录
         //执行交互

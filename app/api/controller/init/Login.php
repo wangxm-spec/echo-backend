@@ -13,7 +13,7 @@ class Login extends Base
     public function __construct()
     {
         parent::__construct();
-        if(!config('sys.site_status')){
+        if(!sys('site_status')){
             throw new SystemException();
         }
     }

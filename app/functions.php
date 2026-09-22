@@ -1,4 +1,8 @@
 <?php
+
+use app\common\model\SystemConfigModel;
+use support\think\Cache;
+
 if(!defined("remove_xss")){
     function remove_xss($string): string
     {
@@ -155,5 +159,30 @@ if(!defined("formatUrl")){
             return getDomain() . $path;
         }
         return $path;
+    }
+}
+
+if (!function_exists('sys')) {
+    /**
+     * 获取系统配置
+     * @param string|null $key     配置键名，为空时返回全部
+     * @param mixed       $default 默认值
+     * @return mixed
+     */
+    function sys(?string $key = null, $default = null)
+    {
+        static $config = null;
+        if ($config === null) {
+            $config = Cache::get('config_data');
+            if (!$config) {
+                $list = SystemConfigModel::column('value', 'name');
+                Cache::set('config_data', $list);
+            }
+        }
+        // 不传 key 返回全部配置
+        if ($key === null) {
+            return $config;
+        }
+        return $config[$key] ?? $default;
     }
 }
