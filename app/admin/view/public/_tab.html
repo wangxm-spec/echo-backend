@@ -1,0 +1,73 @@
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="nav-close"><i class="fa fa-times-circle"></i></div>
+    <div class="sidebar-collapse">
+        <ul class="nav" id="side-menu">
+            <li class="nav-header" style="background-size:cover;">
+                <div class="dropdown profile-element" align="center">
+                    <span><img alt="image" class="img-circle" src="/static/logo.svg" style="width: 80px;height: 80px;"/></span>
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <span class="clear">
+                            <span class="block text-muted m-t-xs"><strong class="font-bold">{:env('APP_NAME')}</strong><b class="caret"></b></span>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                        <li><a href="javascript:;" id="cache">清理缓存</a></li>
+                        <li><a class="J_menuItem" href="{:url('admin/index/password')}">修改密码</a></li>
+                        <li class="divider"></li>
+                        <li><a href="javascript:;" id="logout">安全退出</a></li>
+                    </ul>
+                </div>
+                <div class="logo-element">{:env('APP_NAME')}</div>
+            </li>
+
+            {foreach $menus as $menu}
+                {if !isset($menu.children) || empty($menu.children)}
+                    <li>
+                        <a class="J_menuItem" href="{:url($menu.url)}" name="tabMenuItem">
+                            <i class="{$menu.icon|default='fa fa-circle-o'}"></i>
+                            <span class="nav-label">{$menu.title}</span>
+                        </a>
+                    </li>
+                {else}
+                    <li>
+                        <a href="#">
+                            <i class="fa {$menu.icon|default='fa fa-folder'}"></i>
+                            <span class="nav-label">{$menu.title}</span>
+                            <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level">
+                            {foreach $menu.children as $subMenu}
+                                {if !isset($subMenu.children) || empty($subMenu.children)}
+                                    <li>
+                                        <a class="J_menuItem" href="{:url($subMenu.url)}" name="tabMenuItem">
+                                            <i class="{$subMenu.icon|default='fa fa-circle'} nav-icon"></i>
+                                            <span class="nav-label">{$subMenu.title}</span>
+                                        </a>
+                                    </li>
+                                {else/}
+                                    <li>
+                                        <a href="javascript:;">
+                                            <i class="{$subMenu.icon|default='fa fa-circle'} nav-icon"></i>
+                                            <span class="nav-label">{$subMenu.title}</span>
+                                            <span class="fa arrow"></span>
+                                        </a>
+                                        <ul class="nav nav-third-level">
+                                            {foreach $subMenu.children as $thirdMenu}
+                                                <li>
+                                                    <a class="J_menuItem" href="{:url($thirdMenu.url)}" name="tabMenuItem">
+                                                        <i class="{$thirdMenu.icon|default='fa fa-circle'} nav-icon"></i>
+                                                        <span class="nav-label">{$thirdMenu.title}</span>
+                                                    </a>
+                                                </li>
+                                            {/foreach}
+                                        </ul>
+                                    </li>
+                                {/if}
+                            {/foreach}
+                        </ul>
+                    </li>
+                {/if}
+            {/foreach}
+        </ul>
+    </div>
+</nav>

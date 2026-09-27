@@ -92,8 +92,12 @@ class ExceptionHandle extends ExceptionHandler
         }
 
         // 自定义基础异常
-        if ($exception instanceof BaseException) {
+        if ($exception instanceof \app\common\exception\BaseException) {
             return json(['status' => $exception->getCode(), 'msg' => $exception->getMessage(), 'data' => '']);
+        }
+
+        if ($exception instanceof \app\admin\exception\BaseException) {
+            return $exception->renderResponse($request);
         }
 
         // 其他错误交给系统处理

@@ -1,0 +1,177 @@
+{extend name='public/_container'}
+{block name="content"}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="row" id="searchGroup">
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">关键字</button>
+                                    </div>
+                                    <input type="text" autocomplete="off" class="form-control" id="keywords" placeholder="配置键/标题/备注"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">分组</button>
+                                    </div>
+                                    <select class="form-control chosen" id="group">
+                                        <option value="">全部分组</option>
+                                        {foreach $group_list as $key => $item}
+                                            <option value="{$key}">{$item}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">类型</button>
+                                    </div>
+                                    <select class="form-control chosen" id="type">
+                                        <option value="">全部类型</option>
+                                        {foreach $type_list as $key => $item}
+                                            <option value="{$key}">{$item}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="button" class="btn btn-success" onclick="TableList.search()">
+                                    <i class="fa fa-search"></i>&nbsp;搜索
+                                </button>
+                            </div>
+                        </div>
+                        <div class="btn-group-sm pull-left" id="TableToolbar" role="group" style="margin-top: 15px;">
+                            {if condition="($admin_info.is_super_admin == 1) || (in_array('config/update', $admin_rule))"}
+                            <button type="button" id="create" class="btn btn-primary button-margin" onclick="TableList.update(0)">
+                                <i class="fa fa-plus"></i>&nbsp;添加
+                            </button>
+                            {/if}
+                            <a class="btn btn-info button-margin" href="{:url('config/config', ['group' => 1])}" target="_blank">
+                                <i class="fa fa-cog"></i>&nbsp;分组配置
+                            </a>
+                            {if condition="($admin_info.is_super_admin == 1) || (in_array('config/delete', $admin_rule))"}
+                            <button type="button" id="delete" class="btn btn-danger button-margin" onclick="TableList.delete()">
+                                <i class="fa fa-trash"></i>&nbsp;删除
+                            </button>
+                            {/if}
+                        </div>
+                        <table id="TableList" data-mobile-responsive="true" data-click-to-select="true">
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="__JS__/common/listCom.js" charset="utf-8"></script>
+<script id="config-perm" type="application/json"><?php
+    $perm = [
+        'update' => ($admin_info['is_super_admin'] == 1 || in_array('config/update', $admin_rule)),
+        'del'    => ($admin_info['is_super_admin'] == 1 || in_array('config/delete', $admin_rule)),
+        'status' => ($admin_info['is_super_admin'] == 1 || in_array('config/status', $admin_rule)),
+    ];
+    echo json_encode($perm);
+?></script>
+<script>
+    var ConfigPerm = JSON.parse(document.getElementById('config-perm').textContent);
+    var TableList = {id: "TableList", seItem: null, table: null, layerIndex: -1};
+
+    TableList.initColumn = function () {
+        return [
+            {field: 'selectItem', checkbox: true},
+            {title: '编号', field: 'id', visible: true, align: 'center', valign: 'middle'},
+            {title: '配置键', field: 'name', visible: true, align: 'center', valign: 'middle'},
+            {title: '配置标题', field: 'title', visible: true, align: 'center', valign: 'middle'},
+            {title: '分组', field: 'group_text', visible: true, align: 'center', valign: 'middle'},
+            {title: '类型', field: 'type_text', visible: true, align: 'center', valign: 'middle'},
+            {title: '配置值', field: 'value', visible: true, align: 'left', valign: 'middle'},
+            {title: '排序', field: 'sort', visible: true, align: 'center', valign: 'middle'},
+            {title: '状态', field: 'status', visible: true, align: 'center', valign: 'middle', formatter: TableList.statusFormatter},
+            {title: '更新时间', field: 'update_time', visible: true, align: 'center', valign: 'middle'},
+            {title: '操作', field: '', visible: true, align: 'center', valign: 'middle', formatter: TableList.buttonFormatter},
+        ];
+    };
+
+    TableList.statusFormatter = function (value, row, index) {
+        if (value == 1) {
+            return '<span class="label label-primary">启用</span>';
+        }
+        return '<span class="label label-default">禁用</span>';
+    };
+
+    TableList.buttonFormatter = function (value, row, index) {
+        var str = '';
+        if (ConfigPerm.update) {
+            str += '<button type="button" class="btn btn-success btn-xs" onclick="TableList.update(' + row.id + ')"><i class="fa fa-pencil"></i>&nbsp;编辑</button>&nbsp;';
+        }
+        if (ConfigPerm.status) {
+            str += '<button type="button" class="btn btn-' + (row.status == 1 ? 'warning' : 'primary') + ' btn-xs" onclick="TableList.toggleStatus(' + row.id + ',' + (row.status == 1 ? 0 : 1) + ')"><i class="fa fa-power-off"></i>&nbsp;' + (row.status == 1 ? '禁用' : '启用') + '</button>&nbsp;';
+        }
+        if (ConfigPerm.del) {
+            str += '<button type="button" class="btn btn-danger btn-xs" onclick="TableList.delete(' + row.id + ')"><i class="fa fa-trash"></i>&nbsp;删除</button>';
+        }
+        return str;
+    };
+
+    TableList.formParams = function () {
+        return {
+            'keywords': $("#keywords").val(),
+            'group':    $("#group").val(),
+            'type':     $("#type").val()
+        };
+    };
+
+    TableList.update = function (value) {
+        var index = layer.open({
+            type: 2, title: value > 0 ? '编辑配置' : '添加配置',
+            area: ['720px', '680px'], fix: true,
+            content: "{:url('config/update')}?id=" + value
+        });
+    };
+
+    TableList.toggleStatus = function (id, status) {
+        $.ajax({
+            url: "{:url('config/status')}",
+            type: 'POST', data: {id: id, status: status}, dataType: 'json',
+            success: function (res) {
+                if (res.status === 200) { layer.msg(res.msg, {icon: 1}); TableList.table.refresh(); }
+                else { layer.msg(res.msg, {icon: 2}); }
+            }
+        });
+    };
+
+    TableList.delete = function (value) {
+        var ids = value ? value : '';
+        if (!ids) {
+            var selected = $('#TableList').bootstrapTable('getSelections');
+            if (selected.length === 0) { layer.msg('请先选中表格中的记录！', {icon: 2}); return; }
+            ids = selected.map(function(item){ return item.id; }).join(',');
+        }
+        layer.confirm('确定要删除选中的记录吗？', function(index){
+            $.ajax({
+                url: "{:url('config/delete')}", type: 'POST', data: {id: ids}, dataType: 'json',
+                success: function(res){
+                    if (res.status === 200) { layer.msg(res.msg, {icon: 1}); TableList.table.refresh(); }
+                    else { layer.msg(res.msg, {icon: 2}); }
+                }
+            });
+            layer.close(index);
+        });
+    };
+
+    TableList.search = function () { TableList.table.refresh({query: TableList.formParams()}); };
+
+    $(function () {
+        var table = new BSTable(TableList.id, "{:url('config/index')}" + location.search, TableList.initColumn());
+        table.setQueryParams(TableList.formParams());
+        TableList.table = table.init();
+    });
+</script>
+{/block}

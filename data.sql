@@ -11,11 +11,84 @@
  Target Server Version : 80024 (8.0.24)
  File Encoding         : 65001
 
- Date: 20/09/2026 10:27:37
+ Date: 27/09/2026 17:13:02
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for admin_menu
+-- ----------------------------
+DROP TABLE IF EXISTS `admin_menu`;
+CREATE TABLE `admin_menu`  (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `pid` bigint UNSIGNED NOT NULL DEFAULT 0 COMMENT '父菜单ID',
+  `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '菜单名称',
+  `path` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '菜单路径',
+  `icon` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '图标',
+  `sort` int NOT NULL DEFAULT 0 COMMENT '排序',
+  `type` tinyint NOT NULL DEFAULT 1 COMMENT '类型：1菜单，2按钮',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `delete_time` datetime NULL DEFAULT NULL COMMENT '删除时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '管理员菜单表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of admin_menu
+-- ----------------------------
+INSERT INTO `admin_menu` VALUES (1, 0, '仪表盘', 'admin/index/main', 'fa fa-tachometer', 1, 1, '2026-08-18 22:24:57', '2026-08-18 22:25:04', NULL);
+INSERT INTO `admin_menu` VALUES (2, 0, '系统设置', '', 'fa fa-cog', 9999, 1, '2026-08-18 22:24:57', '2026-08-18 22:25:04', NULL);
+INSERT INTO `admin_menu` VALUES (3, 2, '基础配置', 'admin/config/config', 'fa fa-sliders', 2, 1, '2026-08-18 22:24:57', '2026-08-18 22:25:04', NULL);
+INSERT INTO `admin_menu` VALUES (4, 2, '用户管理', 'admin/admin/index', 'fa fa-user-secret', 3, 1, '2026-08-18 22:24:57', '2026-08-18 22:25:04', NULL);
+INSERT INTO `admin_menu` VALUES (5, 2, '角色权限', 'amin/role/index', 'fa fa-sitemap', 4, 1, '2026-08-18 22:24:57', '2026-08-18 22:25:04', NULL);
+
+-- ----------------------------
+-- Table structure for admin_role
+-- ----------------------------
+DROP TABLE IF EXISTS `admin_role`;
+CREATE TABLE `admin_role`  (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '角色名称',
+  `desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '描述',
+  `status` smallint NULL DEFAULT 1 COMMENT '状态',
+  `permissions` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '权限列表，逗号拼接',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `delete_time` datetime NULL DEFAULT NULL COMMENT '删除时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '管理员角色表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of admin_role
+-- ----------------------------
+INSERT INTO `admin_role` VALUES (1, '超级管理员', '全部权限', 1, '', '2026-07-02 11:00:07', '2026-07-02 22:17:27', NULL);
+
+-- ----------------------------
+-- Table structure for admin_user
+-- ----------------------------
+DROP TABLE IF EXISTS `admin_user`;
+CREATE TABLE `admin_user`  (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `account` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '用户名',
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '密码',
+  `role_id` int NOT NULL DEFAULT 0 COMMENT '权限ID',
+  `status` tinyint NOT NULL DEFAULT 1 COMMENT '状态：1正常，0禁用',
+  `is_super_admin` tinyint NOT NULL DEFAULT 0 COMMENT '是否超管：1是，0否',
+  `last_login_time` datetime NULL DEFAULT NULL COMMENT '最后登录时间',
+  `last_login_ip` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '最后登录IP',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `delete_time` datetime NULL DEFAULT NULL COMMENT '删除时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `uk_username`(`account` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '管理员账户表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of admin_user
+-- ----------------------------
+INSERT INTO `admin_user` VALUES (1, 'admin', '$2y$10$Dk3KYqKa0kBqyb0zydPXEOVUb8wNlhAPucPWB8tZfzYTXWnFytO16', 0, 1, 1, '2026-09-27 17:05:00', '122.4.222.90', '2026-07-01 22:18:55', '2026-09-27 17:04:51', NULL);
 
 -- ----------------------------
 -- Table structure for common_article
@@ -515,6 +588,30 @@ INSERT INTO `system_ai_providers` VALUES (1, 'deepseek', 'DeepSeek', 'DeepSeek V
 INSERT INTO `system_ai_providers` VALUES (2, 'local', 'Ollama', '本地 Ollama 服务', 'openai', '{\"api_key\": \"ollama\", \"retries\": 1, \"timeout\": 120, \"base_url\": \"http://ollama.abug.cc/v1/\"}', '[\"qwen3.5:4b-q4_K_M\"]', 'qwen3.5:4b-q4_K_M', 1, 13495, '2026-09-17 10:02:52', '2026-09-17 10:02:52', NULL);
 
 -- ----------------------------
+-- Table structure for system_app_version
+-- ----------------------------
+DROP TABLE IF EXISTS `system_app_version`;
+CREATE TABLE `system_app_version`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `version_id` int NOT NULL DEFAULT 0 COMMENT '版本ID',
+  `version_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '版本号',
+  `site` enum('ad','ios','mac','win') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'win' COMMENT '平台',
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题',
+  `desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '更新日志',
+  `status` smallint NOT NULL DEFAULT 1 COMMENT '状态',
+  `push_time` datetime NOT NULL COMMENT '发布时间',
+  `is_must` tinyint NOT NULL DEFAULT 0 COMMENT '是否强制',
+  `create_time` datetime NULL DEFAULT NULL,
+  `update_time` datetime NULL DEFAULT NULL,
+  `delete_time` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '版本更新表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of system_app_version
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for system_config
 -- ----------------------------
 DROP TABLE IF EXISTS `system_config`;
@@ -533,13 +630,38 @@ CREATE TABLE `system_config`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `delete_time` datetime NULL DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统配置表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统配置表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of system_config
 -- ----------------------------
 INSERT INTO `system_config` VALUES (1, 'site_status', '系统状态', 1, 4, '1', '0:关闭,1:开启', '系统开放状态', 100, 1, '2026-09-20 10:14:15', '2026-09-20 10:14:16', NULL);
 INSERT INTO `system_config` VALUES (2, 'register_status', '开放注册', 1, 4, '1', '0:关闭,1:开启', '是否开放注册', 100, 1, '2026-09-20 10:15:04', '2026-09-20 10:15:05', NULL);
+INSERT INTO `system_config` VALUES (3, 'admin_white_ip', '后台白名单', 1, 1, '127.0.0.1,124.222.131.85,122.4.222.90', '', '管理端IP白名单', 100, 1, '2026-09-27 11:53:13', '2026-09-27 11:53:15', NULL);
+INSERT INTO `system_config` VALUES (4, 'copyright', '版权声明', 1, 1, '王小明', '', '版权声明', 100, 1, '2026-09-27 16:35:46', '2026-09-27 16:35:48', NULL);
+
+-- ----------------------------
+-- Table structure for system_plugins
+-- ----------------------------
+DROP TABLE IF EXISTS `system_plugins`;
+CREATE TABLE `system_plugins`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `cate` int NOT NULL COMMENT '分类',
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '标题',
+  `desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '描述',
+  `version` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '版本号',
+  `path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '下载路径',
+  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '状态',
+  `env_checker` json NOT NULL COMMENT '环境检查，如系统等',
+  `create_time` datetime NULL DEFAULT NULL,
+  `update_time` datetime NULL DEFAULT NULL,
+  `delete_time` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统插件' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of system_plugins
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for word_message

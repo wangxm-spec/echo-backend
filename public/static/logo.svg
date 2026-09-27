@@ -1,0 +1,173 @@
+<svg width="400" height="400" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- 主渐变：蓝 → 青 -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a6fd4"/>
+      <stop offset="50%" stop-color="#2a9dd4"/>
+      <stop offset="100%" stop-color="#2ac8b8"/>
+    </linearGradient>
+
+    <!-- 旋转光环 1 -->
+    <linearGradient id="ringGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- 旋转光环 2 -->
+    <linearGradient id="ringGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2ac8b8" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#2ac8b8" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#2ac8b8" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- 流星光圈：头亮尾淡 -->
+    <linearGradient id="meteorGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="60%" stop-color="#ffffff" stop-opacity="0.3"/>
+      <stop offset="90%" stop-color="#ffffff" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="1"/>
+    </linearGradient>
+
+    <!-- 流星光圈 2：青色 -->
+    <linearGradient id="meteorGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2ac8b8" stop-opacity="0"/>
+      <stop offset="60%" stop-color="#2ac8b8" stop-opacity="0.3"/>
+      <stop offset="90%" stop-color="#2ac8b8" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#2ac8b8" stop-opacity="1"/>
+    </linearGradient>
+
+    <!-- 外光晕 -->
+    <radialGradient id="glowGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#2ac8b8" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#2ac8b8" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- 阴影 -->
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="8" stdDeviation="20" flood-color="#1a6fd4" flood-opacity="0.5"/>
+    </filter>
+
+    <!-- 流星发光效果 -->
+    <filter id="meteorGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- 外光晕 -->
+  <circle cx="256" cy="256" r="240" fill="url(#glowGrad)">
+    <animate attributeName="r" values="240;250;240" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- 主背景 -->
+  <circle cx="256" cy="256" r="230" fill="url(#bgGrad)" filter="url(#shadow)"/>
+
+  <!-- 旋转光环 1（外层，顺时针，快） -->
+  <g transform="translate(256,256)">
+    <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="4s" repeatCount="indefinite"/>
+    <circle cx="0" cy="0" r="230" fill="none" stroke="url(#ringGrad1)" stroke-width="6" stroke-linecap="round"
+            stroke-dasharray="200 1245"/>
+  </g>
+
+  <!-- 旋转光环 2（中层，逆时针，中速） -->
+  <g transform="translate(256,256)">
+    <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="6s" repeatCount="indefinite"/>
+    <circle cx="0" cy="0" r="210" fill="none" stroke="url(#ringGrad2)" stroke-width="5" stroke-linecap="round"
+            stroke-dasharray="150 1169"/>
+  </g>
+
+  <!-- 旋转光环 3（内层，顺时针，慢） -->
+  <g transform="translate(256,256)">
+    <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="8s" repeatCount="indefinite"/>
+    <circle cx="0" cy="0" r="190" fill="none" stroke="url(#ringGrad1)" stroke-width="4" stroke-linecap="round"
+            stroke-dasharray="100 1094"/>
+  </g>
+
+  <!-- ★ 流星光圈 1（外层，顺时针） -->
+  <g transform="translate(256,256)" filter="url(#meteorGlow)">
+    <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="4s" repeatCount="indefinite"/>
+    <!-- 流星尾迹（弧线） -->
+    <path d="M 0 -230 A 230 230 0 0 0 -80 -215" 
+          fill="none" stroke="url(#meteorGrad)" stroke-width="5" stroke-linecap="round" opacity="0.9"/>
+    <!-- 流星头（亮点） -->
+    <circle cx="0" cy="-230" r="7" fill="#ffffff">
+      <animate attributeName="r" values="7;9;7" dur="0.8s" repeatCount="indefinite"/>
+    </circle>
+    <!-- 流星头光晕 -->
+    <circle cx="0" cy="-230" r="14" fill="#ffffff" opacity="0.4">
+      <animate attributeName="r" values="14;18;14" dur="0.8s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.4;0.2;0.4" dur="0.8s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- ★ 流星光圈 2（中层，逆时针） -->
+  <g transform="translate(256,256)" filter="url(#meteorGlow)">
+    <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="6s" repeatCount="indefinite"/>
+    <path d="M 0 -210 A 210 210 0 0 1 80 -195" 
+          fill="none" stroke="url(#meteorGrad2)" stroke-width="4" stroke-linecap="round" opacity="0.9"/>
+    <circle cx="0" cy="-210" r="6" fill="#2ac8b8">
+      <animate attributeName="r" values="6;8;6" dur="1s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="0" cy="-210" r="12" fill="#2ac8b8" opacity="0.4">
+      <animate attributeName="r" values="12;16;12" dur="1s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.4;0.2;0.4" dur="1s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- 静态细圈 -->
+  <circle cx="256" cy="256" r="220" fill="none" stroke="#ffffff" stroke-width="1" opacity="0.15"/>
+
+  <!-- 中心文字背景圆（呼吸） -->
+  <circle cx="256" cy="256" r="120" fill="#ffffff" opacity="0.1">
+    <animate attributeName="r" values="120;128;120" dur="3s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.1;0.18;0.1" dur="3s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- 文字 Echo（呼吸缩放） -->
+  <g transform="translate(256,256)">
+    <animateTransform attributeName="transform" type="scale" values="1;1.05;1" dur="3s" repeatCount="indefinite" additive="sum"/>
+    <text x="0" y="0" 
+          font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif"
+          font-size="120" 
+          font-weight="800" 
+          fill="#ffffff" 
+          text-anchor="middle" 
+          dominant-baseline="central"
+          letter-spacing="3">Echo</text>
+  </g>
+
+  <!-- 装饰线 -->
+  <line x1="190" y1="308" x2="322" y2="308" 
+        stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" opacity="0.6">
+    <animate attributeName="opacity" values="0.6;0.2;0.6" dur="2s" repeatCount="indefinite"/>
+  </line>
+
+  <!-- 底部小字 -->
+  <text x="256" y="340" 
+        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif"
+        font-size="18" 
+        font-weight="400" 
+        fill="#ffffff" 
+        opacity="0.6"
+        text-anchor="middle" 
+        letter-spacing="6">AI COMPANION</text>
+
+  <!-- 四角闪烁圆点 -->
+  <circle cx="130" cy="130" r="5" fill="#ffffff">
+    <animate attributeName="opacity" values="1;0.1;1" dur="1.5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="382" cy="130" r="5" fill="#ffffff">
+    <animate attributeName="opacity" values="1;0.1;1" dur="1.8s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="130" cy="382" r="5" fill="#ffffff">
+    <animate attributeName="opacity" values="1;0.1;1" dur="2.1s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="382" cy="382" r="5" fill="#ffffff">
+    <animate attributeName="opacity" values="1;0.1;1" dur="1.6s" repeatCount="indefinite"/>
+  </circle>
+</svg>

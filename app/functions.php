@@ -2,7 +2,7 @@
 
 use app\common\model\SystemConfigModel;
 use support\think\Cache;
-
+use support\Url;
 if(!defined("remove_xss")){
     function remove_xss($string): string
     {
@@ -175,14 +175,80 @@ if (!function_exists('sys')) {
         if ($config === null) {
             $config = Cache::get('config_data');
             if (!$config) {
-                $list = SystemConfigModel::column('value', 'name');
-                Cache::set('config_data', $list);
+                $config = SystemConfigModel::column('value', 'name'); // ← 赋值
+                Cache::set('config_data', $config);
             }
         }
-        // 不传 key 返回全部配置
         if ($key === null) {
             return $config;
         }
         return $config[$key] ?? $default;
+    }
+}
+
+
+
+if (!function_exists('url')) {
+    /**
+     * 生成 URL，类似 ThinkPHP 的 url()
+     *
+     * @param string $url
+     * @param array  $params
+     * @param bool   $domain
+     * @param bool   $suffix
+     * @return string
+     */
+    function url(string $url = '', array $params = [], bool $domain = false, bool $suffix = true): string
+    {
+        return Url::build($url, $params, $domain, $suffix);
+    }
+}
+
+if (!function_exists('url_with_domain')) {
+    function url_with_domain(string $url = '', array $params = []): string
+    {
+        return Url::buildWithDomain($url, $params);
+    }
+}
+
+if (!function_exists('action')) {
+    function action(string $controller, string $action = 'index', array $params = []): string
+    {
+        return Url::action($controller, $action, $params);
+    }
+}
+
+
+if(!function_exists('list_to_tree')){
+    /**
+     * 将列表转换为树形结构
+     * @param array $list 列表数据
+     * @param string $pk 主键字段名
+     * @param string $pid 父级字段名
+     * @param string $child 子级键名
+     * @param int $root 根节点值
+     * @return array
+     */
+    function list_to_tree($list, $pk = 'id', $pid = 'pid', $child = '_child', $root = 0)
+    {
+        $tree = [];
+        if (is_array($list)) {
+            $refer = [];
+            foreach ($list as $key => $data) {
+                $refer[$data[$pk]] =& $list[$key];
+            }
+            foreach ($list as $key => $data) {
+                $parentId = $data[$pid];
+                if ($root == $parentId) {
+                    $tree[] =& $list[$key];
+                } else {
+                    if (isset($refer[$parentId])) {
+                        $parent =& $refer[$parentId];
+                        $parent[$child][] =& $list[$key];
+                    }
+                }
+            }
+        }
+        return $tree;
     }
 }

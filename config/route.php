@@ -14,12 +14,12 @@
 
 use Webman\Route;
 
-
+Route::disableDefaultRoute('api');
 require_once app_path('api/route/app.php');
 Route::get('/', [app\index\controller\Index::class, 'index']);
+Route::get('/admin', function (){
+    return redirect('/admin/index/index');
+});
 Route::fallback(function(){
     return redirect('/');
 });
-
-
-

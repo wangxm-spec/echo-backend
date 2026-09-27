@@ -14,6 +14,10 @@
 
 return [
     '' => [
-        \app\api\middleware\Cors::class
+        \app\api\middleware\Cors::class,
+        app\common\middleware\UrlContextMiddleware::class,
+    ],
+    'admin' => [
+        app\admin\middleware\AdminAuthMiddleware::class,
     ]
 ];

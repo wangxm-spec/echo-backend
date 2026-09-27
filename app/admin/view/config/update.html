@@ -1,0 +1,165 @@
+{extend name='public/_container'}
+{block name="content"}
+<div class="row">
+    <form class="form-horizontal" id="doSubmit">
+        <div class="col-sm-12">
+            <div class="ibox ">
+                <div class="ibox-content">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">配置键：</label>
+                        <div class="col-sm-9">
+                            <input type="text" autocomplete="off" id="name" value="{$info.name|default=''}" name="name" class="form-control" placeholder="英文唯一标识">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">配置标题：</label>
+                        <div class="col-sm-9">
+                            <input type="text" autocomplete="off" id="title" value="{$info.title|default=''}" name="title" class="form-control" placeholder="界面显示的中文标题">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">分组：</label>
+                        <div class="col-sm-9">
+                            <select name="group" class="form-control chosen" id="group">
+                                {foreach $group_list as $key => $item}
+                                    <option value="{$key}" {if condition="(int)$info.group === (int)$key"}selected{/if}>{$item}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">输入类型：</label>
+                        <div class="col-sm-9">
+                            <select name="type" class="form-control chosen" id="type">
+                                {foreach $type_list as $key => $item}
+                                    <option value="{$key}" {if condition="(int)$info.type === (int)$key"}selected{/if}>{$item}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">配置值：</label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control" id="value" name="value" rows="6" placeholder="配置值（根据输入类型自动渲染）">{$info.value|default=''}</textarea>
+                            <span class="help-block">
+                                <span id="value-tip">提示：按 input[type=text] 填写。</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">附加数据：</label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control" id="extra" name="extra" rows="2" placeholder="仅当下拉选择/开关等需要额外数据时填写">{$info.extra|default=''}</textarea>
+                            <span class="help-block">下拉类型可填 key:value,key:value，多个用英文逗号分隔。</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">排序：</label>
+                        <div class="col-sm-9">
+                            <input type="number" autocomplete="off" id="sort" value="{$info.sort|default=100}" name="sort" class="form-control" placeholder="数字越小越靠前">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">状态：</label>
+                        <div class="col-sm-9">
+                            <select name="status" class="form-control chosen" id="status">
+                                <option value="1" {if condition="(int)$info.status === 1"}selected{else/}selected{/if}>启用</option>
+                                <option value="0" {if condition="(int)$info.status === 0"}selected{/if}>禁用</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">备注：</label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control" id="remark" name="remark" rows="3" placeholder="备注说明">{$info.remark|default=''}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="hr-line-dashed"></div>
+                    <div class="row btn-group-m-t">
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-4">
+                            <button type="button" class="btn btn-primary" onclick="InfoDlg.submit()" id="ensure">
+                                <i class="fa fa-check"></i>&nbsp;确认提交
+                            </button>
+                            <button type="button" class="btn btn-danger" onclick="InfoDlg.close()" id="cancel" style="margin-left: 20px">
+                                <i class="fa fa-remove"></i>&nbsp;取消关闭
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    var InfoDlg = { formData: {} };
+
+    var typeTipMap = {
+        1: '提示：文本输入框，填写字符串。',
+        2: '提示：数字输入框，填写数字。',
+        3: '提示：多行文本域，可填写长内容。',
+        4: '提示：开关，填写 1（开）或 0（关）。',
+        5: '提示：下拉选择，从附加数据中读取 key:value 选项。',
+        6: '提示：图片上传，请填写图片完整 URL。',
+        7: '提示：富文本编辑器，填写 HTML 内容。'
+    };
+
+    function refreshTypeTip() {
+        var t = $('#type').val();
+        $('#value-tip').text(typeTipMap[t] || '');
+    }
+
+    $(function () {
+        refreshTypeTip();
+        $('#type').on('change', refreshTypeTip);
+    });
+
+    InfoDlg.collectData = function () {
+        this.set('name').set('title').set('value').set('extra').set('remark').set('sort');
+    }
+
+    InfoDlg.Validate = function () {
+        if ($('#name').val() === '') {
+            com.error('请输入配置键');
+            return false;
+        }
+        if ($('#title').val() === '') {
+            com.error('请输入配置标题');
+            return false;
+        }
+        return true;
+    }
+
+    InfoDlg.submit = function () {
+        this.collectData();
+        if (!this.Validate()) return;
+
+        const group  = $('#group').val();
+        const type   = $('#type').val();
+        const status = $('#status').val();
+        const sort   = $('#sort').val() || 100;
+
+        const ajax = new $ax("{:url('update',['id'=>$id])}", function (res) {
+            if (res.status === 200) {
+                com.success(res.msg, 1000);
+                window.parent.TableList.table.refresh();
+                InfoDlg.close();
+            } else {
+                com.error(res.msg + "！", 1000);
+            }
+        });
+        ajax.set('group', group);
+        ajax.set('type',  type);
+        ajax.set('status', status);
+        ajax.set('sort',  sort);
+        ajax.set(this.formData);
+        ajax.start();
+    };
+
+    InfoDlg.close = function () {
+        parent.layer.close(parent.layer.getFrameIndex(window.name));
+    };
+</script>
+<script src="__JS__/common/formCom.js" charset="utf-8"></script>
+{/block}

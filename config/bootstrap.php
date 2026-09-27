@@ -12,7 +12,10 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
+use support\Url;
+
 return [
     support\bootstrap\Session::class,
     Webman\ThinkOrm\ThinkOrm::class,
+    app\common\process\Uri::class,
 ];

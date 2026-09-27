@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{:env('APP_NAME')} - 管理员登录</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/static/layui/css/layui.css?t={:time()}" media="all">
+    <link rel="stylesheet" href="/static/admin/css/login.css?t={:time()}" media="all">
+    <style type="text/css">
+        body {
+            background-image: url("https://bing.pugb.vip/uhd_302.php");
+            background-repeat: no-repeat;      /* 不重复 */
+            background-size: cover;            /* 拉伸铺满整个屏幕 */
+            background-position: center;       /* 居中显示 */
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-box {
+            width: 400px;
+            padding: 40px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .login-title {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+            color: #333;
+            font-weight: bold;
+        }
+        .login-form .layui-form-item {
+            position: relative;
+        }
+        .login-form .layui-form-label {
+            width: 50px;
+            padding: 9px 0;
+        }
+        .login-form .layui-input-block {
+            margin-left: 50px;
+        }
+        .login-btn {
+            height: 45px;
+            font-size: 16px;
+        }
+        .verify-row {
+            display: flex;
+            align-items: center;
+        }
+        .verify-row .layui-input {
+            flex: 1;
+        }
+        .verify-img {
+            height: 38px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-box">
+    <div class="login-title">{:env('APP_NAME')}</div>
+    <div class="login-subtitle" style="text-align:center;color:#999;margin-top:-20px;margin-bottom:25px;font-size:13px;">管理后台</div>
+    <form class="login-form layui-form" method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label"><i class="layui-icon layui-icon-username"></i></label>
+            <div class="layui-input-block">
+                <input type="text" name="username" lay-verify="required" placeholder="请输入用户名" class="layui-input" autocomplete="off">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><i class="layui-icon layui-icon-password"></i></label>
+            <div class="layui-input-block">
+                <input type="password" name="password" lay-verify="required" placeholder="请输入密码" class="layui-input" autocomplete="off">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><i class="layui-icon layui-icon-vercode"></i></label>
+            <div class="layui-input-block verify-row">
+                <input id="verify" type="text" name="verify" lay-verify="required" placeholder="请输入验证码" class="layui-input" autocomplete="off">
+                <img src="{:url('verify')}" class="verify-img" onclick="this.src=this.src+'?c='+Math.random();">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button class="layui-btn layui-btn-fluid layui-btn-normal login-btn" lay-submit lay-filter="login">登 录</button>
+        </div>
+    </form>
+</div>
+
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<script src="/static/admin/js/jquery.min.js"></script>
+<script>
+    layui.use(['form', 'layer'], function(){
+        var form = layui.form;
+        var layer = layui.layer;
+
+        form.on('submit(login)', function(data){
+            $.ajax({
+                url: "{:url('login/index')}",
+                type: 'POST',
+                data: data.field,
+                dataType: 'json',
+                success: function(res){
+                    if(res.status === 200){
+                        layer.msg(res.msg, {icon: 1, time: 1500}, function(){
+                            window.location.href = "{:url('/admin/index/index')}";
+                        });
+                    } else {
+                        layer.msg(res.msg, {icon: 2});
+                        $('.verify-img').click();
+                        $('#verify').value();
+                    }
+                },
+                error: function(){
+                    layer.msg('请求失败', {icon: 2});
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

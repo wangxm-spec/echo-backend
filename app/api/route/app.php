@@ -12,6 +12,9 @@ Route::group('/api', function () {
             Route::any('/list', [app\api\controller\common\Article::class, 'list']);
             Route::any('/info', [app\api\controller\common\Article::class, 'info']);
         });
+        Route::group('/version', function () {
+            Route::any('/update', [app\api\controller\system\Version::class, 'info']);
+        });
     });
     Route::group('/init', function () {
         Route::group('/login', function () {
@@ -35,6 +38,9 @@ Route::group('/api', function () {
         Route::group('/character', function () {
             Route::post('/build', [app\api\controller\init\Character::class, 'build']);
         });
+    });
+    Route::group('/system', function () {
+        Route::any('/plugins', [app\api\controller\system\Plugins::class, 'list']);
     });
     Route::group('/member', function () {
         Route::group('/info', function () {

@@ -1,0 +1,171 @@
+{extend name='public/_container'}
+{block name="content"}
+<div class="row">
+    <form class="form-horizontal" id="doSubmit">
+        <div class="col-sm-12">
+            <div class="ibox ">
+                <div class="ibox-content">
+                    <ul class="nav nav-tabs">
+                        {foreach $group_list as $k=>$v}
+                        <li {if $group== $k}class="active" {/if}>
+                        <a href="{:url('admin/config/config',['group'=> $k])}">{$v}</a>
+                        </li>
+                        {/foreach}
+                    </ul>
+                    <!-- form start -->
+                    <div class="tab-content">
+                        {empty name="list" value=""}
+                        <div style="text-align: center;" class="form-group">该分组下暂无启用的配置项，请前往「基础配置」页添加。</div>
+                        {else/}
+                        {foreach $list as $v}
+                        <div class="form-group" style="margin: 30px 0">
+                            <label class="col-sm-2 control-label">{$v.title|default=$v.name}：</label>
+                            <div class="input-group col-sm-6">
+                                {switch name="v.type"}
+                                {case value="1"}
+                                <input type="text" autocomplete="off" name="{$v.name}" value="{$v.value|default=''}"
+                                       class="form-control" placeholder="请输入">
+                                <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> {$v.remark}</span>
+                                {/case}
+                                {case value="2"}
+                                <input type="number" class="form-control" name="{$v.name}" value="{$v.value|default=''}" step="0.01" autocomplete="off" >
+                                <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> {$v.remark}</span>
+                                {/case}
+                                {case value="3"}
+                                <textarea class="form-control" type="text" rows="4" name="{$v.name}">{$v.value|default=''}</textarea>
+                                <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> {$v.remark}</span>
+                                {/case}
+                                {case value="4"}
+                                <input type="hidden" name="{$v.name}" value="0">
+                                <input type="checkbox" name="{$v.name}" value="1" {if $v.value == 1}checked{/if}
+                                data-switchery="true" class="switchery">
+                                <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> {$v.remark}</span>
+                                {/case}
+                                {case value="5"}
+                                {php}$extraArr = []; if (!empty($v['extra'])) { foreach (explode(',', $v['extra']) as $kv) { if (strpos($kv, ':') !== false) { list($k,$val) = explode(':', $kv, 2); $extraArr[trim($k)] = trim($val); } } } {/php}
+                                <select class="form-control m-b chosen-select" name="{$v.name}">
+                                    {foreach $extraArr as $kk=>$vv}
+                                    <option value="{$kk}" {if (string)$v.value === (string)$kk}selected{/if}>{$vv}</option>
+                                    {/foreach}
+                                </select>
+                                <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> {$v.remark}</span>
+                                {/case}
+                                {case value="6"}
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="{$v.name}" name="{$v.name}" value="{$v.value|default=''}" placeholder="图片URL">
+                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-primary" onclick="InfoDlg.uploadImage('{$v.name}')">
+                                                            <i class="fa fa-upload"></i> 上传图片
+                                                        </button>
+                                                    </span>
+                                </div>
+                                {notempty name="$v.value"}
+                                <div style="margin-top:8px;"><img src="{$v.value}" style="max-width:200px;max-height:120px;border:1px solid #ddd;padding:2px;"></div>
+                                {/notempty}
+                                <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> {$v.remark}</span>
+                                {/case}
+                                {case value="7"}
+                                <textarea class="form-control" rows="6" name="{$v.name}" placeholder="请输入内容">{$v.value|default=''}</textarea>
+                                <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> {$v.remark}</span>
+                                {/case}
+                                {case value="8"}
+                                <input type="text" autocomplete="off" name="{$v.name}" value="{$v.value|default=''}"
+                                       class="form-control" placeholder="请输入" data-role="tagsinput" >
+                                <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> {$v.remark}</span>
+                                {/case}
+                                {default /}
+                                <input type="text" autocomplete="off" name="{$v.name}" value="{$v.value|default=''}"
+                                       class="form-control" placeholder="请输入">
+                                <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> {$v.remark}</span>
+                                {/switch}
+                            </div>
+                        </div>
+                        {/foreach}
+                        {/empty}
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-3">
+                                <button type="button" class="btn btn-primary" onclick="InfoDlg.submit()" id="ensure">
+                                    <i class="fa fa-check"></i>&nbsp;保存提交
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<link href="/static/admin/css/plugins/switchery/switchery.css" rel="stylesheet">
+<script src="/static/admin/js/plugins/switchery/switchery.js"></script>
+<script type="text/javascript">
+    var InfoDlg = {
+        formData: {},
+    }
+
+    InfoDlg.collectData = function () {
+        var that = this;
+        $('input[name], select[name], textarea[name]').each(function () {
+            var name = $(this).attr('name');
+            if (!name) return;
+            if ($(this).attr('type') === 'checkbox') {
+                if (this.checked) {
+                    that.set(name, 1);
+                } else {
+                    var rawInput = $('input[name="' + name + '_raw"]');
+                    that.set(name, rawInput.length ? rawInput.val() : 0);
+                }
+            } else {
+                that.set(name, $(this).val());
+            }
+        });
+    }
+
+    InfoDlg.Validate = function () {
+        return true;
+    }
+
+    InfoDlg.submit = function () {
+        this.collectData();
+        if (!this.Validate()) {
+            return;
+        }
+        const ajax = new $ax("{:url('config/config')}", function (res) {
+            if (res.status === 200) {
+                com.success(res.msg, 1000);
+            } else {
+                com.error(res.msg + "！", 1000);
+            }
+        });
+        ajax.set(this.formData);
+        ajax.start();
+    };
+
+    InfoDlg.uploadImage = function (inputName) {
+        var $input = $('input[name="' + inputName + '"]');
+        var url = $input.val() || '';
+        // 这里需要根据实际项目调整上传弹窗逻辑
+        layer.open({
+            type: 2,
+            title: '上传图片',
+            area: ['600px', '400px'],
+            content: "{:url('upload/image')}"
+        });
+        window._lastUploadInput = inputName;
+    };
+
+    $(function () {
+        if (window.Switchery) {
+            var elems = Array.prototype.slice.call(document.querySelectorAll('.switchery'));
+            elems.forEach(function (html) {
+                new Switchery(html, {color: '#1AB394', secondaryColor: '#ed5565'});
+            });
+        }
+        // 初始化chosen
+        if ($.fn.chosen) {
+            $(".chosen-select").chosen({width: "100%"});
+        }
+    });
+</script>
+<script src="/static/admin/js/common/formCom.js" charset="utf-8"></script>
+{/block}
