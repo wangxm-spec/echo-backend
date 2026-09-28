@@ -1,3 +1,5 @@
+var InfoDlg = { formData: {} };
+
 InfoDlg.clearData = function () {
     this.formData = {};
 };
@@ -115,4 +117,23 @@ InfoDlg.collectMultiImages = function (containerId, inputName, targetId) {
     });
     $('input[name="' + inputName + '"]').remove();
     $('<input type="hidden" name="' + inputName + '" value="' + images.join(',') + '">').appendTo('#' + targetId);
+};
+
+InfoDlg.ajaxSubmit = function (url, data = []) {
+    this.collectData();
+    if (!this.Validate()) return;
+    const ajax = new $ax(url, function (res) {
+        if (res.status === 200) {
+            com.success(res.msg, 1000);
+            window.parent.TableList.table.refresh();
+            InfoDlg.close();
+        } else {
+            com.error(res.msg + "！", 1000);
+        }
+    });
+    ajax.set(this.formData);
+    $.each(data, function(key, val){
+        ajax.set(key, val);  // key 是键，val 是值
+    });
+    ajax.start();
 };

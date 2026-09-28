@@ -13,10 +13,15 @@ class Base extends BaseController
     protected $admin_id = 0;
     protected $admin_role = '';
 
+    protected $is_super_admin = false;
+
     public function __construct(){
         parent::__construct();
         $this->admin_id = $this->request->session()->get('admin_id');
         $this->admin_role = $this->request->session()->get('admin_role');
+        $this->assign('admin_rule', explode(',', $this->admin_role));
+        $this->is_super_admin = $this->admin_role == '__ALL__';
+        $this->assign('is_super_admin', $this->admin_role == '__ALL__');
     }
 
     protected function ajaxReturn($status, $msg, $data = [])

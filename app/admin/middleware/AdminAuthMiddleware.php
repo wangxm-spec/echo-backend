@@ -17,7 +17,7 @@ class AdminAuthMiddleware implements MiddlewareInterface
         }
 
         // 当前控制器/方法
-        $controller = $request->short_controller ?? '';   // 若框架注入了
+        $controller = strtolower($request->short_controller) ?? '';   // 若框架注入了
         $adminId    = $request->session()->get('admin_id');
 
         // 非登录接口且未登录 → 跳登录
@@ -32,9 +32,11 @@ class AdminAuthMiddleware implements MiddlewareInterface
             }
             if($permissions != '__ALL__'){
                 $url = 'admin/' . $controller . '/' . $request->action;
-                if(!in_array($url, ['admin/index/index', 'admin/index/main', 'admin/index/password'])){
-                    if(!in_array($url ,explode(',', $permissions))){
-                        throw new AuthException();
+                if(!in_array($controller, ['upload', 'common'])){
+                    if(!in_array($url, ['admin/index/index', 'admin/index/main', 'admin/index/password'])){
+                        if(!in_array($url ,explode(',', $permissions))){
+                            throw new AuthException();
+                        }
                     }
                 }
             }

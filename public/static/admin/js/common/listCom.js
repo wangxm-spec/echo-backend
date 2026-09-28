@@ -2,7 +2,7 @@ var listCom = {
     switchBtn: function (id, filed, type = 0, url) {
         var str = "";
         str = '<input class="mui-switch mui-switch-animbg ' + filed + id + '" type="checkbox" onclick="listCom.updateStatus(' + id + ',' + type + ',\'' + filed + '\',\'' + url + '\')"';
-        if (type === 0) {
+        if (type === 1) {
             str += ' checked';
         }
         return str + '>';

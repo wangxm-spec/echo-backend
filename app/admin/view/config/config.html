@@ -54,10 +54,10 @@
                                 <div class="input-group">
                                     <input type="text" class="form-control" id="{$v.name}" name="{$v.name}" value="{$v.value|default=''}" placeholder="图片URL">
                                     <span class="input-group-btn">
-                                                        <button type="button" class="btn btn-primary" onclick="InfoDlg.uploadImage('{$v.name}')">
-                                                            <i class="fa fa-upload"></i> 上传图片
-                                                        </button>
-                                                    </span>
+                                        <button type="button" class="btn btn-primary" onclick="InfoDlg.uploadImage('{$v.name}', '{$v.name}')">
+                                            <i class="fa fa-upload"></i> 上传图片
+                                        </button>
+                                    </span>
                                 </div>
                                 {notempty name="$v.value"}
                                 <div style="margin-top:8px;"><img src="{$v.value}" style="max-width:200px;max-height:120px;border:1px solid #ddd;padding:2px;"></div>
@@ -95,14 +95,10 @@
         </div>
     </form>
 </div>
-
+<script src="/static/admin/js/common/formCom.js" charset="utf-8"></script>
 <link href="/static/admin/css/plugins/switchery/switchery.css" rel="stylesheet">
 <script src="/static/admin/js/plugins/switchery/switchery.js"></script>
 <script type="text/javascript">
-    var InfoDlg = {
-        formData: {},
-    }
-
     InfoDlg.collectData = function () {
         var that = this;
         $('input[name], select[name], textarea[name]').each(function () {
@@ -126,32 +122,7 @@
     }
 
     InfoDlg.submit = function () {
-        this.collectData();
-        if (!this.Validate()) {
-            return;
-        }
-        const ajax = new $ax("{:url('config/config')}", function (res) {
-            if (res.status === 200) {
-                com.success(res.msg, 1000);
-            } else {
-                com.error(res.msg + "！", 1000);
-            }
-        });
-        ajax.set(this.formData);
-        ajax.start();
-    };
-
-    InfoDlg.uploadImage = function (inputName) {
-        var $input = $('input[name="' + inputName + '"]');
-        var url = $input.val() || '';
-        // 这里需要根据实际项目调整上传弹窗逻辑
-        layer.open({
-            type: 2,
-            title: '上传图片',
-            area: ['600px', '400px'],
-            content: "{:url('upload/image')}"
-        });
-        window._lastUploadInput = inputName;
+        this.ajaxSubmit("{:url('config/config')}")
     };
 
     $(function () {
@@ -167,5 +138,5 @@
         }
     });
 </script>
-<script src="/static/admin/js/common/formCom.js" charset="utf-8"></script>
+
 {/block}

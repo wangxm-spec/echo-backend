@@ -11,7 +11,7 @@
  Target Server Version : 80024 (8.0.24)
  File Encoding         : 65001
 
- Date: 27/09/2026 17:13:02
+ Date: 28/09/2026 14:55:42
 */
 
 SET NAMES utf8mb4;
@@ -33,16 +33,70 @@ CREATE TABLE `admin_menu`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `delete_time` datetime NULL DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '管理员菜单表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 60 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '管理员菜单表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of admin_menu
 -- ----------------------------
-INSERT INTO `admin_menu` VALUES (1, 0, '仪表盘', 'admin/index/main', 'fa fa-tachometer', 1, 1, '2026-08-18 22:24:57', '2026-08-18 22:25:04', NULL);
-INSERT INTO `admin_menu` VALUES (2, 0, '系统设置', '', 'fa fa-cog', 9999, 1, '2026-08-18 22:24:57', '2026-08-18 22:25:04', NULL);
-INSERT INTO `admin_menu` VALUES (3, 2, '基础配置', 'admin/config/config', 'fa fa-sliders', 2, 1, '2026-08-18 22:24:57', '2026-08-18 22:25:04', NULL);
-INSERT INTO `admin_menu` VALUES (4, 2, '用户管理', 'admin/admin/index', 'fa fa-user-secret', 3, 1, '2026-08-18 22:24:57', '2026-08-18 22:25:04', NULL);
-INSERT INTO `admin_menu` VALUES (5, 2, '角色权限', 'amin/role/index', 'fa fa-sitemap', 4, 1, '2026-08-18 22:24:57', '2026-08-18 22:25:04', NULL);
+INSERT INTO `admin_menu` VALUES (1, 0, '仪表盘', 'admin/index/main', 'fa fa-tachometer', 0, 1, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
+INSERT INTO `admin_menu` VALUES (2, 0, '系统设置', '#', 'fa fa-cog', 9999, 1, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
+INSERT INTO `admin_menu` VALUES (3, 2, '基础配置', 'admin/config/config', 'fa fa-sliders', 2, 1, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
+INSERT INTO `admin_menu` VALUES (4, 2, '用户管理', 'admin/admin/index', 'fa fa-user-secret', 3, 1, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
+INSERT INTO `admin_menu` VALUES (5, 2, '角色权限', 'admin/role/index', 'fa fa-sitemap', 4, 1, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
+INSERT INTO `admin_menu` VALUES (6, 4, '新增编辑', 'admin/admin/update', '', 0, 2, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
+INSERT INTO `admin_menu` VALUES (7, 4, '修改状态', 'admin/admin/status', '', 0, 2, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
+INSERT INTO `admin_menu` VALUES (8, 4, '删除', 'admin/admin/delete', '', 0, 2, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
+INSERT INTO `admin_menu` VALUES (9, 4, '重置密码', 'admin/admin/password', '', 0, 2, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
+INSERT INTO `admin_menu` VALUES (10, 5, '新增编辑', 'admin/role/update', '', 0, 2, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
+INSERT INTO `admin_menu` VALUES (11, 5, '修改状态', 'admin/role/status', '', 0, 2, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
+INSERT INTO `admin_menu` VALUES (12, 5, '删除', 'admin/role/delete', '', 0, 2, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
+INSERT INTO `admin_menu` VALUES (13, 5, '分配角色', 'admin/role/auth', '', 0, 2, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
+INSERT INTO `admin_menu` VALUES (14, 0, '内容管理', '#', '', 2, 1, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
+INSERT INTO `admin_menu` VALUES (15, 14, '文章管理', 'admin/content/article/index', '', 1, 1, '2026-09-28 14:20:37', '2026-09-28 14:20:39', NULL);
+INSERT INTO `admin_menu` VALUES (16, 15, '新增修改', 'admin/content/article/update', '', 0, 2, '2026-09-28 14:23:13', '2026-09-28 14:23:13', NULL);
+INSERT INTO `admin_menu` VALUES (17, 15, '修改状态', 'admin/content/article/status', '', 0, 2, '2026-09-28 14:23:13', '2026-09-28 14:23:13', NULL);
+INSERT INTO `admin_menu` VALUES (18, 15, '删除', 'admin/content/article/delete', '', 0, 2, '2026-09-28 14:23:13', '2026-09-28 14:23:13', NULL);
+INSERT INTO `admin_menu` VALUES (19, 14, 'MBTI维护', 'admin/content/mbti/index', '', 2, 1, '2026-09-28 14:24:10', '2026-09-28 14:24:12', NULL);
+INSERT INTO `admin_menu` VALUES (20, 19, '新增修改', 'admin/content/mbti/update', '', 0, 2, '2026-09-28 14:25:05', '2026-09-28 14:25:07', NULL);
+INSERT INTO `admin_menu` VALUES (21, 19, '修改状态', 'admin/content/mbti/status', '', 0, 2, '2026-09-28 14:25:35', '2026-09-28 14:25:38', NULL);
+INSERT INTO `admin_menu` VALUES (22, 19, '删除', 'admin/content/mbti/delete', '', 0, 2, '2026-09-28 14:25:57', '2026-09-28 14:26:00', NULL);
+INSERT INTO `admin_menu` VALUES (23, 0, '会员管理', '#', '', 50, 1, '2026-09-28 14:29:39', '2026-09-28 14:29:41', NULL);
+INSERT INTO `admin_menu` VALUES (24, 23, '账号管理', 'admin/member/account/index', '', 0, 1, '2026-09-28 14:30:09', '2026-09-28 14:30:12', NULL);
+INSERT INTO `admin_menu` VALUES (25, 24, '编辑账号(无添加)', 'admin/member/account/update', '', 0, 2, '2026-09-28 14:30:40', '2026-09-28 14:30:42', NULL);
+INSERT INTO `admin_menu` VALUES (26, 24, '修改禁用', 'admin/member/account/status', '', 0, 2, '2026-09-28 14:31:09', '2026-09-28 14:31:11', NULL);
+INSERT INTO `admin_menu` VALUES (27, 24, '修改密码', 'admin/member/account/password', '', 0, 2, '2026-09-28 14:31:33', '2026-09-28 14:31:35', NULL);
+INSERT INTO `admin_menu` VALUES (28, 24, '删除', 'admin/member/account/delete', '', 0, 2, '2026-09-28 14:31:58', '2026-09-28 14:32:00', NULL);
+INSERT INTO `admin_menu` VALUES (29, 23, '称号管理', 'admin/member/call/index', '', 0, 1, '2026-09-28 14:35:20', '2026-09-28 14:35:22', NULL);
+INSERT INTO `admin_menu` VALUES (30, 29, '新增修改', 'admin/member/call/update', '', 0, 2, '2026-09-28 14:35:45', '2026-09-28 14:35:48', NULL);
+INSERT INTO `admin_menu` VALUES (31, 29, '删除', 'admin/member/call/delete', '', 0, 2, '2026-09-28 14:36:23', '2026-09-28 14:36:25', NULL);
+INSERT INTO `admin_menu` VALUES (32, 29, '修改状态', 'admin/member/call/status', '', 0, 2, '2026-09-28 14:36:51', '2026-09-28 14:36:53', NULL);
+INSERT INTO `admin_menu` VALUES (33, 23, '角色管理', 'admin/member/character/index', '', 0, 1, '2026-09-28 14:37:40', '2026-09-28 14:37:42', NULL);
+INSERT INTO `admin_menu` VALUES (34, 33, '详情', 'admin/member/character/detail', '', 0, 2, '2026-09-28 14:39:06', '2026-09-28 14:39:08', NULL);
+INSERT INTO `admin_menu` VALUES (35, 33, '文件信息', 'admin/member/character/file', '', 0, 2, '2026-09-28 14:39:32', '2026-09-28 14:39:34', NULL);
+INSERT INTO `admin_menu` VALUES (36, 33, '删除', 'admin/member/character/delete', '', 0, 2, '2026-09-28 14:39:53', '2026-09-28 14:39:55', NULL);
+INSERT INTO `admin_menu` VALUES (37, 23, '琥珀日志', 'admin/member/hope/log', '', 0, 1, '2026-09-28 14:40:37', '2026-09-28 14:40:39', NULL);
+INSERT INTO `admin_menu` VALUES (38, 2, '系统日志', '#', '', 5, 1, '2026-09-28 14:41:26', '2026-09-28 14:41:28', NULL);
+INSERT INTO `admin_menu` VALUES (39, 38, '短信日志', 'admin/service/sms/log', '', 1, 1, '2026-09-28 14:42:05', '2026-09-28 14:42:07', NULL);
+INSERT INTO `admin_menu` VALUES (40, 38, '邮件日志', 'admin/service/email/log', '', 1, 1, '2026-09-28 14:42:30', '2026-09-28 14:42:33', NULL);
+INSERT INTO `admin_menu` VALUES (41, 0, '系统管理', '#', '', 1, 1, '2026-09-28 14:44:36', '2026-09-28 14:44:37', NULL);
+INSERT INTO `admin_menu` VALUES (42, 41, '系统插件', 'admin/system/plugins/index', '', 1, 1, '2026-09-28 14:45:18', '2026-09-28 14:45:20', NULL);
+INSERT INTO `admin_menu` VALUES (43, 42, '新增编辑', 'admin/system/plugins/update', '', 1, 2, '2026-09-28 14:45:50', '2026-09-28 14:45:52', NULL);
+INSERT INTO `admin_menu` VALUES (44, 42, '修改状态', 'admin/system/plugins/status', '', 2, 2, '2026-09-28 14:46:14', '2026-09-28 14:46:16', NULL);
+INSERT INTO `admin_menu` VALUES (45, 42, '删除', 'admin/system/plugins/delete', '', 3, 2, '2026-09-28 14:46:38', '2026-09-28 14:46:39', NULL);
+INSERT INTO `admin_menu` VALUES (46, 41, 'APP版本', 'admin/system/version/index', '', 2, 1, '2026-09-28 14:47:44', '2026-09-28 14:47:46', NULL);
+INSERT INTO `admin_menu` VALUES (47, 46, '新增修改', 'admin/system/version/update', '', 1, 2, '2026-09-28 14:48:32', '2026-09-28 14:48:34', NULL);
+INSERT INTO `admin_menu` VALUES (48, 46, '修改状态', 'admin/system/version/status', '', 2, 2, '2026-09-28 14:49:11', '2026-09-28 14:49:12', NULL);
+INSERT INTO `admin_menu` VALUES (49, 46, '删除', 'admin/system/version/delete', '', 3, 2, '2026-09-28 14:49:34', '2026-09-28 14:49:35', NULL);
+INSERT INTO `admin_menu` VALUES (50, 41, 'AI服务商', 'admin/system/ai/index', '', 3, 1, '2026-09-28 14:50:29', '2026-09-28 14:50:30', NULL);
+INSERT INTO `admin_menu` VALUES (51, 50, '新增编辑', 'admin/system/ai/update', '', 1, 2, '2026-09-28 14:50:55', '2026-09-28 14:50:57', NULL);
+INSERT INTO `admin_menu` VALUES (52, 50, '修改状态', 'admin/system/ai/status', '', 2, 2, '2026-09-28 14:51:19', '2026-09-28 14:51:21', NULL);
+INSERT INTO `admin_menu` VALUES (53, 50, '删除', 'admin/system/ai/delete', '', 3, 2, '2026-09-28 14:51:40', '2026-09-28 14:51:42', NULL);
+INSERT INTO `admin_menu` VALUES (54, 0, '世界频道', '#', '', 55, 1, '2026-09-28 14:52:32', '2026-09-28 14:52:34', NULL);
+INSERT INTO `admin_menu` VALUES (55, 54, '频道管理', 'admin/world/channel/index', '', 0, 1, '2026-09-28 14:53:17', '2026-09-28 14:53:18', NULL);
+INSERT INTO `admin_menu` VALUES (56, 55, '新增编辑', 'admin/world/channel/update', '', 1, 2, '2026-09-28 14:53:56', '2026-09-28 14:53:57', NULL);
+INSERT INTO `admin_menu` VALUES (57, 55, '修改状态', 'admin/world/channel/status', '', 2, 2, '2026-09-28 14:54:21', '2026-09-28 14:54:23', NULL);
+INSERT INTO `admin_menu` VALUES (58, 55, '删除', 'admin/world/channel/delete', '', 3, 2, '2026-09-28 14:54:47', '2026-09-28 14:54:48', NULL);
+INSERT INTO `admin_menu` VALUES (59, 54, '聊天信息', 'admin/world/message/index', '', 2, 1, '2026-09-28 14:55:17', '2026-09-28 14:55:19', NULL);
 
 -- ----------------------------
 -- Table structure for admin_role
@@ -63,7 +117,7 @@ CREATE TABLE `admin_role`  (
 -- ----------------------------
 -- Records of admin_role
 -- ----------------------------
-INSERT INTO `admin_role` VALUES (1, '超级管理员', '全部权限', 1, '', '2026-07-02 11:00:07', '2026-07-02 22:17:27', NULL);
+INSERT INTO `admin_role` VALUES (1, '超级管理员', '全部权限1', 1, 'admin/index/main,admin/config/config,admin/admin/index,admin/role/index', '2026-07-02 11:00:07', '2026-09-28 14:15:10', NULL);
 
 -- ----------------------------
 -- Table structure for admin_user
@@ -88,7 +142,7 @@ CREATE TABLE `admin_user`  (
 -- ----------------------------
 -- Records of admin_user
 -- ----------------------------
-INSERT INTO `admin_user` VALUES (1, 'admin', '$2y$10$Dk3KYqKa0kBqyb0zydPXEOVUb8wNlhAPucPWB8tZfzYTXWnFytO16', 0, 1, 1, '2026-09-27 17:05:00', '122.4.222.90', '2026-07-01 22:18:55', '2026-09-27 17:04:51', NULL);
+INSERT INTO `admin_user` VALUES (1, 'admin', '$2y$10$AQ34jIPCZqH21A4XHnNBsOgnGVj.NL/gGKBinQItE3IyRqeiceLpu', 1, 1, 1, '2026-09-27 17:05:00', '122.4.222.90', '2026-07-01 22:18:55', '2026-09-28 11:49:18', NULL);
 
 -- ----------------------------
 -- Table structure for common_article
@@ -301,6 +355,7 @@ CREATE TABLE `member_call`  (
   `title` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '名称',
   `color` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '颜色',
   `status` smallint NOT NULL DEFAULT 0 COMMENT '状态：1开启，0关闭',
+  `role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '权限：common普通，admin管理员，viewer观察者',
   `create_time` datetime NULL DEFAULT NULL,
   `update_time` datetime NULL DEFAULT NULL,
   `delete_time` datetime NULL DEFAULT NULL,
@@ -333,8 +388,8 @@ CREATE TABLE `member_character`  (
   `loader_call` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '主人称呼',
   `current_coordinates` json NOT NULL COMMENT '五维坐标：{\"X\":0,\"Y\":0,\"Z\":0,\"T\":0,\"R\":0}\r\nX:权力距离,-100 ~ 100,臣服关系\r\nY:情感效价,-100 ~ 100,好感度\r\nZ:纽带连接,-100 ~ 100,亲密度\r\nT:信任透明度,-100 ~ 100,信任值\r\nR:共振理解度,-100 ~ 100,是否理解',
   `status` smallint NOT NULL DEFAULT 1 COMMENT '角色状态: 1=正常，0禁用',
-  `created_time` datetime NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_time` datetime NULL DEFAULT CURRENT_TIMESTAMP,
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP,
   `delete_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`cuid`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户角色卡' ROW_FORMAT = Dynamic;
@@ -355,7 +410,7 @@ CREATE TABLE `member_character_file`  (
   `file_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '原始文件名',
   `file_size` int NOT NULL COMMENT '文件大小（KB）',
   `file_hash` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'SHA-256哈希值',
-  `created_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL,
   `delete_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
@@ -605,7 +660,7 @@ CREATE TABLE `system_app_version`  (
   `update_time` datetime NULL DEFAULT NULL,
   `delete_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '版本更新表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '版本更新表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of system_app_version
@@ -630,15 +685,16 @@ CREATE TABLE `system_config`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `delete_time` datetime NULL DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统配置表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统配置表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of system_config
 -- ----------------------------
-INSERT INTO `system_config` VALUES (1, 'site_status', '系统状态', 1, 4, '1', '0:关闭,1:开启', '系统开放状态', 100, 1, '2026-09-20 10:14:15', '2026-09-20 10:14:16', NULL);
-INSERT INTO `system_config` VALUES (2, 'register_status', '开放注册', 1, 4, '1', '0:关闭,1:开启', '是否开放注册', 100, 1, '2026-09-20 10:15:04', '2026-09-20 10:15:05', NULL);
-INSERT INTO `system_config` VALUES (3, 'admin_white_ip', '后台白名单', 1, 1, '127.0.0.1,124.222.131.85,122.4.222.90', '', '管理端IP白名单', 100, 1, '2026-09-27 11:53:13', '2026-09-27 11:53:15', NULL);
-INSERT INTO `system_config` VALUES (4, 'copyright', '版权声明', 1, 1, '王小明', '', '版权声明', 100, 1, '2026-09-27 16:35:46', '2026-09-27 16:35:48', NULL);
+INSERT INTO `system_config` VALUES (1, 'site_status', '系统状态', 1, 4, '1', '0:关闭,1:开启', '系统开放状态', 100, 1, '2026-09-20 10:14:15', '2026-09-27 17:27:22', NULL);
+INSERT INTO `system_config` VALUES (2, 'register_status', '开放注册', 2, 4, '1', '0:关闭,1:开启', '是否开放注册', 100, 1, '2026-09-20 10:15:04', '2026-09-28 08:00:56', NULL);
+INSERT INTO `system_config` VALUES (3, 'admin_white_ip', '后台白名单', 1, 8, '127.0.0.1,124.222.131.85,122.4.222.90', '', '管理端IP白名单', 100, 1, '2026-09-27 11:53:13', '2026-09-27 17:27:22', NULL);
+INSERT INTO `system_config` VALUES (4, 'copyright', '版权声明', 1, 1, '王小明', '', '版权声明', 100, 1, '2026-09-27 16:35:46', '2026-09-27 17:27:22', NULL);
+INSERT INTO `system_config` VALUES (5, 'site_logo', 'LOGO', 1, 6, '', '', '图标Logo', 100, 1, NULL, '2026-09-27 17:27:22', NULL);
 
 -- ----------------------------
 -- Table structure for system_plugins
@@ -657,7 +713,7 @@ CREATE TABLE `system_plugins`  (
   `update_time` datetime NULL DEFAULT NULL,
   `delete_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统插件' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统插件' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of system_plugins
