@@ -1,0 +1,74 @@
+{extend name='public/_container'}
+{block name="content"}
+<div class="row">
+    <form class="form-horizontal" id="doSubmit">
+        <div class="col-sm-12">
+            <div class="ibox ">
+                <div class="ibox-content">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">频道名称：</label>
+                        <div class="col-sm-9">
+                            <input type="text" autocomplete="off" id="name" value="{$info.name|default=''}" name="name" class="form-control" placeholder="请输入频道名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">描述：</label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control" id="desc" name="desc" rows="3" placeholder="请输入频道描述">{$info.desc|default=''}</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">排序：</label>
+                        <div class="col-sm-9">
+                            <input type="number" autocomplete="off" id="sort" value="{$info.sort|default=50}" name="sort" class="form-control" placeholder="数字越小越靠前">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">状态：</label>
+                        <div class="col-sm-9">
+                            <select name="status" class="form-control chosen" id="status">
+                                <option value="1" {if condition="(int)$info.status === 1"}selected{else/}selected{/if}>正常</option>
+                                <option value="0" {if condition="(int)$info.status === 0"}selected{/if}>禁用</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="row btn-group-m-t">
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-4">
+                            <button type="button" class="btn btn-primary" onclick="InfoDlg.submit()" id="ensure">
+                                <i class="fa fa-check"></i>&nbsp;确认提交
+                            </button>
+                            <button type="button" class="btn btn-danger" onclick="InfoDlg.close()" id="cancel"
+                                    style="margin-left: 20px">
+                                <i class="fa fa-remove"></i>&nbsp;取消关闭
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="/static/admin/js/common/formCom.js" charset="utf-8"></script>
+<script type="text/javascript">
+
+    InfoDlg.collectData = function () {
+        this.set('name').set('desc').set('sort').set('status');
+    }
+
+    InfoDlg.Validate = function () {
+        if ($('#name').val() === '') {
+            com.error('请输入频道名称');
+            return false;
+        }
+        return true;
+    }
+
+    InfoDlg.submit = function () {
+        this.ajaxSubmit("{:url('admin/world/channel/update',['id'=>$id])}");
+    };
+
+</script>
+
+{/block}

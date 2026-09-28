@@ -1,13 +1,14 @@
 var listCom = {
-    switchBtn: function (id, filed, type = 0, url) {
+    switchBtn: function (id, filed, type = 0, url, pk = 'id') {
         var str = "";
-        str = '<input class="mui-switch mui-switch-animbg ' + filed + id + '" type="checkbox" onclick="listCom.updateStatus(' + id + ',' + type + ',\'' + filed + '\',\'' + url + '\')"';
+        var key = (typeof id === 'string') ? "'" + id + "'" : id;
+        str = '<input class="mui-switch mui-switch-animbg ' + filed + id + '" type="checkbox" onclick="listCom.updateStatus(' + key + ',' + type + ',\'' + filed + '\',\'' + url + '\',\'' + pk + '\')"';
         if (type === 1) {
             str += ' checked';
         }
         return str + '>';
     },
-    updateStatus: function (pk, value, field, url){
+    updateStatus: function (pk, value, field, url, pkName){
         let str = "." + field + pk;
         const ajax = new $ax(url, function (res) {
             if (res.status === 200) {
@@ -19,7 +20,7 @@ var listCom = {
 
         });
         const val = $(str).prop("checked") ? 1 : 0;
-        ajax.set('id', pk);
+        ajax.set(pkName || 'id', pk);
         ajax.set(field, val);
         ajax.start();
     },

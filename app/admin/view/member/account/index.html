@@ -12,7 +12,7 @@
                                     <div class="input-group-btn">
                                         <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">关键字</button>
                                     </div>
-                                    <input type="text" autocomplete="off" class="form-control" id="keywords" placeholder="用户名/手机号"/>
+                                    <input type="text" autocomplete="off" class="form-control" id="keywords" placeholder="账号/昵称/邮箱/QQ"/>
                                 </div>
                             </div>
                             <div class="col-sm-2">
@@ -20,7 +20,7 @@
                                     <div class="input-group-btn">
                                         <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">状态</button>
                                     </div>
-                                    <select class="form-control chosen" id="status" autocomplete="off" >
+                                    <select class="form-control chosen" id="status">
                                         <option value="">请选择</option>
                                         <option value="1">正常</option>
                                         <option value="0">禁用</option>
@@ -34,12 +34,7 @@
                             </div>
                         </div>
                         <div class="btn-group-sm pull-left" id="TableToolbar" role="group" style="margin-top: 15px;">
-                            {if condition="($is_super_admin == 1) || (in_array('admin/admin/update', $admin_rule))"}
-                            <button type="button" id="create" class="btn btn-primary button-margin" onclick="TableList.update(0)">
-                                <i class="fa fa-plus"></i>&nbsp;添加
-                            </button>
-                            {/if}
-                            {if condition="($is_super_admin == 1) || (in_array('admin/admin/delete', $admin_rule))"}
+                            {if condition="$is_super_admin == 1 || in_array('admin/member/account/delete', $admin_rule)"}
                             <button type="button" id="delete" class="btn btn-danger button-margin" onclick="TableList.delete()">
                                 <i class="fa fa-trash"></i>&nbsp;删除
                             </button>
@@ -60,35 +55,38 @@
     TableList.initColumn = function () {
         return [
             {field: 'selectItem', checkbox: true},
-            {title: '编号', field: 'id', visible: true, align: 'center', valign: 'middle'},
-            {title: '用户名', field: 'account', visible: true, align: 'center', valign: 'middle'},
-            {title: '类型', field: 'role_name', visible: true, align: 'center', valign: 'middle'},
+            {title: 'UUID', field: 'uuid', visible: true, align: 'center', valign: 'middle'},
+            {title: '账号', field: 'account', visible: true, align: 'center', valign: 'middle'},
+            {title: '昵称', field: 'nickname', visible: true, align: 'center', valign: 'middle'},
+            {title: '邮箱', field: 'email', visible: true, align: 'center', valign: 'middle'},
+            {title: 'QQ号', field: 'qq_number', visible: true, align: 'center', valign: 'middle'},
+            {title: 'MBTI', field: 'mbti_type', visible: true, align: 'center', valign: 'middle'},
+            {title: '称号', field: 'call_title', visible: true, align: 'center', valign: 'middle'},
+            {title: '琥珀余额', field: 'hope_amount', visible: true, align: 'center', valign: 'middle'},
             {title: '状态', field: 'status', visible: true, align: 'center', valign: 'middle', formatter: TableList.statusFormatter},
-            {title: '最后登录IP', field: 'last_login_ip', visible: true, align: 'center', valign: 'middle'},
-            {title: '最后登录时间', field: 'last_login_time', visible: true, align: 'center', valign: 'middle'},
-            {title: '创建时间', field: 'create_time', visible: true, align: 'center', valign: 'middle'},
+            {title: '注册时间', field: 'create_time', visible: true, align: 'center', valign: 'middle'},
             {title: '操作', field: '', visible: true, align: 'center', valign: 'middle', formatter: TableList.buttonFormatter},
         ];
     };
 
     TableList.statusFormatter = function (value, row, index) {
         var str = '';
-        {if condition="$is_super_admin == 1 || in_array('admin/admin/auth', $admin_rule)"}
-        str += listCom.switchBtn(row.id, 'status', value, "{:url('admin/admin/status')}")
+        {if condition="$is_super_admin == 1 || in_array('admin/member/account/status', $admin_rule)"}
+        str += listCom.switchBtn(row.uuid, 'status', value, "{:url('admin/member/account/status')}", 'uuid')
         {/if}
         return str;
     };
 
     TableList.buttonFormatter = function (value, row, index) {
         var str = '';
-        {if ($is_super_admin == 1 || in_array('admin/admin/update',$admin_rule))}
-        str += '<button type="button" class="btn btn-success btn-xs" onclick="TableList.update(' + row.id + ')"><i class="fa fa-pencil"></i>&nbsp;编辑</button>&nbsp;';
+        {if condition="$is_super_admin == 1 || in_array('admin/member/account/update', $admin_rule)"}
+        str += '<button type="button" class="btn btn-success btn-xs" onclick="TableList.update(\'' + row.uuid + '\')"><i class="fa fa-pencil"></i>&nbsp;编辑</button>&nbsp;';
         {/if}
-        {if ($is_super_admin == 1 || in_array('admin/admin/password',$admin_rule))}
-        str += '<button type="button" class="btn btn-warning btn-xs" onclick="TableList.password(' + row.id + ')"><i class="fa fa-lock"></i>&nbsp;重置密码</button>&nbsp;';
+        {if condition="$is_super_admin == 1 || in_array('admin/member/account/password', $admin_rule)"}
+        str += '<button type="button" class="btn btn-warning btn-xs" onclick="TableList.password(\'' + row.uuid + '\')"><i class="fa fa-lock"></i>&nbsp;修改密码</button>&nbsp;';
         {/if}
-        {if ($is_super_admin == 1 || in_array('admin/admin/delete',$admin_rule))}
-        str += '<button type="button" class="btn btn-danger btn-xs" onclick="TableList.delete(' + row.id + ')"><i class="fa fa-trash"></i>&nbsp;删除</button>';
+        {if condition="$is_super_admin == 1 || in_array('admin/member/account/delete', $admin_rule)"}
+        str += '<button type="button" class="btn btn-danger btn-xs" onclick="TableList.delete(\'' + row.uuid + '\')"><i class="fa fa-trash"></i>&nbsp;删除</button>';
         {/if}
         return str;
     };
@@ -103,19 +101,19 @@
     TableList.update = function (value) {
         var index = layer.open({
             type: 2,
-            title: value > 0 ? '编辑管理员' : '添加管理员',
-            area: ['720px', '650px'],
+            title: '编辑账号',
+            area: ['760px', '80%'],
             fix: true,
-            content: "{:url('admin/admin/update')}?id=" + value
+            content: "{:url('admin/member/account/update')}?uuid=" + value
         });
     };
 
     TableList.password = function (value) {
         layer.prompt({title: '请输入新密码', formType: 1}, function(pass, index){
             $.ajax({
-                url: "{:url('admin/admin/password')}",
+                url: "{:url('admin/member/account/password')}",
                 type: 'POST',
-                data: {id: value, password: pass},
+                data: {uuid: value, password: pass},
                 dataType: 'json',
                 success: function(res){
                     if (res.status === 200) { layer.msg(res.msg, {icon: 1}); }
@@ -134,13 +132,13 @@
                 layer.msg('请先选中表格中的记录！', {icon: 2});
                 return;
             }
-            ids = selected.map(function(item){ return item.id; }).join(',');
+            ids = selected.map(function(item){ return item.uuid; }).join(',');
         }
         layer.confirm('确定要删除选中的记录吗？', function(index){
             $.ajax({
-                url: "{:url('admin/admin/delete')}",
+                url: "{:url('admin/member/account/delete')}",
                 type: 'POST',
-                data: {id: ids},
+                data: {uuid: ids},
                 dataType: 'json',
                 success: function(res){
                     if (res.status === 200) { layer.msg(res.msg, {icon: 1}); TableList.table.refresh(); }
@@ -156,7 +154,7 @@
     };
 
     $(function () {
-        var table = new BSTable(TableList.id, "{:url('admin/admin/index')}" + location.search, TableList.initColumn());
+        var table = new BSTable(TableList.id, "{:url('admin/member/account/index')}" + location.search, TableList.initColumn());
         table.setQueryParams(TableList.formParams());
         TableList.table = table.init();
     });

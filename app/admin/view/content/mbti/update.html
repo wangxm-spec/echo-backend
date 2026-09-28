@@ -1,0 +1,119 @@
+{extend name='public/_container'}
+{block name="content"}
+<div class="row">
+    <form class="form-horizontal" id="doSubmit">
+        <div class="col-sm-12">
+            <div class="ibox ">
+                <div class="ibox-content">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">人格代码：</label>
+                        <div class="col-sm-9">
+                            <input type="text" autocomplete="off" id="code" value="{$info.code|default=''}" name="code" class="form-control" placeholder="4位字母，如 INTJ" maxlength="4" {if $code}readonly{/if}>
+                            <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 人格代码为主键，编辑时不可修改</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">中文名：</label>
+                        <div class="col-sm-9">
+                            <input type="text" autocomplete="off" id="name" value="{$info.name|default=''}" name="name" class="form-control" placeholder="如 建筑师">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">分组：</label>
+                        <div class="col-sm-9">
+                            <select name="group" class="form-control chosen" id="group">
+                                <option value="NT" {if condition="$info.group == 'NT'"}selected{/if}>NT 理性主义者</option>
+                                <option value="NF" {if condition="$info.group == 'NF'"}selected{/if}>NF 理想主义者</option>
+                                <option value="SJ" {if condition="$info.group == 'SJ'"}selected{/if}>SJ 守护者</option>
+                                <option value="SP" {if condition="$info.group == 'SP'"}selected{/if}>SP 探索者</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">标签：</label>
+                        <div class="col-sm-9">
+                            <input type="text" autocomplete="off" id="traits" value="{$info.traits|default=''}" name="traits" class="form-control" placeholder="逗号分隔，如 理性,独立,有远见">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">主题色：</label>
+                        <div class="col-sm-9">
+                            <div class="input-group colorpicker" id="colorpicker">
+                                <span class="input-group-addon"><i style="background-color: {$info.theme_color|default='#2C3E50'};"></i></span>
+                                <input type="text" autocomplete="off" id="theme_color" value="{$info.theme_color|default=''}" name="theme_color" class="form-control" placeholder="如 #2C3E50">
+                            </div>
+                            <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 点击左侧色块打开拾色器，留空为默认色</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">详细描述：</label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control" id="description" name="description" rows="10" placeholder="请输入详细描述">{$info.description|default=''}</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">状态：</label>
+                        <div class="col-sm-9">
+                            <select name="status" class="form-control chosen" id="status">
+                                <option value="1" {if condition="(int)$info.status === 1"}selected{else/}selected{/if}>正常</option>
+                                <option value="0" {if condition="(int)$info.status === 0"}selected{/if}>隐藏</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="row btn-group-m-t">
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-4">
+                            <button type="button" class="btn btn-primary" onclick="InfoDlg.submit()" id="ensure">
+                                <i class="fa fa-check"></i>&nbsp;确认提交
+                            </button>
+                            <button type="button" class="btn btn-danger" onclick="InfoDlg.close()" id="cancel"
+                                    style="margin-left: 20px">
+                                <i class="fa fa-remove"></i>&nbsp;取消关闭
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="/static/admin/js/common/formCom.js" charset="utf-8"></script>
+<link href="/static/admin/css/plugins/colorpicker/css/bootstrap-colorpicker.min.css" rel="stylesheet">
+<script src="/static/admin/js/plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
+<script type="text/javascript">
+
+    InfoDlg.collectData = function () {
+        this.set('code').set('name').set('group').set('traits').set('theme_color').set('description').set('status');
+    }
+
+    InfoDlg.Validate = function () {
+        if ($('#code').val() === '') {
+            com.error('请输入人格代码');
+            return false;
+        }
+        if ($('#name').val() === '') {
+            com.error('请输入中文名');
+            return false;
+        }
+        return true;
+    }
+
+    InfoDlg.submit = function () {
+        this.ajaxSubmit("{:url('admin/content/mbti/update',['code'=>$code])}");
+    };
+
+    InfoDlg.close = function () {
+        parent.layer.close(parent.layer.getFrameIndex(window.name));
+    };
+
+    $(function () {
+        if ($.fn.colorpicker) {
+            $('#colorpicker').colorpicker().on('changeColor', function (ev) {
+                $('#theme_color').val(ev.color.toHex());
+            });
+        }
+    });
+</script>
+
+{/block}

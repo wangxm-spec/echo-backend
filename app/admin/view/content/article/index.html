@@ -12,7 +12,20 @@
                                     <div class="input-group-btn">
                                         <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">关键字</button>
                                     </div>
-                                    <input type="text" autocomplete="off" class="form-control" id="keywords" placeholder="用户名/手机号"/>
+                                    <input type="text" autocomplete="off" class="form-control" id="keywords" placeholder="标题/关键字"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">位置</button>
+                                    </div>
+                                    <select class="form-control chosen" id="position">
+                                        <option value="">全部位置</option>
+                                        {foreach $position_list as $key => $item}
+                                            <option value="{$key}">{$item}</option>
+                                        {/foreach}
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-sm-2">
@@ -20,10 +33,10 @@
                                     <div class="input-group-btn">
                                         <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">状态</button>
                                     </div>
-                                    <select class="form-control chosen" id="status" autocomplete="off" >
+                                    <select class="form-control chosen" id="status">
                                         <option value="">请选择</option>
                                         <option value="1">正常</option>
-                                        <option value="0">禁用</option>
+                                        <option value="0">隐藏</option>
                                     </select>
                                 </div>
                             </div>
@@ -34,12 +47,12 @@
                             </div>
                         </div>
                         <div class="btn-group-sm pull-left" id="TableToolbar" role="group" style="margin-top: 15px;">
-                            {if condition="($is_super_admin == 1) || (in_array('admin/admin/update', $admin_rule))"}
+                            {if condition="$is_super_admin == 1 || in_array('admin/content/article/update', $admin_rule)"}
                             <button type="button" id="create" class="btn btn-primary button-margin" onclick="TableList.update(0)">
                                 <i class="fa fa-plus"></i>&nbsp;添加
                             </button>
                             {/if}
-                            {if condition="($is_super_admin == 1) || (in_array('admin/admin/delete', $admin_rule))"}
+                            {if condition="$is_super_admin == 1 || in_array('admin/content/article/delete', $admin_rule)"}
                             <button type="button" id="delete" class="btn btn-danger button-margin" onclick="TableList.delete()">
                                 <i class="fa fa-trash"></i>&nbsp;删除
                             </button>
@@ -61,33 +74,31 @@
         return [
             {field: 'selectItem', checkbox: true},
             {title: '编号', field: 'id', visible: true, align: 'center', valign: 'middle'},
-            {title: '用户名', field: 'account', visible: true, align: 'center', valign: 'middle'},
-            {title: '类型', field: 'role_name', visible: true, align: 'center', valign: 'middle'},
+            {title: '位置', field: 'position_text', visible: true, align: 'center', valign: 'middle'},
+            {title: '标题', field: 'title', visible: true, align: 'center', valign: 'middle'},
+            {title: '关键字', field: 'keyword', visible: true, align: 'center', valign: 'middle'},
             {title: '状态', field: 'status', visible: true, align: 'center', valign: 'middle', formatter: TableList.statusFormatter},
-            {title: '最后登录IP', field: 'last_login_ip', visible: true, align: 'center', valign: 'middle'},
-            {title: '最后登录时间', field: 'last_login_time', visible: true, align: 'center', valign: 'middle'},
+            {title: '发布时间', field: 'publish_time', visible: true, align: 'center', valign: 'middle'},
             {title: '创建时间', field: 'create_time', visible: true, align: 'center', valign: 'middle'},
+            {title: '更新时间', field: 'update_time', visible: true, align: 'center', valign: 'middle'},
             {title: '操作', field: '', visible: true, align: 'center', valign: 'middle', formatter: TableList.buttonFormatter},
         ];
     };
 
     TableList.statusFormatter = function (value, row, index) {
         var str = '';
-        {if condition="$is_super_admin == 1 || in_array('admin/admin/auth', $admin_rule)"}
-        str += listCom.switchBtn(row.id, 'status', value, "{:url('admin/admin/status')}")
+        {if condition="$is_super_admin == 1 || in_array('admin/content/article/status', $admin_rule)"}
+        str += listCom.switchBtn(row.id, 'status', value, "{:url('admin/content/article/status')}")
         {/if}
         return str;
     };
 
     TableList.buttonFormatter = function (value, row, index) {
         var str = '';
-        {if ($is_super_admin == 1 || in_array('admin/admin/update',$admin_rule))}
+        {if condition="$is_super_admin == 1 || in_array('admin/content/article/update', $admin_rule)"}
         str += '<button type="button" class="btn btn-success btn-xs" onclick="TableList.update(' + row.id + ')"><i class="fa fa-pencil"></i>&nbsp;编辑</button>&nbsp;';
         {/if}
-        {if ($is_super_admin == 1 || in_array('admin/admin/password',$admin_rule))}
-        str += '<button type="button" class="btn btn-warning btn-xs" onclick="TableList.password(' + row.id + ')"><i class="fa fa-lock"></i>&nbsp;重置密码</button>&nbsp;';
-        {/if}
-        {if ($is_super_admin == 1 || in_array('admin/admin/delete',$admin_rule))}
+        {if condition="$is_super_admin == 1 || in_array('admin/content/article/delete', $admin_rule)"}
         str += '<button type="button" class="btn btn-danger btn-xs" onclick="TableList.delete(' + row.id + ')"><i class="fa fa-trash"></i>&nbsp;删除</button>';
         {/if}
         return str;
@@ -96,6 +107,7 @@
     TableList.formParams = function () {
         var queryData = {};
         queryData['keywords'] = $("#keywords").val();
+        queryData['position'] = $("#position").val();
         queryData['status']   = $("#status").val();
         return queryData;
     };
@@ -103,26 +115,10 @@
     TableList.update = function (value) {
         var index = layer.open({
             type: 2,
-            title: value > 0 ? '编辑管理员' : '添加管理员',
-            area: ['720px', '650px'],
+            title: value > 0 ? '编辑文章' : '添加文章',
+            area: ['860px', '80%'],
             fix: true,
-            content: "{:url('admin/admin/update')}?id=" + value
-        });
-    };
-
-    TableList.password = function (value) {
-        layer.prompt({title: '请输入新密码', formType: 1}, function(pass, index){
-            $.ajax({
-                url: "{:url('admin/admin/password')}",
-                type: 'POST',
-                data: {id: value, password: pass},
-                dataType: 'json',
-                success: function(res){
-                    if (res.status === 200) { layer.msg(res.msg, {icon: 1}); }
-                    else { layer.msg(res.msg, {icon: 2}); }
-                }
-            });
-            layer.close(index);
+            content: "{:url('admin/content/article/update')}?id=" + value
         });
     };
 
@@ -138,7 +134,7 @@
         }
         layer.confirm('确定要删除选中的记录吗？', function(index){
             $.ajax({
-                url: "{:url('admin/admin/delete')}",
+                url: "{:url('admin/content/article/delete')}",
                 type: 'POST',
                 data: {id: ids},
                 dataType: 'json',
@@ -156,7 +152,7 @@
     };
 
     $(function () {
-        var table = new BSTable(TableList.id, "{:url('admin/admin/index')}" + location.search, TableList.initColumn());
+        var table = new BSTable(TableList.id, "{:url('admin/content/article/index')}" + location.search, TableList.initColumn());
         table.setQueryParams(TableList.formParams());
         TableList.table = table.init();
     });

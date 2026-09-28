@@ -1,19 +1,18 @@
 <?php
 
-namespace app\admin\controller\content;
+namespace app\admin\controller\system;
 
 use app\admin\controller\Base;
-use app\common\model\CommonArticleModel;
+use app\common\model\SystemPluginsModel;
 
-class Article extends Base
+class Plugins extends Base
 {
     /**
-     * 文章列表
+     * 插件列表
      */
     public function index()
     {
         if (!$this->request->isAjax()) {
-            $this->assign('position_list', CommonArticleModel::position);
             return view();
         }
 
@@ -21,64 +20,71 @@ class Article extends Base
         $offset = $this->request->param('offset', 0);
         $page   = floor($offset / $limit) + 1;
 
-        $where[] = ['title|keyword', 'like', $this->request->param('keywords', '')];
-        $where[] = ['position', '=', $this->request->param('position', '')];
+        $where[] = ['title|desc', 'like', $this->request->param('keywords', '')];
         $where[] = ['status', '=', $this->request->param('status', '')];
 
         $order    = $this->request->param('order', '');
         $sort     = $this->request->param('sort', '');
         $orderStr = ($sort && $order) ? "{$sort} {$order}" : 'id desc';
 
-        $res = CommonArticleModel::where(formatWhere($where))
+        $res = SystemPluginsModel::where(formatWhere($where))
             ->order($orderStr)
             ->paginate(['list_rows' => $limit, 'page' => $page])
             ->toArray();
 
         foreach ($res['data'] as &$item) {
-            $item['position_text'] = CommonArticleModel::position[$item['position']] ?? $item['position'];
+            $item['status_text'] = SystemPluginsModel::status[$item['status']] ?? $item['status'];
         }
+        unset($item);
+
         return json(['rows' => $res['data'], 'total' => $res['total']]);
     }
 
     /**
-     * 新增/编辑文章
+     * 新增/编辑插件
      */
     public function update()
     {
         $id = $this->request->param('id', 0);
         if (!$this->request->isPost()) {
-            $info = CommonArticleModel::find($id);
+            $info = SystemPluginsModel::find($id);
             $this->assign('id', $id);
-            $this->assign('info', $info ?: new CommonArticleModel());
-            $this->assign('position_list', CommonArticleModel::position);
+            $this->assign('info', $info ?: new SystemPluginsModel());
             return view();
         }
 
         $data = $this->request->param([
-            'position' => '',
-            'title'    => '',
-            'keyword'  => '',
-            'detaill'  => '',
-            'status'   => 1,
-            'publish_time' => formatDate()
+            'cate'        => 0,
+            'title'       => '',
+            'desc'        => '',
+            'version'     => '',
+            'path'        => '',
+            'status'      => 1,
+            'env_checker' => '',
         ]);
 
         if (empty($data['title'])) {
-            return $this->error('请输入标题');
+            return $this->error('请输入插件标题');
         }
-        if (empty($data['position'])) {
-            return $this->error('请选择位置');
+
+        $envChecker = [];
+        if (!empty($data['env_checker'])) {
+            $envChecker = json_decode($data['env_checker'], true);
+            if (!is_array($envChecker)) {
+                return $this->error('环境检查必须是合法的 JSON');
+            }
         }
+        $data['env_checker'] = $envChecker;
 
         $now = date('Y-m-d H:i:s');
 
         if ($id > 0) {
             $data['update_time'] = $now;
-            CommonArticleModel::where('id', $id)->update($data);
+            SystemPluginsModel::where('id', $id)->update($data);
         } else {
-            $data['create_time']  = $now;
-            $data['update_time']  = $now;
-            CommonArticleModel::create($data);
+            $data['create_time'] = $now;
+            $data['update_time'] = $now;
+            SystemPluginsModel::create($data);
         }
 
         return $this->success('提交成功');
@@ -93,7 +99,7 @@ class Article extends Base
         if (!$data['id']) {
             return $this->error('参数错误');
         }
-        CommonArticleModel::where('id', $data['id'])->update([
+        SystemPluginsModel::where('id', $data['id'])->update([
             'status'      => $data['status'],
             'update_time' => date('Y-m-d H:i:s'),
         ]);
@@ -101,7 +107,7 @@ class Article extends Base
     }
 
     /**
-     * 删除文章
+     * 删除插件
      */
     public function delete()
     {
@@ -110,7 +116,7 @@ class Article extends Base
             return $this->error('参数错误');
         }
         $ids = is_array($idx) ? $idx : explode(',', $idx);
-        CommonArticleModel::destroy($ids);
+        SystemPluginsModel::destroy($ids);
         return $this->success('操作成功');
     }
 }

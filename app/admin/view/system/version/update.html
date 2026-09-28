@@ -1,0 +1,117 @@
+{extend name='public/_container'}
+{block name="content"}
+<div class="row">
+    <form class="form-horizontal" id="doSubmit">
+        <div class="col-sm-12">
+            <div class="ibox ">
+                <div class="ibox-content">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">版本号：</label>
+                        <div class="col-sm-9">
+                            <input type="text" autocomplete="off" id="version_code" value="{$info.version_code|default=''}" name="version_code" class="form-control" placeholder="如 1.0.0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">版本ID：</label>
+                        <div class="col-sm-9">
+                            <input type="number" autocomplete="off" id="version_id" value="{$info.version_id|default=0}" name="version_id" class="form-control" placeholder="版本数字标识，如 100">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">平台：</label>
+                        <div class="col-sm-9">
+                            <select name="site" class="form-control chosen" id="site">
+                                <option value="ad" {if condition="$info.site == 'ad'"}selected{/if}>安卓</option>
+                                <option value="ios" {if condition="$info.site == 'ios'"}selected{/if}>苹果手机</option>
+                                <option value="mac" {if condition="$info.site == 'mac'"}selected{/if}>苹果电脑</option>
+                                <option value="win" {if condition="$info.site == 'win' || !$info.site"}selected{/if}>微软</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">标题：</label>
+                        <div class="col-sm-9">
+                            <input type="text" autocomplete="off" id="title" value="{$info.title|default=''}" name="title" class="form-control" placeholder="请输入标题">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">更新日志：</label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control" id="desc" name="desc" rows="6" placeholder="请输入更新日志">{$info.desc|default=''}</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">发布时间：</label>
+                        <div class="col-sm-9">
+                            <input type="text" autocomplete="off" id="push_time" value="{$info.push_time|default=''}" name="push_time" class="form-control" placeholder="请选择发布时间">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">是否强制：</label>
+                        <div class="col-sm-9">
+                            <select name="is_must" class="form-control chosen" id="is_must">
+                                <option value="0" {if condition="(int)$info.is_must === 0"}selected{else/}selected{/if}>非强制</option>
+                                <option value="1" {if condition="(int)$info.is_must === 1"}selected{/if}>强制更新</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">状态：</label>
+                        <div class="col-sm-9">
+                            <select name="status" class="form-control chosen" id="status">
+                                <option value="1" {if condition="(int)$info.status === 1"}selected{else/}selected{/if}>正常</option>
+                                <option value="0" {if condition="(int)$info.status === 0"}selected{/if}>禁用</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="row btn-group-m-t">
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-4">
+                            <button type="button" class="btn btn-primary" onclick="InfoDlg.submit()" id="ensure">
+                                <i class="fa fa-check"></i>&nbsp;确认提交
+                            </button>
+                            <button type="button" class="btn btn-danger" onclick="InfoDlg.close()" id="cancel"
+                                    style="margin-left: 20px">
+                                <i class="fa fa-remove"></i>&nbsp;取消关闭
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="/static/admin/js/common/formCom.js" charset="utf-8"></script>
+<script type="text/javascript">
+
+    InfoDlg.collectData = function () {
+        this.set('version_code').set('version_id').set('site').set('title').set('desc').set('push_time').set('is_must').set('status');
+    }
+
+    InfoDlg.Validate = function () {
+        if ($('#version_code').val() === '') {
+            com.error('请输入版本号');
+            return false;
+        }
+        if ($('#title').val() === '') {
+            com.error('请输入标题');
+            return false;
+        }
+        if ($('#push_time').val() === '') {
+            com.error('请选择发布时间');
+            return false;
+        }
+        return true;
+    }
+
+    InfoDlg.submit = function () {
+        this.ajaxSubmit("{:url('admin/system/version/update',['id'=>$id])}");
+    };
+
+    $(function () {
+        laydate.render({elem: '#push_time', type: 'datetime'});
+    });
+</script>
+
+{/block}

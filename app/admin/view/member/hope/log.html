@@ -1,0 +1,105 @@
+{extend name='public/_container'}
+{block name="content"}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="row" id="searchGroup">
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">用户UUID</button>
+                                    </div>
+                                    <input type="text" autocomplete="off" class="form-control" id="uuid" placeholder="输入用户UUID"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">类型</button>
+                                    </div>
+                                    <select class="form-control chosen" id="type">
+                                        <option value="">全部类型</option>
+                                        {foreach $type_list as $key => $item}
+                                            <option value="{$key}">{$item}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">来源</button>
+                                    </div>
+                                    <select class="form-control chosen" id="from">
+                                        <option value="">全部来源</option>
+                                        {foreach $from_list as $key => $item}
+                                            <option value="{$key}">{$item}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="button" class="btn btn-success" onclick="TableList.search()">
+                                    <i class="fa fa-search"></i>&nbsp;搜索
+                                </button>
+                            </div>
+                        </div>
+                        <table id="TableList" data-mobile-responsive="true" data-click-to-select="true">
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/static/admin/js/common/listCom.js" charset="utf-8"></script>
+<script>
+    var TableList = {id: "TableList", seItem: null, table: null, layerIndex: -1};
+
+    TableList.initColumn = function () {
+        return [
+            {title: '编号', field: 'id', visible: true, align: 'center', valign: 'middle'},
+            {title: '用户UUID', field: 'uuid', visible: true, align: 'center', valign: 'middle'},
+            {title: '昵称', field: 'nickname', visible: true, align: 'center', valign: 'middle'},
+            {title: '变更值', field: 'change', visible: true, align: 'center', valign: 'middle', formatter: TableList.changeFormatter},
+            {title: '变更前', field: 'before', visible: true, align: 'center', valign: 'middle'},
+            {title: '变更后', field: 'after', visible: true, align: 'center', valign: 'middle'},
+            {title: '类型', field: 'type_text', visible: true, align: 'center', valign: 'middle'},
+            {title: '来源', field: 'from_text', visible: true, align: 'center', valign: 'middle'},
+            {title: '详情', field: 'desc', visible: true, align: 'center', valign: 'middle'},
+            {title: '时间', field: 'create_time', visible: true, align: 'center', valign: 'middle'},
+        ];
+    };
+
+    TableList.changeFormatter = function (value, row, index) {
+        if (value > 0) {
+            return '<span style="color:#ed5565;">+' + value + '</span>';
+        }
+        if (value < 0) {
+            return '<span style="color:#1ab394;">' + value + '</span>';
+        }
+        return value;
+    };
+
+    TableList.formParams = function () {
+        var queryData = {};
+        queryData['uuid'] = $("#uuid").val();
+        queryData['type'] = $("#type").val();
+        queryData['from'] = $("#from").val();
+        return queryData;
+    };
+
+    TableList.search = function () {
+        TableList.table.refresh({query: TableList.formParams()});
+    };
+
+    $(function () {
+        var table = new BSTable(TableList.id, "{:url('admin/member/hope/log')}" + location.search, TableList.initColumn());
+        table.setQueryParams(TableList.formParams());
+        TableList.table = table.init();
+    });
+</script>
+{/block}

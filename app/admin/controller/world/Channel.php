@@ -1,19 +1,18 @@
 <?php
 
-namespace app\admin\controller\content;
+namespace app\admin\controller\world;
 
 use app\admin\controller\Base;
-use app\common\model\CommonArticleModel;
+use app\common\model\WorldChannelModel;
 
-class Article extends Base
+class Channel extends Base
 {
     /**
-     * 文章列表
+     * 频道列表
      */
     public function index()
     {
         if (!$this->request->isAjax()) {
-            $this->assign('position_list', CommonArticleModel::position);
             return view();
         }
 
@@ -21,64 +20,54 @@ class Article extends Base
         $offset = $this->request->param('offset', 0);
         $page   = floor($offset / $limit) + 1;
 
-        $where[] = ['title|keyword', 'like', $this->request->param('keywords', '')];
-        $where[] = ['position', '=', $this->request->param('position', '')];
+        $where[] = ['name|desc', 'like', $this->request->param('keywords', '')];
         $where[] = ['status', '=', $this->request->param('status', '')];
 
         $order    = $this->request->param('order', '');
         $sort     = $this->request->param('sort', '');
-        $orderStr = ($sort && $order) ? "{$sort} {$order}" : 'id desc';
+        $orderStr = ($sort && $order) ? "{$sort} {$order}" : 'sort asc, id asc';
 
-        $res = CommonArticleModel::where(formatWhere($where))
+        $res = WorldChannelModel::where(formatWhere($where))
             ->order($orderStr)
             ->paginate(['list_rows' => $limit, 'page' => $page])
             ->toArray();
 
-        foreach ($res['data'] as &$item) {
-            $item['position_text'] = CommonArticleModel::position[$item['position']] ?? $item['position'];
-        }
         return json(['rows' => $res['data'], 'total' => $res['total']]);
     }
 
     /**
-     * 新增/编辑文章
+     * 新增/编辑频道
      */
     public function update()
     {
         $id = $this->request->param('id', 0);
         if (!$this->request->isPost()) {
-            $info = CommonArticleModel::find($id);
+            $info = WorldChannelModel::find($id);
             $this->assign('id', $id);
-            $this->assign('info', $info ?: new CommonArticleModel());
-            $this->assign('position_list', CommonArticleModel::position);
+            $this->assign('info', $info ?: new WorldChannelModel());
             return view();
         }
 
         $data = $this->request->param([
-            'position' => '',
-            'title'    => '',
-            'keyword'  => '',
-            'detaill'  => '',
-            'status'   => 1,
-            'publish_time' => formatDate()
+            'name'   => '',
+            'desc'   => '',
+            'sort'   => 50,
+            'status' => 1,
         ]);
 
-        if (empty($data['title'])) {
-            return $this->error('请输入标题');
-        }
-        if (empty($data['position'])) {
-            return $this->error('请选择位置');
+        if (empty($data['name'])) {
+            return $this->error('请输入频道名称');
         }
 
         $now = date('Y-m-d H:i:s');
 
         if ($id > 0) {
             $data['update_time'] = $now;
-            CommonArticleModel::where('id', $id)->update($data);
+            WorldChannelModel::where('id', $id)->update($data);
         } else {
-            $data['create_time']  = $now;
-            $data['update_time']  = $now;
-            CommonArticleModel::create($data);
+            $data['create_time'] = $now;
+            $data['update_time'] = $now;
+            WorldChannelModel::create($data);
         }
 
         return $this->success('提交成功');
@@ -93,7 +82,7 @@ class Article extends Base
         if (!$data['id']) {
             return $this->error('参数错误');
         }
-        CommonArticleModel::where('id', $data['id'])->update([
+        WorldChannelModel::where('id', $data['id'])->update([
             'status'      => $data['status'],
             'update_time' => date('Y-m-d H:i:s'),
         ]);
@@ -101,7 +90,7 @@ class Article extends Base
     }
 
     /**
-     * 删除文章
+     * 删除频道
      */
     public function delete()
     {
@@ -110,7 +99,7 @@ class Article extends Base
             return $this->error('参数错误');
         }
         $ids = is_array($idx) ? $idx : explode(',', $idx);
-        CommonArticleModel::destroy($ids);
+        WorldChannelModel::destroy($ids);
         return $this->success('操作成功');
     }
 }

@@ -12,7 +12,21 @@
                                     <div class="input-group-btn">
                                         <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">关键字</button>
                                     </div>
-                                    <input type="text" autocomplete="off" class="form-control" id="keywords" placeholder="用户名/手机号"/>
+                                    <input type="text" autocomplete="off" class="form-control" id="keywords" placeholder="中文名/标签"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">分组</button>
+                                    </div>
+                                    <select class="form-control chosen" id="group">
+                                        <option value="">全部分组</option>
+                                        <option value="NT">NT</option>
+                                        <option value="NF">NF</option>
+                                        <option value="SJ">SJ</option>
+                                        <option value="SP">SP</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-sm-2">
@@ -20,10 +34,10 @@
                                     <div class="input-group-btn">
                                         <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">状态</button>
                                     </div>
-                                    <select class="form-control chosen" id="status" autocomplete="off" >
+                                    <select class="form-control chosen" id="status">
                                         <option value="">请选择</option>
                                         <option value="1">正常</option>
-                                        <option value="0">禁用</option>
+                                        <option value="0">隐藏</option>
                                     </select>
                                 </div>
                             </div>
@@ -34,12 +48,12 @@
                             </div>
                         </div>
                         <div class="btn-group-sm pull-left" id="TableToolbar" role="group" style="margin-top: 15px;">
-                            {if condition="($is_super_admin == 1) || (in_array('admin/admin/update', $admin_rule))"}
-                            <button type="button" id="create" class="btn btn-primary button-margin" onclick="TableList.update(0)">
+                            {if condition="$is_super_admin == 1 || in_array('admin/content/mbti/update', $admin_rule)"}
+                            <button type="button" id="create" class="btn btn-primary button-margin" onclick="TableList.update('')">
                                 <i class="fa fa-plus"></i>&nbsp;添加
                             </button>
                             {/if}
-                            {if condition="($is_super_admin == 1) || (in_array('admin/admin/delete', $admin_rule))"}
+                            {if condition="$is_super_admin == 1 || in_array('admin/content/mbti/delete', $admin_rule)"}
                             <button type="button" id="delete" class="btn btn-danger button-margin" onclick="TableList.delete()">
                                 <i class="fa fa-trash"></i>&nbsp;删除
                             </button>
@@ -60,35 +74,36 @@
     TableList.initColumn = function () {
         return [
             {field: 'selectItem', checkbox: true},
-            {title: '编号', field: 'id', visible: true, align: 'center', valign: 'middle'},
-            {title: '用户名', field: 'account', visible: true, align: 'center', valign: 'middle'},
-            {title: '类型', field: 'role_name', visible: true, align: 'center', valign: 'middle'},
+            {title: '代码', field: 'code', visible: true, align: 'center', valign: 'middle'},
+            {title: '中文名', field: 'name', visible: true, align: 'center', valign: 'middle'},
+            {title: '分组', field: 'group_text', visible: true, align: 'center', valign: 'middle'},
+            {title: '标签', field: 'traits', visible: true, align: 'center', valign: 'middle'},
+            {title: '主题色', field: 'theme_color', visible: true, align: 'center', valign: 'middle', formatter: TableList.colorFormatter},
             {title: '状态', field: 'status', visible: true, align: 'center', valign: 'middle', formatter: TableList.statusFormatter},
-            {title: '最后登录IP', field: 'last_login_ip', visible: true, align: 'center', valign: 'middle'},
-            {title: '最后登录时间', field: 'last_login_time', visible: true, align: 'center', valign: 'middle'},
-            {title: '创建时间', field: 'create_time', visible: true, align: 'center', valign: 'middle'},
             {title: '操作', field: '', visible: true, align: 'center', valign: 'middle', formatter: TableList.buttonFormatter},
         ];
     };
 
+    TableList.colorFormatter = function (value, row, index) {
+        if (!value) return '';
+        return '<span style="display:inline-block;width:16px;height:16px;border:1px solid #ddd;vertical-align:middle;background:' + value + '"></span> ' + value;
+    };
+
     TableList.statusFormatter = function (value, row, index) {
         var str = '';
-        {if condition="$is_super_admin == 1 || in_array('admin/admin/auth', $admin_rule)"}
-        str += listCom.switchBtn(row.id, 'status', value, "{:url('admin/admin/status')}")
+        {if condition="$is_super_admin == 1 || in_array('admin/content/mbti/status', $admin_rule)"}
+        str += listCom.switchBtn(row.code, 'status', value, "{:url('admin/content/mbti/status')}", 'code')
         {/if}
         return str;
     };
 
     TableList.buttonFormatter = function (value, row, index) {
         var str = '';
-        {if ($is_super_admin == 1 || in_array('admin/admin/update',$admin_rule))}
-        str += '<button type="button" class="btn btn-success btn-xs" onclick="TableList.update(' + row.id + ')"><i class="fa fa-pencil"></i>&nbsp;编辑</button>&nbsp;';
+        {if condition="$is_super_admin == 1 || in_array('admin/content/mbti/update', $admin_rule)"}
+        str += '<button type="button" class="btn btn-success btn-xs" onclick="TableList.update(\'' + row.code + '\')"><i class="fa fa-pencil"></i>&nbsp;编辑</button>&nbsp;';
         {/if}
-        {if ($is_super_admin == 1 || in_array('admin/admin/password',$admin_rule))}
-        str += '<button type="button" class="btn btn-warning btn-xs" onclick="TableList.password(' + row.id + ')"><i class="fa fa-lock"></i>&nbsp;重置密码</button>&nbsp;';
-        {/if}
-        {if ($is_super_admin == 1 || in_array('admin/admin/delete',$admin_rule))}
-        str += '<button type="button" class="btn btn-danger btn-xs" onclick="TableList.delete(' + row.id + ')"><i class="fa fa-trash"></i>&nbsp;删除</button>';
+        {if condition="$is_super_admin == 1 || in_array('admin/content/mbti/delete', $admin_rule)"}
+        str += '<button type="button" class="btn btn-danger btn-xs" onclick="TableList.delete(\'' + row.code + '\')"><i class="fa fa-trash"></i>&nbsp;删除</button>';
         {/if}
         return str;
     };
@@ -96,6 +111,7 @@
     TableList.formParams = function () {
         var queryData = {};
         queryData['keywords'] = $("#keywords").val();
+        queryData['group']    = $("#group").val();
         queryData['status']   = $("#status").val();
         return queryData;
     };
@@ -103,44 +119,28 @@
     TableList.update = function (value) {
         var index = layer.open({
             type: 2,
-            title: value > 0 ? '编辑管理员' : '添加管理员',
-            area: ['720px', '650px'],
+            title: value ? '编辑人格' : '添加人格',
+            area: ['820px', '80%'],
             fix: true,
-            content: "{:url('admin/admin/update')}?id=" + value
-        });
-    };
-
-    TableList.password = function (value) {
-        layer.prompt({title: '请输入新密码', formType: 1}, function(pass, index){
-            $.ajax({
-                url: "{:url('admin/admin/password')}",
-                type: 'POST',
-                data: {id: value, password: pass},
-                dataType: 'json',
-                success: function(res){
-                    if (res.status === 200) { layer.msg(res.msg, {icon: 1}); }
-                    else { layer.msg(res.msg, {icon: 2}); }
-                }
-            });
-            layer.close(index);
+            content: "{:url('admin/content/mbti/update')}?code=" + value
         });
     };
 
     TableList.delete = function (value) {
-        var ids = value ? value : '';
-        if (!ids) {
+        var codes = value ? value : '';
+        if (!codes) {
             var selected = $('#TableList').bootstrapTable('getSelections');
             if (selected.length === 0) {
                 layer.msg('请先选中表格中的记录！', {icon: 2});
                 return;
             }
-            ids = selected.map(function(item){ return item.id; }).join(',');
+            codes = selected.map(function(item){ return item.code; }).join(',');
         }
         layer.confirm('确定要删除选中的记录吗？', function(index){
             $.ajax({
-                url: "{:url('admin/admin/delete')}",
+                url: "{:url('admin/content/mbti/delete')}",
                 type: 'POST',
-                data: {id: ids},
+                data: {code: codes},
                 dataType: 'json',
                 success: function(res){
                     if (res.status === 200) { layer.msg(res.msg, {icon: 1}); TableList.table.refresh(); }
@@ -156,7 +156,7 @@
     };
 
     $(function () {
-        var table = new BSTable(TableList.id, "{:url('admin/admin/index')}" + location.search, TableList.initColumn());
+        var table = new BSTable(TableList.id, "{:url('admin/content/mbti/index')}" + location.search, TableList.initColumn());
         table.setQueryParams(TableList.formParams());
         TableList.table = table.init();
     });

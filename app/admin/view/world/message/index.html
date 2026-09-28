@@ -1,0 +1,148 @@
+{extend name='public/_container'}
+{block name="content"}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="row" id="searchGroup">
+                            <div class="col-sm-2">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">频道</button>
+                                    </div>
+                                    <select class="form-control chosen" id="channel_id">
+                                        <option value="">全部频道</option>
+                                        {foreach $channel_list as $item}
+                                            <option value="{$item.id}">{$item.name}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">关键字</button>
+                                    </div>
+                                    <input type="text" autocomplete="off" class="form-control" id="keywords" placeholder="用户名称/消息内容"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">消息类型</button>
+                                    </div>
+                                    <select class="form-control chosen" id="message_type">
+                                        <option value="">全部类型</option>
+                                        <option value="text">文本</option>
+                                        <option value="image">图片</option>
+                                        <option value="emoji">表情</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">权限</button>
+                                    </div>
+                                    <select class="form-control chosen" id="role">
+                                        <option value="">全部权限</option>
+                                        {foreach $role_list as $key => $item}
+                                            <option value="{$key}">{$item}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="button" class="btn btn-success" onclick="TableList.search()">
+                                    <i class="fa fa-search"></i>&nbsp;搜索
+                                </button>
+                            </div>
+                        </div>
+                        <div class="btn-group-sm pull-left" id="TableToolbar" role="group" style="margin-top: 15px;">
+                            {if condition="$is_super_admin == 1 || in_array('admin/world/message/delete', $admin_rule)"}
+                            <button type="button" id="delete" class="btn btn-danger button-margin" onclick="TableList.delete()">
+                                <i class="fa fa-trash"></i>&nbsp;删除
+                            </button>
+                            {/if}
+                        </div>
+                        <table id="TableList" data-mobile-responsive="true" data-click-to-select="true">
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/static/admin/js/common/listCom.js" charset="utf-8"></script>
+<script>
+    var TableList = {id: "TableList", seItem: null, table: null, layerIndex: -1};
+
+    TableList.initColumn = function () {
+        return [
+            {field: 'selectItem', checkbox: true},
+            {title: '编号', field: 'id', visible: true, align: 'center', valign: 'middle'},
+            {title: '频道', field: 'channel_name', visible: true, align: 'center', valign: 'middle'},
+            {title: '用户名称', field: 'uname', visible: true, align: 'center', valign: 'middle'},
+            {title: '用户UUID', field: 'uuid', visible: true, align: 'center', valign: 'middle'},
+            {title: '消息类型', field: 'message_type_text', visible: true, align: 'center', valign: 'middle'},
+            {title: '消息内容', field: 'message_data', visible: true, align: 'left', valign: 'middle', formatter: TableList.messageFormatter},
+            {title: '权限', field: 'role_text', visible: true, align: 'center', valign: 'middle'},
+            {title: '发送时间', field: 'create_time', visible: true, align: 'center', valign: 'middle'},
+            {title: '操作', field: '', visible: true, align: 'center', valign: 'middle', formatter: TableList.buttonFormatter},
+        ];
+    };
+
+    TableList.messageFormatter = function (value, row, index) {
+        if (row.message_type === 'image') {
+            return '<a href="javascript:void(0)" onclick="openImg(\'' + value + '\')"><img height="30" src="' + value + '"></a>';
+        }
+        return value;
+    };
+
+    TableList.buttonFormatter = function (value, row, index) {
+        var str = '';
+        {if condition="$is_super_admin == 1 || in_array('admin/world/message/delete', $admin_rule)"}
+        str += '<button type="button" class="btn btn-danger btn-xs" onclick="TableList.delete(' + row.id + ')"><i class="fa fa-trash"></i>&nbsp;删除</button>';
+        {/if}
+        return str;
+    };
+
+    TableList.formParams = function () {
+        var queryData = {};
+        queryData['channel_id']   = $("#channel_id").val();
+        queryData['keywords']     = $("#keywords").val();
+        queryData['message_type'] = $("#message_type").val();
+        queryData['role']         = $("#role").val();
+        return queryData;
+    };
+
+    TableList.delete = function (value) {
+        var ids = value ? value : '';
+        if (!ids) {
+            var selected = $('#TableList').bootstrapTable('getSelections');
+            if (selected.length === 0) { layer.msg('请先选中表格中的记录！', {icon: 2}); return; }
+            ids = selected.map(function(item){ return item.id; }).join(',');
+        }
+        layer.confirm('确定要删除选中的记录吗？', function(index){
+            $.ajax({
+                url: "{:url('admin/world/message/delete')}", type: 'POST', data: {id: ids}, dataType: 'json',
+                success: function(res){
+                    if (res.status === 200) { layer.msg(res.msg, {icon: 1}); TableList.table.refresh(); }
+                    else { layer.msg(res.msg, {icon: 2}); }
+                }
+            });
+            layer.close(index);
+        });
+    };
+
+    TableList.search = function () { TableList.table.refresh({query: TableList.formParams()}); };
+
+    $(function () {
+        var table = new BSTable(TableList.id, "{:url('admin/world/message/index')}" + location.search, TableList.initColumn());
+        table.setQueryParams(TableList.formParams());
+        TableList.table = table.init();
+    });
+</script>
+{/block}

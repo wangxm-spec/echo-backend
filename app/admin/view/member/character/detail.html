@@ -1,0 +1,102 @@
+{extend name='public/_container'}
+{block name="content"}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <h3 style="margin-top:0;">{$info.name|default=''}</h3>
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <th style="width:180px;">角色ID</th>
+                        <td>{$info.cuid|default=''}</td>
+                    </tr>
+                    <tr>
+                        <th>角色名称</th>
+                        <td>{$info.name|default=''}</td>
+                    </tr>
+                    <tr>
+                        <th>生日</th>
+                        <td>{$info.birth|default=''}</td>
+                    </tr>
+                    <tr>
+                        <th>头像</th>
+                        <td>
+                            {notempty name="$info.icon"}
+                            <img src="{$info.icon}" style="max-width:80px;max-height:80px;border:1px solid #ddd;padding:2px;">
+                            {/notempty}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>备注</th>
+                        <td>{$info.remark|default=''}</td>
+                    </tr>
+                    <tr>
+                        <th>角色描述</th>
+                        <td style="white-space:pre-wrap;">{$info.description|default=''}</td>
+                    </tr>
+                    <tr>
+                        <th>角色性格</th>
+                        <td style="white-space:pre-wrap;">{$info.personality|default=''}</td>
+                    </tr>
+                    <tr>
+                        <th>当前场景</th>
+                        <td style="white-space:pre-wrap;">{$info.scenario|default=''}</td>
+                    </tr>
+                    <tr>
+                        <th>开发者提示</th>
+                        <td style="white-space:pre-wrap;">{$info.system_prompt|default=''}</td>
+                    </tr>
+                    <tr>
+                        <th>角色标签</th>
+                        <td>{:is_array($info['tone_tags']) ? implode(' / ', $info['tone_tags']) : $info['tone_tags']}</td>
+                    </tr>
+                    <tr>
+                        <th>灵魂卡片</th>
+                        <td>{$info.soul_card|default=''}</td>
+                    </tr>
+                    <tr>
+                        <th>刚性系数</th>
+                        <td>{$info.rigidity|default=0}</td>
+                    </tr>
+                    <tr>
+                        <th>主人称呼</th>
+                        <td>{$info.loader_call|default=''}</td>
+                    </tr>
+                    <tr>
+                        <th>状态</th>
+                        <td>{if condition="(int)$info.status === 1"}正常{else/}禁用{/if}</td>
+                    </tr>
+                    <tr>
+                        <th>创建时间</th>
+                        <td>{$info.create_time|default=''}</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <h4>五维坐标</h4>
+                {foreach $coordinates_desc as $key => $text}
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" style="text-align:left;">{$text}（{$key}）：</label>
+                    <div class="col-sm-9">
+                        <div class="progress" style="margin-bottom:0;">
+                            {php}$val = (int)($info['current_coordinates'][$key] ?? 0); $width = ($val + 100) / 2;{/php}
+                            <div class="progress-bar" style="width:{$width}%;background:#1ab394;">{$val}</div>
+                        </div>
+                    </div>
+                </div>
+                {/foreach}
+
+                <div class="row" style="margin-top:30px;">
+                    <div class="col-sm-12 text-center">
+                        <button type="button" class="btn btn-default" onclick="InfoDlg.close()">
+                            <i class="fa fa-remove"></i>&nbsp;关闭
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/static/admin/js/common/formCom.js" charset="utf-8"></script>
+{/block}
