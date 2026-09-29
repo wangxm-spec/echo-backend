@@ -11,7 +11,7 @@
  Target Server Version : 80024 (8.0.24)
  File Encoding         : 65001
 
- Date: 28/09/2026 14:55:42
+ Date: 28/09/2026 16:00:58
 */
 
 SET NAMES utf8mb4;
@@ -43,60 +43,60 @@ INSERT INTO `admin_menu` VALUES (2, 0, '系统设置', '#', 'fa fa-cog', 9999, 1
 INSERT INTO `admin_menu` VALUES (3, 2, '基础配置', 'admin/config/config', 'fa fa-sliders', 2, 1, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
 INSERT INTO `admin_menu` VALUES (4, 2, '用户管理', 'admin/admin/index', 'fa fa-user-secret', 3, 1, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
 INSERT INTO `admin_menu` VALUES (5, 2, '角色权限', 'admin/role/index', 'fa fa-sitemap', 4, 1, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
-INSERT INTO `admin_menu` VALUES (6, 4, '新增编辑', 'admin/admin/update', '', 0, 2, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
-INSERT INTO `admin_menu` VALUES (7, 4, '修改状态', 'admin/admin/status', '', 0, 2, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
-INSERT INTO `admin_menu` VALUES (8, 4, '删除', 'admin/admin/delete', '', 0, 2, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
-INSERT INTO `admin_menu` VALUES (9, 4, '重置密码', 'admin/admin/password', '', 0, 2, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
-INSERT INTO `admin_menu` VALUES (10, 5, '新增编辑', 'admin/role/update', '', 0, 2, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
-INSERT INTO `admin_menu` VALUES (11, 5, '修改状态', 'admin/role/status', '', 0, 2, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
-INSERT INTO `admin_menu` VALUES (12, 5, '删除', 'admin/role/delete', '', 0, 2, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
-INSERT INTO `admin_menu` VALUES (13, 5, '分配角色', 'admin/role/auth', '', 0, 2, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
-INSERT INTO `admin_menu` VALUES (14, 0, '内容管理', '#', '', 2, 1, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
-INSERT INTO `admin_menu` VALUES (15, 14, '文章管理', 'admin/content/article/index', '', 1, 1, '2026-09-28 14:20:37', '2026-09-28 14:20:39', NULL);
-INSERT INTO `admin_menu` VALUES (16, 15, '新增修改', 'admin/content/article/update', '', 0, 2, '2026-09-28 14:23:13', '2026-09-28 14:23:13', NULL);
-INSERT INTO `admin_menu` VALUES (17, 15, '修改状态', 'admin/content/article/status', '', 0, 2, '2026-09-28 14:23:13', '2026-09-28 14:23:13', NULL);
-INSERT INTO `admin_menu` VALUES (18, 15, '删除', 'admin/content/article/delete', '', 0, 2, '2026-09-28 14:23:13', '2026-09-28 14:23:13', NULL);
-INSERT INTO `admin_menu` VALUES (19, 14, 'MBTI维护', 'admin/content/mbti/index', '', 2, 1, '2026-09-28 14:24:10', '2026-09-28 14:24:12', NULL);
-INSERT INTO `admin_menu` VALUES (20, 19, '新增修改', 'admin/content/mbti/update', '', 0, 2, '2026-09-28 14:25:05', '2026-09-28 14:25:07', NULL);
-INSERT INTO `admin_menu` VALUES (21, 19, '修改状态', 'admin/content/mbti/status', '', 0, 2, '2026-09-28 14:25:35', '2026-09-28 14:25:38', NULL);
-INSERT INTO `admin_menu` VALUES (22, 19, '删除', 'admin/content/mbti/delete', '', 0, 2, '2026-09-28 14:25:57', '2026-09-28 14:26:00', NULL);
-INSERT INTO `admin_menu` VALUES (23, 0, '会员管理', '#', '', 50, 1, '2026-09-28 14:29:39', '2026-09-28 14:29:41', NULL);
-INSERT INTO `admin_menu` VALUES (24, 23, '账号管理', 'admin/member/account/index', '', 0, 1, '2026-09-28 14:30:09', '2026-09-28 14:30:12', NULL);
-INSERT INTO `admin_menu` VALUES (25, 24, '编辑账号(无添加)', 'admin/member/account/update', '', 0, 2, '2026-09-28 14:30:40', '2026-09-28 14:30:42', NULL);
-INSERT INTO `admin_menu` VALUES (26, 24, '修改禁用', 'admin/member/account/status', '', 0, 2, '2026-09-28 14:31:09', '2026-09-28 14:31:11', NULL);
-INSERT INTO `admin_menu` VALUES (27, 24, '修改密码', 'admin/member/account/password', '', 0, 2, '2026-09-28 14:31:33', '2026-09-28 14:31:35', NULL);
-INSERT INTO `admin_menu` VALUES (28, 24, '删除', 'admin/member/account/delete', '', 0, 2, '2026-09-28 14:31:58', '2026-09-28 14:32:00', NULL);
-INSERT INTO `admin_menu` VALUES (29, 23, '称号管理', 'admin/member/call/index', '', 0, 1, '2026-09-28 14:35:20', '2026-09-28 14:35:22', NULL);
-INSERT INTO `admin_menu` VALUES (30, 29, '新增修改', 'admin/member/call/update', '', 0, 2, '2026-09-28 14:35:45', '2026-09-28 14:35:48', NULL);
-INSERT INTO `admin_menu` VALUES (31, 29, '删除', 'admin/member/call/delete', '', 0, 2, '2026-09-28 14:36:23', '2026-09-28 14:36:25', NULL);
-INSERT INTO `admin_menu` VALUES (32, 29, '修改状态', 'admin/member/call/status', '', 0, 2, '2026-09-28 14:36:51', '2026-09-28 14:36:53', NULL);
-INSERT INTO `admin_menu` VALUES (33, 23, '角色管理', 'admin/member/character/index', '', 0, 1, '2026-09-28 14:37:40', '2026-09-28 14:37:42', NULL);
-INSERT INTO `admin_menu` VALUES (34, 33, '详情', 'admin/member/character/detail', '', 0, 2, '2026-09-28 14:39:06', '2026-09-28 14:39:08', NULL);
-INSERT INTO `admin_menu` VALUES (35, 33, '文件信息', 'admin/member/character/file', '', 0, 2, '2026-09-28 14:39:32', '2026-09-28 14:39:34', NULL);
-INSERT INTO `admin_menu` VALUES (36, 33, '删除', 'admin/member/character/delete', '', 0, 2, '2026-09-28 14:39:53', '2026-09-28 14:39:55', NULL);
-INSERT INTO `admin_menu` VALUES (37, 23, '琥珀日志', 'admin/member/hope/log', '', 0, 1, '2026-09-28 14:40:37', '2026-09-28 14:40:39', NULL);
-INSERT INTO `admin_menu` VALUES (38, 2, '系统日志', '#', '', 5, 1, '2026-09-28 14:41:26', '2026-09-28 14:41:28', NULL);
-INSERT INTO `admin_menu` VALUES (39, 38, '短信日志', 'admin/service/sms/log', '', 1, 1, '2026-09-28 14:42:05', '2026-09-28 14:42:07', NULL);
-INSERT INTO `admin_menu` VALUES (40, 38, '邮件日志', 'admin/service/email/log', '', 1, 1, '2026-09-28 14:42:30', '2026-09-28 14:42:33', NULL);
-INSERT INTO `admin_menu` VALUES (41, 0, '系统管理', '#', '', 1, 1, '2026-09-28 14:44:36', '2026-09-28 14:44:37', NULL);
-INSERT INTO `admin_menu` VALUES (42, 41, '系统插件', 'admin/system/plugins/index', '', 1, 1, '2026-09-28 14:45:18', '2026-09-28 14:45:20', NULL);
-INSERT INTO `admin_menu` VALUES (43, 42, '新增编辑', 'admin/system/plugins/update', '', 1, 2, '2026-09-28 14:45:50', '2026-09-28 14:45:52', NULL);
-INSERT INTO `admin_menu` VALUES (44, 42, '修改状态', 'admin/system/plugins/status', '', 2, 2, '2026-09-28 14:46:14', '2026-09-28 14:46:16', NULL);
-INSERT INTO `admin_menu` VALUES (45, 42, '删除', 'admin/system/plugins/delete', '', 3, 2, '2026-09-28 14:46:38', '2026-09-28 14:46:39', NULL);
-INSERT INTO `admin_menu` VALUES (46, 41, 'APP版本', 'admin/system/version/index', '', 2, 1, '2026-09-28 14:47:44', '2026-09-28 14:47:46', NULL);
-INSERT INTO `admin_menu` VALUES (47, 46, '新增修改', 'admin/system/version/update', '', 1, 2, '2026-09-28 14:48:32', '2026-09-28 14:48:34', NULL);
-INSERT INTO `admin_menu` VALUES (48, 46, '修改状态', 'admin/system/version/status', '', 2, 2, '2026-09-28 14:49:11', '2026-09-28 14:49:12', NULL);
-INSERT INTO `admin_menu` VALUES (49, 46, '删除', 'admin/system/version/delete', '', 3, 2, '2026-09-28 14:49:34', '2026-09-28 14:49:35', NULL);
-INSERT INTO `admin_menu` VALUES (50, 41, 'AI服务商', 'admin/system/ai/index', '', 3, 1, '2026-09-28 14:50:29', '2026-09-28 14:50:30', NULL);
-INSERT INTO `admin_menu` VALUES (51, 50, '新增编辑', 'admin/system/ai/update', '', 1, 2, '2026-09-28 14:50:55', '2026-09-28 14:50:57', NULL);
-INSERT INTO `admin_menu` VALUES (52, 50, '修改状态', 'admin/system/ai/status', '', 2, 2, '2026-09-28 14:51:19', '2026-09-28 14:51:21', NULL);
-INSERT INTO `admin_menu` VALUES (53, 50, '删除', 'admin/system/ai/delete', '', 3, 2, '2026-09-28 14:51:40', '2026-09-28 14:51:42', NULL);
-INSERT INTO `admin_menu` VALUES (54, 0, '世界频道', '#', '', 55, 1, '2026-09-28 14:52:32', '2026-09-28 14:52:34', NULL);
-INSERT INTO `admin_menu` VALUES (55, 54, '频道管理', 'admin/world/channel/index', '', 0, 1, '2026-09-28 14:53:17', '2026-09-28 14:53:18', NULL);
-INSERT INTO `admin_menu` VALUES (56, 55, '新增编辑', 'admin/world/channel/update', '', 1, 2, '2026-09-28 14:53:56', '2026-09-28 14:53:57', NULL);
-INSERT INTO `admin_menu` VALUES (57, 55, '修改状态', 'admin/world/channel/status', '', 2, 2, '2026-09-28 14:54:21', '2026-09-28 14:54:23', NULL);
-INSERT INTO `admin_menu` VALUES (58, 55, '删除', 'admin/world/channel/delete', '', 3, 2, '2026-09-28 14:54:47', '2026-09-28 14:54:48', NULL);
-INSERT INTO `admin_menu` VALUES (59, 54, '聊天信息', 'admin/world/message/index', '', 2, 1, '2026-09-28 14:55:17', '2026-09-28 14:55:19', NULL);
+INSERT INTO `admin_menu` VALUES (6, 4, '新增编辑', 'admin/admin/update', 'fa fa-plus-square', 0, 2, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
+INSERT INTO `admin_menu` VALUES (7, 4, '修改状态', 'admin/admin/status', 'fa fa-toggle-on', 0, 2, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
+INSERT INTO `admin_menu` VALUES (8, 4, '删除', 'admin/admin/delete', 'fa fa-trash', 0, 2, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
+INSERT INTO `admin_menu` VALUES (9, 4, '重置密码', 'admin/admin/password', 'fa fa-key', 0, 2, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
+INSERT INTO `admin_menu` VALUES (10, 5, '新增编辑', 'admin/role/update', 'fa fa-plus-square', 0, 2, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
+INSERT INTO `admin_menu` VALUES (11, 5, '修改状态', 'admin/role/status', 'fa fa-toggle-on', 0, 2, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
+INSERT INTO `admin_menu` VALUES (12, 5, '删除', 'admin/role/delete', 'fa fa-trash', 0, 2, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
+INSERT INTO `admin_menu` VALUES (13, 5, '分配角色', 'admin/role/auth', 'fa fa-user-plus', 0, 2, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
+INSERT INTO `admin_menu` VALUES (14, 0, '内容管理', '#', 'fa fa-file-text-o', 2, 1, '2026-09-28 14:20:10', '2026-09-28 14:20:10', NULL);
+INSERT INTO `admin_menu` VALUES (15, 14, '文章管理', 'admin/content/article/index', 'fa fa-newspaper-o', 1, 1, '2026-09-28 14:20:37', '2026-09-28 14:20:39', NULL);
+INSERT INTO `admin_menu` VALUES (16, 15, '新增修改', 'admin/content/article/update', 'fa fa-plus-square', 0, 2, '2026-09-28 14:23:13', '2026-09-28 14:23:13', NULL);
+INSERT INTO `admin_menu` VALUES (17, 15, '修改状态', 'admin/content/article/status', 'fa fa-toggle-on', 0, 2, '2026-09-28 14:23:13', '2026-09-28 14:23:13', NULL);
+INSERT INTO `admin_menu` VALUES (18, 15, '删除', 'admin/content/article/delete', 'fa fa-trash', 0, 2, '2026-09-28 14:23:13', '2026-09-28 14:23:13', NULL);
+INSERT INTO `admin_menu` VALUES (19, 14, 'MBTI维护', 'admin/content/mbti/index', 'fa fa-newspaper-o', 2, 1, '2026-09-28 14:24:10', '2026-09-28 14:24:12', NULL);
+INSERT INTO `admin_menu` VALUES (20, 19, '新增修改', 'admin/content/mbti/update', 'fa fa-plus-square', 0, 2, '2026-09-28 14:25:05', '2026-09-28 14:25:07', NULL);
+INSERT INTO `admin_menu` VALUES (21, 19, '修改状态', 'admin/content/mbti/status', 'fa fa-toggle-on', 0, 2, '2026-09-28 14:25:35', '2026-09-28 14:25:38', NULL);
+INSERT INTO `admin_menu` VALUES (22, 19, '删除', 'admin/content/mbti/delete', 'fa fa-trash', 0, 2, '2026-09-28 14:25:57', '2026-09-28 14:26:00', NULL);
+INSERT INTO `admin_menu` VALUES (23, 0, '会员管理', '#', 'fa fa-users', 50, 1, '2026-09-28 14:29:39', '2026-09-28 14:29:41', NULL);
+INSERT INTO `admin_menu` VALUES (24, 23, '账号管理', 'admin/member/account/index', 'fa fa-users', 0, 1, '2026-09-28 14:30:09', '2026-09-28 14:30:12', NULL);
+INSERT INTO `admin_menu` VALUES (25, 24, '编辑账号(无添加)', 'admin/member/account/update', 'fa fa-pencil-square-o', 0, 2, '2026-09-28 14:30:40', '2026-09-28 14:30:42', NULL);
+INSERT INTO `admin_menu` VALUES (26, 24, '修改禁用', 'admin/member/account/status', 'fa fa-toggle-on', 0, 2, '2026-09-28 14:31:09', '2026-09-28 14:31:11', NULL);
+INSERT INTO `admin_menu` VALUES (27, 24, '修改密码', 'admin/member/account/password', 'fa fa-key', 0, 2, '2026-09-28 14:31:33', '2026-09-28 14:31:35', NULL);
+INSERT INTO `admin_menu` VALUES (28, 24, '删除', 'admin/member/account/delete', 'fa fa-trash', 0, 2, '2026-09-28 14:31:58', '2026-09-28 14:32:00', NULL);
+INSERT INTO `admin_menu` VALUES (29, 23, '称号管理', 'admin/member/call/index', 'fa fa-tags', 0, 1, '2026-09-28 14:35:20', '2026-09-28 14:35:22', NULL);
+INSERT INTO `admin_menu` VALUES (30, 29, '新增修改', 'admin/member/call/update', 'fa fa-plus-square', 0, 2, '2026-09-28 14:35:45', '2026-09-28 14:35:48', NULL);
+INSERT INTO `admin_menu` VALUES (31, 29, '删除', 'admin/member/call/delete', 'fa fa-trash', 0, 2, '2026-09-28 14:36:23', '2026-09-28 14:36:25', NULL);
+INSERT INTO `admin_menu` VALUES (32, 29, '修改状态', 'admin/member/call/status', 'fa fa-toggle-on', 0, 2, '2026-09-28 14:36:51', '2026-09-28 14:36:53', NULL);
+INSERT INTO `admin_menu` VALUES (33, 23, '角色管理', 'admin/member/character/index', 'fa fa-magic', 0, 1, '2026-09-28 14:37:40', '2026-09-28 14:37:42', NULL);
+INSERT INTO `admin_menu` VALUES (34, 33, '详情', 'admin/member/character/detail', 'fa fa-search', 0, 2, '2026-09-28 14:39:06', '2026-09-28 14:39:08', NULL);
+INSERT INTO `admin_menu` VALUES (35, 33, '文件信息', 'admin/member/character/file', 'fa fa-folder-open-o', 0, 2, '2026-09-28 14:39:32', '2026-09-28 14:39:34', NULL);
+INSERT INTO `admin_menu` VALUES (36, 33, '删除', 'admin/member/character/delete', 'fa fa-trash', 0, 2, '2026-09-28 14:39:53', '2026-09-28 14:39:55', NULL);
+INSERT INTO `admin_menu` VALUES (37, 23, '琥珀日志', 'admin/member/hope/log', 'fa fa-history', 0, 1, '2026-09-28 14:40:37', '2026-09-28 14:40:39', NULL);
+INSERT INTO `admin_menu` VALUES (38, 2, '系统日志', '#', 'fa fa-book', 5, 1, '2026-09-28 14:41:26', '2026-09-28 14:41:28', NULL);
+INSERT INTO `admin_menu` VALUES (39, 38, '短信日志', 'admin/service/sms/log', 'fa fa-commenting-o', 1, 1, '2026-09-28 14:42:05', '2026-09-28 14:42:07', NULL);
+INSERT INTO `admin_menu` VALUES (40, 38, '邮件日志', 'admin/service/email/log', 'fa fa-envelope-o', 1, 1, '2026-09-28 14:42:30', '2026-09-28 14:42:33', NULL);
+INSERT INTO `admin_menu` VALUES (41, 0, '系统管理', '#', 'fa fa-server', 1, 1, '2026-09-28 14:44:36', '2026-09-28 14:44:37', NULL);
+INSERT INTO `admin_menu` VALUES (42, 41, '系统插件', 'admin/system/plugins/index', 'fa fa-plug', 1, 1, '2026-09-28 14:45:18', '2026-09-28 14:45:20', NULL);
+INSERT INTO `admin_menu` VALUES (43, 42, '新增编辑', 'admin/system/plugins/update', 'fa fa-plus-square', 1, 2, '2026-09-28 14:45:50', '2026-09-28 14:45:52', NULL);
+INSERT INTO `admin_menu` VALUES (44, 42, '修改状态', 'admin/system/plugins/status', 'fa fa-toggle-on', 2, 2, '2026-09-28 14:46:14', '2026-09-28 14:46:16', NULL);
+INSERT INTO `admin_menu` VALUES (45, 42, '删除', 'admin/system/plugins/delete', 'fa fa-trash', 3, 2, '2026-09-28 14:46:38', '2026-09-28 14:46:39', NULL);
+INSERT INTO `admin_menu` VALUES (46, 41, 'APP版本', 'admin/system/version/index', 'fa fa-mobile', 2, 1, '2026-09-28 14:47:44', '2026-09-28 14:47:46', NULL);
+INSERT INTO `admin_menu` VALUES (47, 46, '新增修改', 'admin/system/version/update', 'fa fa-plus-square', 1, 2, '2026-09-28 14:48:32', '2026-09-28 14:48:34', NULL);
+INSERT INTO `admin_menu` VALUES (48, 46, '修改状态', 'admin/system/version/status', 'fa fa-toggle-on', 2, 2, '2026-09-28 14:49:11', '2026-09-28 14:49:12', NULL);
+INSERT INTO `admin_menu` VALUES (49, 46, '删除', 'admin/system/version/delete', 'fa fa-trash', 3, 2, '2026-09-28 14:49:34', '2026-09-28 14:49:35', NULL);
+INSERT INTO `admin_menu` VALUES (50, 41, 'AI服务商', 'admin/system/ai/index', 'fa fa-plug', 3, 1, '2026-09-28 14:50:29', '2026-09-28 14:50:30', NULL);
+INSERT INTO `admin_menu` VALUES (51, 50, '新增编辑', 'admin/system/ai/update', 'fa fa-plus-square', 1, 2, '2026-09-28 14:50:55', '2026-09-28 14:50:57', NULL);
+INSERT INTO `admin_menu` VALUES (52, 50, '修改状态', 'admin/system/ai/status', 'fa fa-toggle-on', 2, 2, '2026-09-28 14:51:19', '2026-09-28 14:51:21', NULL);
+INSERT INTO `admin_menu` VALUES (53, 50, '删除', 'admin/system/ai/delete', 'fa fa-trash', 3, 2, '2026-09-28 14:51:40', '2026-09-28 14:51:42', NULL);
+INSERT INTO `admin_menu` VALUES (54, 0, '世界频道', '#', 'fa fa-globe', 55, 1, '2026-09-28 14:52:32', '2026-09-28 14:52:34', NULL);
+INSERT INTO `admin_menu` VALUES (55, 54, '频道管理', 'admin/world/channel/index', 'fa fa-comments-o', 0, 1, '2026-09-28 14:53:17', '2026-09-28 14:53:18', NULL);
+INSERT INTO `admin_menu` VALUES (56, 55, '新增编辑', 'admin/world/channel/update', 'fa fa-plus-square', 1, 2, '2026-09-28 14:53:56', '2026-09-28 14:53:57', NULL);
+INSERT INTO `admin_menu` VALUES (57, 55, '修改状态', 'admin/world/channel/status', 'fa fa-toggle-on', 2, 2, '2026-09-28 14:54:21', '2026-09-28 14:54:23', NULL);
+INSERT INTO `admin_menu` VALUES (58, 55, '删除', 'admin/world/channel/delete', 'fa fa-trash', 3, 2, '2026-09-28 14:54:47', '2026-09-28 14:54:48', NULL);
+INSERT INTO `admin_menu` VALUES (59, 54, '聊天信息', 'admin/world/message/index', 'fa fa-commenting', 2, 1, '2026-09-28 14:55:17', '2026-09-28 14:55:19', NULL);
 
 -- ----------------------------
 -- Table structure for admin_role
@@ -343,7 +343,7 @@ CREATE TABLE `member_account`  (
 -- ----------------------------
 -- Records of member_account
 -- ----------------------------
-INSERT INTO `member_account` VALUES ('59ba9558-35d9-497b-b1d4-5fd22392a34a', '15763043010', '$2y$10$A2hDC2nyGnzQ7rb4MjNoDe26fmSNhc.bZYS0uTj1DrrD0E0rgeiUi', 'omjoqv', '981615632@qq.com', '用户-513787', '981615632', '/static/img/avatar.png', 1, 0, 'ENFJ', 0, '2026-09-17 09:24:48', '2026-09-17 14:06:01', NULL);
+INSERT INTO `member_account` VALUES ('59ba9558-35d9-497b-b1d4-5fd22392a34a', '15763043010', '$2y$10$A2hDC2nyGnzQ7rb4MjNoDe26fmSNhc.bZYS0uTj1DrrD0E0rgeiUi', 'omjoqv', '981615632@qq.com', '用户-513787', '981615632', '/static/img/avatar.png', 1, 0, 'ENFJ', 1, '2026-09-17 09:24:48', '2026-09-28 15:47:59', NULL);
 
 -- ----------------------------
 -- Table structure for member_call
@@ -360,11 +360,12 @@ CREATE TABLE `member_call`  (
   `update_time` datetime NULL DEFAULT NULL,
   `delete_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户称号' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户称号' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of member_call
 -- ----------------------------
+INSERT INTO `member_call` VALUES (1, '59ba9558-35d9-497b-b1d4-5fd22392a34a', '管理员', '#ff2e00', 1, 'admin', '2026-09-28 15:44:33', '2026-09-28 15:44:33', NULL);
 
 -- ----------------------------
 -- Table structure for member_character
@@ -755,10 +756,11 @@ CREATE TABLE `world_channel`  (
   `update_time` datetime NULL DEFAULT NULL,
   `delete_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '世界频道表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '世界频道表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of world_channel
 -- ----------------------------
+INSERT INTO `world_channel` VALUES (1, '水漫金山', '灌水区', 1, 50, '2026-09-28 15:24:19', '2026-09-28 15:24:27', NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;
